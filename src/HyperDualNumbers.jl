@@ -6,11 +6,11 @@ module HyperDualNumbers
   
   export
     Hyper,
-    Hyper64,
-    Hyper32,
+    Hyper256,
+    Hyper128,
     hyper,
-    hyper64,
-    hyper32,
+    hyper256,
+    hyper128,
     ishyper,
     hyper_show,
     eps1,

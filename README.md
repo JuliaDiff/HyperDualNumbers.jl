@@ -49,6 +49,8 @@ Use the `dual()` function to define the dual number `2+1*du`:
     hd1 = hyper(1.0)
     hd2 = hyper(1.0, 2.0, 3.0, 4.0)
 
+TBD:
+
 Define a function that will be differentiated, say
 
     f(x) = x^3

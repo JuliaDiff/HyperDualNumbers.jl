@@ -192,9 +192,9 @@ isequal(x::Real, z::Hyper) = ==(z, x)
 *(z::Hyper, w::Real) = hyper(real(z) * w, eps1(z)*w, eps2(z)*w, w*eps1eps2(z))
 *(z::Number, w::Hyper) = w * z
 
-/(z::Hyper, w::Hyper) = hyper(z*w^-1)
-/(z::Number, w::Hyper) = hyper(z*w^-1)
-/(z::Hyper, w::Complex) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps2eps2(z)/w)
+/(z::Hyper, w::Hyper) = z*w^-1
+/(z::Number, w::Hyper) = z*w^-1
+#/(z::Hyper, w::Complex) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps2eps2(z)/w)
 /(z::Hyper, w::Number) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps2eps2(z)/w)
 
 function ^(z::Hyper, w::Rational)

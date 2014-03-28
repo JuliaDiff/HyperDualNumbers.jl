@@ -1,22 +1,29 @@
+#
+# Basic definitions
+#
+
 immutable Hyper{T<:Real} <: Number
-  re::T
-  eps1::T
-  eps2::T
-  eps1eps2::T
+  f0::T
+  f1::T
+  f2::T
+  f12::T
 end
 
 Hyper(x::Real, eps1::Real, eps2::Real, eps1eps2::Real) =
   Hyper(promote(x, eps1, eps2, eps1eps2)...)
 
-Hyper(x::Real) = Hyper(x, zero(eps1, zero(eps2), zero(eps1eps2)))
+Hyper(x::Real) = Hyper(x, zero(x), zero(x), zero(x))
+Hyper() = Hyper(0.0, 0.0, 0.0, 0.0)
 
 typealias Hyper256 Hyper{Float64}
+Hyper256() = Hyper256(0.0, 0.0, 0.0, 0.0)
 typealias Hyper128 Hyper{Float32}
+Hyper128() = Hyper128(0.0, 0.0, 0.0, 0.0)
 
-real(z::Hyper) = z.re
-eps1(z::Hyper) = z.eps1
-eps2(z::Hyper) = z.eps2
-eps1eps2(z::Hyper) = z.eps1eps2
+real(z::Hyper) = z.f0
+eps1(z::Hyper) = z.f1
+eps2(z::Hyper) = z.f2
+eps1eps2(z::Hyper) = z.f12
 
 eps(z::Hyper) = eps(real(z))
 eps{T}(::Type{Hyper{T}}) = eps(T)
@@ -34,23 +41,22 @@ convert{T<:Real}(::Type{Hyper{T}}, z::Hyper) =
   Hyper{T}(convert(T, real(z)), convert(T, eps1(z)), convert(T, eps2(z)),
     convert(T, eps1eps2(z)))
 
-# Need to better understand what this means
+# Need to better understand what this means/does
 convert{T<:Real}(::Type{T}, z::Hyper) =
-  ((eps1(z) == 0 && eps2(z) == 0) ? convert(T, real(z)) : throw(InexactError()))
+  ((eps1(z) == 0 && eps2(z) == 0 && eps1eps2(z)) ? convert(T, real(z)) : throw(InexactError()))
 
 # Again, need better grasp 
-promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}
-  (::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}}, ::Type{Hyper{P}}) =
+promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}(::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}}, ::Type{Hyper{P}}) =
     Hyper{promote_type(T, S, Q, P)}
 
 promote_rule{T<:Real}(::Type{Hyper{T}}, ::Type{T}, ::Type{T}, ::Type{T}) = Hyper{T}
 
-promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}
-  (::Type{Hyper{T}}, ::Type{S}, ::Type{Q}, ::Type{P}) =
+promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}(::Type{Hyper{T}}, ::Type{S}, ::Type{Q}, ::Type{P}) =
     Hyper{promote_type(T, S, Q, P)}
 
 hyper(x, y, z, yz) = Hyper(x, y, z, yz)
 hyper(x) = Hyper(x)
+hyper() = Hyper()
 
 @vectorize_1arg Real hyper
 
@@ -67,10 +73,112 @@ hyper128(z) = hyper128(real(z), eps1(z), eps2(z), eps1eps2(z))
 ishyper(x::Hyper) = true
 ishyper(x::Number) = false
 
-real_valued{T<:Real}(z::Hyper{T}) = (eps1 == 0 && eps2 == 0 && eps1eps2 == 0)
+real_valued{T<:Real}(z::Hyper{T}) = (eps1(z) == 0 && eps2(z) == 0 && eps1eps2(z) == 0)
 integer_valued(z::Hyper) = real_valued(z) && integer_valued(real(z))
 
 isfinite(z::Hyper) = isfinite(real(z))
 reim(z::Hyper) = (real(z), eps1(z), eps2(z), eps1eps2(z))
 
+#
+# IO definitions
+#
+
+function hyper_show(io::IO, z::Hyper, compact::Bool)
+  f0, f1, f2, f12 = reim(z)
+  if isnan(f0) || (isfinite(f1) || isfinite(f2) || isfinite(f12))
+    compact ? showcompact(io, f0) : show(io, f0)
+    if isfinite(f1)
+      if signbit(f1) == 1 && !isnan(f1)
+        f1 = -f1
+        print(io, compact ? "-" : " - ")
+      else
+        print(io, compact ? "+" : " + ")
+      end  
+      compact ? showcompact(io, f1) : show(io, f1)
+      if !(isa(f1, Integer) || isa(f1, Rational) ||
+           isa(f1, FloatingPoint) || isfinite(f1))
+           print(io, "*")
+      end
+      print(io, "\u03F51")
+    end
+    if isfinite(f2)
+      if signbit(f2) == 1 && !isnan(f2)
+        f2 = -f2
+        print(io, compact ? "-" : " - ")
+      else
+        print(io, compact ? "+" : " + ")
+      end  
+      compact ? showcompact(io, f2) : show(io, f2)
+      if !(isa(f2, Integer) || isa(f2, Rational) ||
+           isa(f2, FloatingPoint) || isfinite(f2))
+           print(io, "*")
+      end
+      print(io, "\u03F52")
+    end
+    if isfinite(f12)
+      if signbit(f12) == 1 && !isnan(f12)
+        f12 = -f12
+        print(io, compact ? "-" : " - ")
+      else
+        print(io, compact ? "+" : " + ")
+      end  
+      compact ? showcompact(io, f12) : show(io, f12)
+      if !(isa(f12, Integer) || isa(f12, Rational) ||
+           isa(f12, FloatingPoint) || isfinite(f12))
+           print(io, "*")
+      end
+      print(io, "\u03F51\u03F52")
+    end
+  else
+    print(io, "dual(", f0, ",", f1, ",", f2, ",", f12, ")")
+  end
+end
+
+show(io::IO, z::Hyper) = hyper_show(io, z, false)
+showcompact(io::IO, z::Hyper) = hyper_show(io, z, true)
+
+function read{T<:Real}(s::IO, ::Type{Hyper{T}})
+  f0 = read(s, T)
+  f1 = read(s, T)
+  f2 = read(s, T)
+  f12 = read(s, T)
+  Hyper{T}(f0, f1, f2, f12)
+end
+
+function write(s::IO, z::Hyper)
+  write(s, real(z))
+  write(s, eps1(z))
+  write(s, eps2(z))
+  write(s, eps1eps2(z))
+end
+  
+#
+# Generic function on hyperdualnumbers
+#
+
+convert(::Type{Hyper}, z::Hyper) = z
+convert(::Type{Hyper}, x::Real) = dual(x)
+
+==(z::Hyper, w::Hyper) = real(z) == real(w) && eps1(z) == eps1(w) &&
+  eps2(z) == eps2(w) && eps1eps2(z) == eps1eps2(w)  
+
+==(z::Hyper, x::Real) = real_valued(z) && real(z) == x
+==(x::Real, z::Hyper) = ==(z, x)
+
+isequal(z::Hyper, w::Hyper) = isequal(real(z), real(w)) && isequal(eps1(z), eps1(w)) && 
+  isequal(eps2(z), eps2(w)) && isequal(eps1eps2(z), eps1eps2(w))
+
+isequal(z::Hyper, x::Real) = 
+isequal(x::Real, z::Hyper) = ==(z, x)
+
++(z::Hyper, w::Hyper) = hyper(real(z) + real(w), eps1(z) + eps1(w),
+  eps2(z) + eps2(w), eps1eps2(z) + eps1eps2(w))
++(z::Number, w::Hyper) = hyper(z + real(w), eps1(w), eps2(w), eps1eps2(w))
++(z::Hyper, w::Number) = hyper(real(z) + w, eps1(z), eps2(z), eps1eps2(z))
+
+-(z::Hyper) = hyper(-real(z), -eps1(z), -eps2(z), -eps1eps2(z))
+-(z::Hyper, w::Hyper) = hyper(real(z) - real(w), eps1(z) - eps1(w),
+  eps2(z) - eps2(w), eps1eps2(z) - eps1eps2(w))
+-(z::Number, w::Hyper) = hyper(z - real(w), eps1(w), eps2(w), eps1eps2(w))
+-(z::Hyper, w::Number) = hyper(real(z) - w, eps1(z), eps2(z), eps1eps2(z))
 

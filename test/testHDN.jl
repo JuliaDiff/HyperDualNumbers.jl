@@ -1,6 +1,7 @@
 #include("/Users/rob/.julia/v0.3/HyperDualNumbers/src/hyperdual.jl")
 using HyperDualNumbers
 
+hd0 = Hyper()
 hd1 = Hyper(1.0)
 hd2 = Hyper(1.0, 2.0, 3.0, 4.0)
 
@@ -18,3 +19,10 @@ println("+hd3 = ", +hd3)
 println("hd1 - hd3 = ", hd1-hd3)
 println("2 + hd2 = ", 2+hd2)
 println("hd4-5 = ", hd4-5)
+
+hdNaN = hyper(0/0)
+println("NaN example: hdNaN = ", hdNaN)
+println("hdNaN + hd4 = ", hdNaN + hd4)
+
+println("hd1 * hd2 = ", hd1*hd2)
+println("hd0 * hd2 = ", hd0*hd2)

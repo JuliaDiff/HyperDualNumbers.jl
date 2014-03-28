@@ -182,3 +182,13 @@ isequal(x::Real, z::Hyper) = ==(z, x)
 -(z::Number, w::Hyper) = hyper(z - real(w), eps1(w), eps2(w), eps1eps2(w))
 -(z::Hyper, w::Number) = hyper(real(z) - w, eps1(z), eps2(z), eps1eps2(z))
 
+*(x::Bool, z::Hyper) = ifelse(x, z, ifelse(signbit(real(z)) == 0, zero(z), -zero(z)))
+*(x::Hyper, z::Bool) = z * x
+
+*(z::Hyper, w::Hyper) = hyper(real(z) * real(w),
+  real(z)*eps1(w)+eps1(z)*real(w), real(z)*eps2(w)+eps2(z)*real(w),
+  real(z)*eps1eps2(w)+eps1(z)*eps2(w)+eps2(z)*eps1(w)+real(w)*eps1eps2(z))
+
+*(z::Hyper, w::Real) = hyper(real(z) * w, eps1(z)*w, eps2(z)*w, w*eps1eps2(z))
+*(z::Real, w::Hyper) = w * z
+

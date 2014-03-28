@@ -30,7 +30,6 @@ convert{T<:Real}(::Type{Hyper{T}}, x::Real) =
 
 convert{T<:Real}(::Type{Hyper{T}}, z::Hyper{T}) = z
 
-
 convert{T<:Real}(::Type{Hyper{T}}, z::Hyper) =
   Hyper{T}(convert(T, real(z)), convert(T, eps1(z)), convert(T, eps2(z)),
     convert(T, eps1eps2(z)))
@@ -40,15 +39,15 @@ convert{T<:Real}(::Type{T}, z::Hyper) =
   ((eps1(z) == 0 && eps2(z) == 0) ? convert(T, real(z)) : throw(InexactError()))
 
 # Again, need better grasp 
-promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}(
-  ::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}}, ::Type{Hyper{P}}) =
+promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}
+  (::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}}, ::Type{Hyper{P}}) =
     Hyper{promote_type(T, S, Q, P)}
 
 promote_rule{T<:Real}(::Type{Hyper{T}}, ::Type{T}, ::Type{T}, ::Type{T}) = Hyper{T}
 
 promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}
   (::Type{Hyper{T}}, ::Type{S}, ::Type{Q}, ::Type{P}) =
-  Hyper{promote_type(T, S, Q, P)}
+    Hyper{promote_type(T, S, Q, P)}
 
 hyper(x, y, z, yz) = Hyper(x, y, z, yz)
 hyper(x) = Hyper(x)
@@ -59,7 +58,8 @@ hyper256(s::Float64, t::Float64, q::Float64, p::Float64) = Hyper{Float64}(s, t, 
 hyper256(s::Real, t::Real, q::Real, p::Real) =
   hyper256(float64(s), float64(t), float64(q), float64(p))
 hyper256(z) = hyper256(real(z), eps1(z), eps2(z), eps1eps2(z))
-128(s::Float32, t::Float32, q::Float32, p::Float32) = Hyper{Float32}(s, t, q, p)
+
+hyper128(s::Float32, t::Float32, q::Float32, p::Float32) = Hyper{Float32}(s, t, q, p)
 hyper128(s::Real, t::Real, q::Real, p::Real) =
   hyper128(float32(s), float32(t), float32(q), float32(p))
 hyper128(z) = hyper128(real(z), eps1(z), eps2(z), eps1eps2(z))
@@ -72,6 +72,5 @@ integer_valued(z::Hyper) = real_valued(z) && integer_valued(real(z))
 
 isfinite(z::Hyper) = isfinite(real(z))
 reim(z::Hyper) = (real(z), eps1(z), eps2(z), eps1eps2(z))
-
 
 

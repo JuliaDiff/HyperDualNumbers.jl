@@ -41,7 +41,7 @@ convert{T<:Real}(::Type{T}, z::Hyper) =
 
 # Again, need better grasp 
 promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}(
-  ::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}}, ::Type{Hyper{P}} =
+  ::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}}, ::Type{Hyper{P}}) =
     Hyper{promote_type(T, S, Q, P)}
 
 promote_rule{T<:Real}(::Type{Hyper{T}}, ::Type{T}, ::Type{T}, ::Type{T}) = Hyper{T}

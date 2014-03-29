@@ -194,8 +194,12 @@ isequal(x::Real, z::Hyper) = ==(z, x)
 
 /(z::Hyper, w::Hyper) = z*w^-1
 /(z::Number, w::Hyper) = z*w^-1
-#/(z::Hyper, w::Complex) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps2eps2(z)/w)
-/(z::Hyper, w::Number) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps2eps2(z)/w)
+
+# Needed to prevent ambiguous warning:
+#   /(Number,Complex{T<:Real}) at complex.jl:127
+
+/(z::Hyper, w::Complex) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps1eps2(z)/w)
+/(z::Hyper, w::Number) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps1eps2(z)/w)
 
 function ^(z::Hyper, w::Rational)
   xval = real(z)
@@ -246,4 +250,66 @@ function log(z::Hyper)
   hyper(log(real(z)), deriv1, deriv2, eps1eps2(z)/real(z)-(deriv1*deriv2))
 end
 
+function sin(z::Hyper)
+  funval = sin(real(z))
+  deriv = cos(real(z))
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)-funval*eps1(z)*eps2(z))
+end
+
+function cos(z::Hyper)
+  funval = cos(real(z))
+  deriv = -sin(real(z))
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)-funval*eps1(z)*eps2(z))
+end
+
+function tan(z::Hyper)
+  funval = tan(real(z))
+  deriv = funval*funval+1
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(2*funval*deriv))
+end
+
+function asin(z::Hyper)
+  funval = asin(real(z))
+  deriv1 = 1.0-real(z)*real(z)
+  deriv = 1.0/sqrt(deriv1)
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(real(z)/deriv1^-1.5))
+end
+
+function acos(z::Hyper)
+  funval = acos(real(z))
+  deriv1 = 1.0-real(z)*real(z)
+  deriv = -1.0/sqrt(deriv1)
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-real(z)/deriv1^-1.5))
+end
+
+function atan(z::Hyper)
+  funval = atan(real(z))
+  deriv1 = 1.0+real(z)*real(z)
+  deriv = 1.0/sqrt(deriv1)
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),
+    deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-2*real(z)/deriv1*deriv1))
+end
+
+sqrt(z::Hyper) = z^0.5
+
+maximum(z::Hyper, w::Hyper) = z > w ? z : w
+maximum(z::Hyper, w::Number) = z > w ? z : hyper(w)
+maximum(z::Number, w::Hyper) = z > w ? hyper(z) : w
+
+minimum(z::Hyper, w::Hyper) = z < w ? z : w
+minimum(z::Hyper, w::Number) = z < w ? z : hyper(w)
+minimum(z::Number, w::Hyper) = z < w ? hyper(z) : w
+
+>(z::Hyper, w::Hyper) = real(z) > real(w)
+>(z::Hyper, w::Number) = real(z) > w
+>(z::Number, w::Hyper) = z > real(w)
+>=(z::Hyper, w::Hyper) = real(z) >= real(w)
+>=(z::Hyper, w::Number) = real(z) >= w
+>=(z::Number, w::Hyper) = z >= real(w)
+<(z::Hyper, w::Hyper) = real(z) < real(w)
+<(z::Hyper, w::Number) = real(z) < w
+<(z::Number, w::Hyper) = z < real(w)
+<=(z::Hyper, w::Hyper) = real(z) <= real(w)
+<=(z::Hyper, w::Number) = real(z) <= w
+<=(z::Number, w::Hyper) = z <= real(w)
 

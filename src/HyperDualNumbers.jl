@@ -15,8 +15,6 @@ module HyperDualNumbers
     hyper_show,
     eps1,
     eps2,
-    eps1eps2,
-    abshyper,
-    abs2hyper
+    eps1eps2
 
 end # module

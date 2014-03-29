@@ -26,3 +26,8 @@ println("hdNaN + hd4 = ", hdNaN + hd4)
 
 println("hd1 * hd2 = ", hd1*hd2)
 println("hd0 * hd2 = ", hd0*hd2)
+
+println("1/(1/hd2) = ", 1/(1/hd2))
+println("hd3^3 = ", hd3^3)
+println("(hd3^3)^(1/3) = ", (hd3^3)^(1/3))
+println("(hd3^3)^1/3 = ", (hd3^3)^1/3)

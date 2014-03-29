@@ -15,6 +15,7 @@ module HyperDualNumbers
     hyper_show,
     eps1,
     eps2,
-    eps1eps2
+    eps1eps2,
+    conjhyper
 
 end # module

@@ -79,6 +79,9 @@ integer_valued(z::Hyper) = real_valued(z) && integer_valued(real(z))
 isfinite(z::Hyper) = isfinite(real(z))
 reim(z::Hyper) = (real(z), eps1(z), eps2(z), eps1eps2(z))
 
+# No-op?
+conjhyper(z::Hyper) = z
+
 #
 # IO definitions
 #
@@ -157,19 +160,7 @@ end
 #
 
 convert(::Type{Hyper}, z::Hyper) = z
-convert(::Type{Hyper}, x::Real) = dual(x)
-
-==(z::Hyper, w::Hyper) = real(z) == real(w) && eps1(z) == eps1(w) &&
-  eps2(z) == eps2(w) && eps1eps2(z) == eps1eps2(w)  
-
-==(z::Hyper, x::Real) = real_valued(z) && real(z) == x
-==(x::Real, z::Hyper) = ==(z, x)
-
-isequal(z::Hyper, w::Hyper) = isequal(real(z), real(w)) && isequal(eps1(z), eps1(w)) && 
-  isequal(eps2(z), eps2(w)) && isequal(eps1eps2(z), eps1eps2(w))
-
-isequal(z::Hyper, x::Real) = 
-isequal(x::Real, z::Hyper) = ==(z, x)
+convert(::Type{Hyper}, x::Real) = hyper(x)
 
 +(z::Hyper, w::Hyper) = hyper(real(z) + real(w), eps1(z) + eps1(w),
   eps2(z) + eps2(w), eps1eps2(z) + eps1eps2(w))
@@ -313,3 +304,15 @@ minimum(z::Number, w::Hyper) = z < w ? hyper(z) : w
 <=(z::Hyper, w::Number) = real(z) <= w
 <=(z::Number, w::Hyper) = z <= real(w)
 
+
+==(z::Hyper, w::Hyper) = real(z) == real(w) && eps1(z) == eps1(w) &&
+  eps2(z) == eps2(w) && eps1eps2(z) == eps1eps2(w)  
+
+==(z::Hyper, x::Real) = real_valued(z) && real(z) == x
+==(x::Real, z::Hyper) = ==(z, x)
+
+isequal(z::Hyper, w::Hyper) = isequal(real(z), real(w)) && isequal(eps1(z), eps1(w)) && 
+  isequal(eps2(z), eps2(w)) && isequal(eps1eps2(z), eps1eps2(w))
+
+isequal(z::Hyper, x::Real) = 
+isequal(x::Real, z::Hyper) = ==(z, x)

@@ -1,6 +1,6 @@
 # HyperDualNumbers
 
-This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
+This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
 
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
@@ -44,13 +44,11 @@ Define a function that will be differentiated, say
 
     f(x) = e^x / (sqrt(sin(x)^3 + cos(x)^3))
 
-Perform automatic differentiation by passing the dual number `x` as argument to 
-`f`:
+Perform automatic differentiation by passing the dual number `x` as argument to `f`:
 
-    y = f(hd2)
+    y = f(t0)
 
-Use the functions `real()`, `eps1()` to get the real and imaginary (dual) 
-parts of `x`, respectively:
+Use the functions `real()`, `eps1()` or `eps2 and `eps1eps2` to get the function evaluation, the first derivative and the second derivative, e.g.:
 
     println("f(1.5) = ", f(1.5))
     println("f(t0) = ", real(f(t0)))

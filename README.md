@@ -44,11 +44,11 @@ Define a function that will be differentiated, say
 
     f(x) = e^x / (sqrt(sin(x)^3 + cos(x)^3))
 
-Perform automatic differentiation by passing the dual number `x` as argument to `f`:
+Perform automatic differentiation by passing the hyperdual number `t0` as argument to `f`:
 
     y = f(t0)
 
-Use the functions `real()`, `eps1()` or `eps2 and `eps1eps2` to get the function evaluation, the first derivative and the second derivative, e.g.:
+Use the functions `real()`, `eps1()` or `eps2` and `eps1eps2` to get the function evaluation, the first derivative and the second derivative, e.g.:
 
     println("f(1.5) = ", f(1.5))
     println("f(t0) = ", real(f(t0)))

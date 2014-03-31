@@ -21,9 +21,9 @@ The following functions are specific to hyperdual numbers:
 
 ### A walk-through example
 
-The example below demonstrates basic usage of dual numbers by employing them to 
+The example below demonstrates basic usage of hyperdual numbers by employing them to 
 perform automatic differentiation. The code for this example can be found in 
-`test/automatic_differentiation_test.jl`.
+`test/runtests.jl`.
 
 First install the package by using the Julia package manager:
 

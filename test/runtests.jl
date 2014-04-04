@@ -7,11 +7,11 @@ hd1 = Hyper(1.0)
 
 hd2 = Hyper(1.0, 2.0, 3.0, 4.0)
 hd3 = hyper(1.0, 3.0, 3.0, 4.0)
-hd4 = hyper256(1.0, 4.0, 3.0, 4.0)
-hd5 = Hyper256(1.0, 5.0, 3.0, 4.0)
+hd4 = hyper256(1, 4, 3, 4)
+hd5 = Hyper256(1//1, 10//2, 6//2, 20//5)
 
 hd6 = hyper128(1.0, 6.0, 3.0, 4.0)
-hd7 = Hyper128(1.0, 7.0, 3.0, 4.0)
+hd7 = Hyper128(1//1, 10//2, 6//2, 20//5)
 
 hdNaN = hyper(0/0)
 
@@ -37,8 +37,8 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 @test eps1eps2(hdNaN+hd4) == 4.0
 
 # Using and mixing 64 & 32 bits
-@test hd6+hd7 == hyper(2.0, 13.0, 6.0, 8.0)
-@test hd7+hd5 == hyper(2.0, 12.0, 6.0, 8.0)
+@test hd6+hd7 == hyper(2.0, 11.0, 6.0, 8.0)
+@test hd7+hd5 == 2//1 * hd7
 
 # Multiplication
 @test hd1 * hd2 == hyper128(1, 2, 3, 4)
@@ -50,6 +50,10 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 # Power of
 @test hd3^3 == hd3 * hd3 * hd3
 @test (hd3^3)^(1/3) == hd3
+
+# Mixing types
+@test hd5*hd7 == hd7^2
+@test 1/hd5 == hd7^-1
 
 # THE example
 println("\n\"THE\" example")

@@ -194,7 +194,7 @@ convert(::Type{Hyper}, x::Real) = hyper(x)
 
 function ^(z::Hyper, w::Rational)
   xval = real(z)
-  tol = eps(xval)
+  tol = typeof(xval)==FloatingPoint ? eps(xval) : 10.0^-15
   if abs(xval) < tol
     xval = ifelse(signbit(xval)==0, tol, -tol)
   end
@@ -206,7 +206,7 @@ end
 
 function ^(z::Hyper, w::Integer)
   xval = real(z)
-  tol = eps(xval)
+  tol = typeof(xval)==FloatingPoint ? eps(xval) : 10.0^-15
   if abs(xval) < tol
     xval = ifelse(signbit(xval)==0, tol, -tol)
   end
@@ -218,7 +218,7 @@ end
 
 function ^(z::Hyper, w::Number)
   xval = real(z)
-  tol = eps(xval)
+  tol = typeof(xval)==FloatingPoint ? eps(xval) : 10.0^-15
   if abs(xval) < tol
     xval = ifelse(signbit(xval)==0, tol, -tol)
   end

@@ -228,7 +228,7 @@ function ^(z::Hyper, w::Number)
     eps1eps2(z)*deriv+w*(w-1)*eps1(z)*eps2(z)*xval^(w-2))
 end
 
-^(z::Hyper, w::Hyper) = exp(w*log(x))
+^(z::Hyper, w::Hyper) = exp(w*log(z))
 
 function exp(z::Hyper)
   deriv = exp(real(z))

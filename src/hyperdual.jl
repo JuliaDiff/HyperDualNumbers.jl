@@ -1,3 +1,37 @@
+#==
+
+ # This implementation is based on Jeffrey A. Fikes's C++ implementation
+
+ * Class: hyperdual
+ * 
+ * Implementation of hyper-dual numbers
+ *
+ * Written by: Jeffrey A. Fike
+ * Stanford University, Department of Aeronautics and Astronautics
+ * 
+ * Copyright (c) 2006 Jeffrey A. Fike
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+
+==#
+
 #
 # Basic definitions
 #
@@ -41,11 +75,9 @@ convert{T<:Real}(::Type{Hyper{T}}, z::Hyper) =
   Hyper{T}(convert(T, real(z)), convert(T, eps1(z)), convert(T, eps2(z)),
     convert(T, eps1eps2(z)))
 
-# Need to better understand what this means/does
 convert{T<:Real}(::Type{T}, z::Hyper) =
   ((eps1(z) == 0 && eps2(z) == 0 && eps1eps2(z)) ? convert(T, real(z)) : throw(InexactError()))
 
-# Again, need better grasp 
 promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}(::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}}, ::Type{Hyper{P}}) =
     Hyper{promote_type(T, S, Q, P)}
 

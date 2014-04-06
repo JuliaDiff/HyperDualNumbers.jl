@@ -54,6 +54,7 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 # Mixing types
 @test hd5*hd7 == hd7^2
 @test 1/hd5 == hd7^-1
+@test (hd2^(1//8)^8)^16777216 == hd2
 
 # THE example
 println("\n\"THE\" example")

@@ -58,8 +58,12 @@ Use the functions `real()`, `eps1()` or `eps2` and `eps1eps2` to get the functio
 
 ### TBD
 
-1) Graphs (as in Jeffrey Fike's paper)
-2) Profiling
-3) Compare with Standard Library
-4) Cross-validate with other relevant Julia packages
-5) Make it a proper package, e.g. dependencies. etc.
+Wish list:
+
+1) A generic hyper-number package to support multiple types (Complex, Double & Dual)
+   and variable order (e.g. order 1 is dual, order 2 is as in this package, etc.)
+2) Graphs (as in Jeffrey Fike's paper)
+3) Profiling
+4) Compare with Standard Library
+5) Cross-validate with other relevant Julia packages
+6) Make it a proper package, e.g. dependencies. etc.

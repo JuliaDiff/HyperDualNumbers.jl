@@ -1,7 +1,5 @@
 The HyperDualNumbers.jl package is licensed under the MIT "Expat" License:
 
-Copyright (c) 2014: Rob J. Goedman.
-
 This Julia implementation is directly based on Jeffrey A. Fikes's C++ implementation:
 
  * Written by: Jeffrey A. Fike
@@ -9,7 +7,9 @@ This Julia implementation is directly based on Jeffrey A. Fikes's C++ implementa
  * 
  * Copyright (c) 2006 Jeffrey A. Fike
  
-See the README.md for more details.
+See the README.md for more details. 
+
+The Julia implementation was written by Rob J. Goedman.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

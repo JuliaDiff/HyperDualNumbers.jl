@@ -60,6 +60,7 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 println("\n\"THE\" example")
 f(x) = e^x / sqrt(sin(x)^3 + cos(x)^3)
 println("f(1.5) = $(f(1.5))")
+println()
 t0 = hyper(1.5, 1.0, 1.0, 0.0)
 t1 = e^t0
 t2 = sin(t0)
@@ -80,5 +81,6 @@ println("t6 = ", t6)
 println("t7 = ", t7)
 println("t8 = ", t8)
 
+println()
 println("f(t0) = ", f(t0))
 

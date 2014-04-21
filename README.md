@@ -38,7 +38,7 @@ Then make the package available via
 
     using HyperDualNumbers
 
-Use the `dual()` function to define the dual number `2+1*du`:
+Use the `hyper()` function to define a hyperdual number:
 
     hd0 = hyper()
     hd1 = hyper(1.0)

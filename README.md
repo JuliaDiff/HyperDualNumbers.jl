@@ -37,10 +37,15 @@ Then make the package available via
 
     using HyperDualNumbers
 
-Use the `dual()` function to define the dual number `2+1*du`:
+Use the `hyper()` function to define a hyperual number, e.g.:
 
     hd0 = hyper()
     hd1 = hyper(1.0)
+    hd2 = hyper(3.0, 1.0, 1.0, 0.0)
+    hd3 = hyper(3//2, 1//1, 1//1,0//1)
+
+HyperDual to compute first & second derivative at 1.5:
+
     t0 = hyper(1.5, 1.0, 1.0, 0.0)
 
 Define a function that will be differentiated, say

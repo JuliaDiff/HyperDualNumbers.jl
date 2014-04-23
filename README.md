@@ -31,14 +31,13 @@ perform automatic differentiation. The code for this example can be found in
 
 First install the package by using the Julia package manager:
 
-    Pkg.update()
-    Pkg.clone("https://github.com/goedman/HyperDualNumbers.jl.git")
+    Pkg.add("https://github.com/goedman/HyperDualNumbers.jl.git")
     
 Then make the package available via
 
     using HyperDualNumbers
 
-Use the `dual()` function to define the dual number `2+1*du`:
+Define a few HyperDualNumbers:
 
     hd0 = hyper()
     hd1 = hyper(1.0)

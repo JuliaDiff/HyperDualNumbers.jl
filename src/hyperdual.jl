@@ -168,7 +168,7 @@ convert(::Type{Hyper}, x::Real) = hyper(x)
 -(z::Hyper) = hyper(-real(z), -eps1(z), -eps2(z), -eps1eps2(z))
 -(z::Hyper, w::Hyper) = hyper(real(z) - real(w), eps1(z) - eps1(w),
   eps2(z) - eps2(w), eps1eps2(z) - eps1eps2(w))
--(z::Number, w::Hyper) = hyper(z - real(w), eps1(w), eps2(w), eps1eps2(w))
+-(z::Number, w::Hyper) = hyper(z - real(w), -eps1(w), -eps2(w), -eps1eps2(w))
 -(z::Hyper, w::Number) = hyper(real(z) - w, eps1(z), eps2(z), eps1eps2(z))
 
 *(x::Bool, z::Hyper) = ifelse(x, z, ifelse(signbit(real(z)) == 0, zero(z), -zero(z)))
@@ -191,33 +191,21 @@ convert(::Type{Hyper}, x::Real) = hyper(x)
 /(z::Hyper, w::Number) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps1eps2(z)/w)
 
 function ^(z::Hyper, w::Rational)
-  xval = real(z)
-  tol = typeof(xval)==FloatingPoint ? eps(xval) : 10.0^-15
-  if abs(xval) < tol
-    xval = ifelse(signbit(xval)==0, tol, -tol)
-  end
-  deriv = w * xval^(w-1)
-  # Use actual value for f0, tol for deriv only
+  deriv = w * real(z)^(w-1)
   hyper(real(z)^w, eps1(z)*deriv, eps2(z)*deriv,
-    eps1eps2(z)*deriv+w*(w-1)*eps1(z)*eps2(z)*xval^(w-2))
+    eps1eps2(z)*deriv+w*(w-1)*eps1(z)*eps2(z)*real(z)^(w-2))
 end
 
 function ^(z::Hyper, w::Integer)
-  xval = real(z)
-  tol = typeof(xval)==FloatingPoint ? eps(xval) : 10.0^-15
-  if abs(xval) < tol
-    xval = ifelse(signbit(xval)==0, tol, -tol)
-  end
-  deriv = w * xval^(w-1)
-  # Use actual value for f0, tol for deriv only
+  deriv = w * real(z)^(w-1)
   hyper(real(z)^w, eps1(z)*deriv, eps2(z)*deriv,
-    eps1eps2(z)*deriv+w*(w-1)*eps1(z)*eps2(z)*xval^(w-2))
+    eps1eps2(z)*deriv+w*(w-1)*eps1(z)*eps2(z)*real(z)^(w-2))
 end
 
 function ^(z::Hyper, w::Number)
   xval = real(z)
   tol = typeof(xval)==FloatingPoint ? eps(xval) : 10.0^-15
-  if abs(xval) < tol
+  if abs(float(xval)) < tol
     xval = ifelse(signbit(xval)==0, tol, -tol)
   end
   deriv = w * xval^(w-1)

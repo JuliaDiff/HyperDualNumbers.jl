@@ -56,6 +56,16 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 @test 1/hd5 == hd7^-1
 @test (hd2^(1//8)^8)^16777216 == hd2
 
+# Tim Holy's test example
+hd10 = Hyper(1//2, 1, 1, 0)
+q1(x) = 1 - (96//25)*x^2 + (112//25)*x^4
+q2(x) = 1 - (96//25)*x^2.0 + (112//25)*x^4.0
+q3(x) = 1 - (96//25)*x^(2//1) + (112//25)*x^(4//1)
+
+@test q1(hd10) == hyper(8//25, - 8//5, - 8//5, + 144//25)
+@test q2(hd10) == hyper(0.32000000000000006, -1.5999999999999996, -1.5999999999999996, 5.760000000000002)
+@test q2(hd10) == q3(hd10)
+
 # THE example
 println("\n\"THE\" example")
 f(x) = e^x / sqrt(sin(x)^3 + cos(x)^3)
@@ -67,6 +77,7 @@ t2 = sin(t0)
 t3 = t2^3
 t4 = cos(t0)
 t5 = t4^3
+t5a = (cos(t0))^3
 t6 = t3 + t5
 t7 = t6^-0.5
 t8 = t1*t7
@@ -77,10 +88,10 @@ println("t2 = ", t2)
 println("t3 = ", t3)
 println("t4 = ", t4)
 println("t5 = ", t5)
+println("t5a = ", t5a)
 println("t6 = ", t6)
 println("t7 = ", t7)
 println("t8 = ", t8)
 
 println()
 println("f(t0) = ", f(t0))
-

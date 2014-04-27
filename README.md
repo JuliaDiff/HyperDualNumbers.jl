@@ -1,5 +1,7 @@
 # HyperDualNumbers
 
+[![Build Status](https://travis-ci.org/goedman/HyperDualNumbers.jl.svg)](https://travis-ci.org/goedman/HyperDualNumbers.jl)
+
 This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
 
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)

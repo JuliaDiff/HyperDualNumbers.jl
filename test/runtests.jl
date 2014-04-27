@@ -1,6 +1,6 @@
-my_tests = ["test/test_basics.jl",
-            "test/test_TimHoly_example.jl",
-            "test/test_Paper_example.jl"]
+my_tests = ["test_basics.jl",
+            "test_TimHoly_example.jl",
+            "test_Paper_example.jl"]
 
 println("Running tests:")
 

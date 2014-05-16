@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/goedman/HyperDualNumbers.jl.svg)](https://travis-ci.org/goedman/HyperDualNumbers.jl)
 
-This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
+Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
 
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
@@ -40,26 +40,29 @@ Then make the package available via
 
     using HyperDualNumbers
 
-Use the `hyper()` function to define a hyperual number, e.g.:
+Use the `hyper()` function to define a hyperdual number, e.g.:
 
     hd0 = hyper()
     hd1 = hyper(1.0)
     hd2 = hyper(3.0, 1.0, 1.0, 0.0)
     hd3 = hyper(3//2, 1//1, 1//1,0//1)
 
-HyperDual to compute first & second derivative at 1.5:
-
-    t0 = hyper(1.5, 1.0, 1.0, 0.0)
-
-Define a function that will be differentiated, say
+Let's say we want to calculate the first and second derivative of
 
     f(x) = e^x / (sqrt(sin(x)^3 + cos(x)^3))
 
-Perform automatic differentiation by passing the hyperdual number `t0` as argument to `f`:
+To calculate these derivatives at a location `x`, evaluate your function at `hyper(x, 1.0, 1.0, 0.0)`. For example:
 
+    t0 = hyper(1.5, 1.0, 1.0, 0.0)
     y = f(t0)
 
-Use the functions `real()`, `eps1()` or `eps2()` and `eps1eps2()` to get the function evaluation, the first derivative and the second derivative, e.g.:
+For this example, you'll get the result
+
+    4.497780053946162 + 4.053427893898621ϵ1 + 4.053427893898621ϵ2 + 9.463073681596601ϵ1ϵ2
+
+The first term is the function value, the coefficients of both `ϵ1` and `ϵ2` (which correspond to the second and third arguments of `hyper`) are equal to the first derivative, and the coefficient of `ϵ1ϵ2` is the second derivative.
+
+You can extract these coefficients from the hyperdual number using the functions `real()`, `eps1()` or `eps2()` and `eps1eps2()`:
 
     println("f(1.5) = ", f(1.5))
     println("f(t0) = ", real(f(t0)))

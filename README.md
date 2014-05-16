@@ -7,7 +7,7 @@ Hyper-dual numbers can be used to compute first and second derivatives numerical
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
 The Julia version was derived/written by Rob J Goedman (goedman@icloud.com).
-Tagged as v0.1.2 on 4/21/2014
+Latest version tagged as v0.1.3 (5/16/2014)
 
 The Julia package is structured similar to the DualNumbers package, which aims for complete support for `HyperDual` types for numerical functions within Julia's `Base`. Currently, basic mathematical operations and trigonometric functions are supported.
 

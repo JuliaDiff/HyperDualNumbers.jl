@@ -131,7 +131,7 @@ function hyper_show(io::IO, z::Hyper, compact::Bool)
       print(io, "\u03F51\u03F52")
     end
   else
-    print(io, "Hyper(", f0, ")")
+    print(io, "Hyper(", f0, f1, f2, f12, ")")
   end
 end
 

@@ -25,8 +25,9 @@ hdNaN = hyper(0/0)
 @test hd4-5 == hyper256(-4.0, 4.0, 3.0, 4.0)
 
 # NaN tests
-#@test hdNaN == hyper(NaN, 0.0, 0.0, 0.0)
-#@test hdNaN + hd4 == hyper128(NaN, 4.0, 3.0, 4.0)
+@test isnan(hdNaN) == isnan(hyper(NaN, 0.0, 0.0, 0.0))
+hdNaN128 = hyper128(NaN, 4.0, 3.0, 4.0)
+@test isnan(hdNaN + hd4) == isnan(hdNaN128) && eps1eps2(hdNaN128)==4.0
 
 println("\nExamples of show() for hyperdual numbers with NaN:\n")
 println("hdNaN = $(hdNaN)")

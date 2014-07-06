@@ -1,6 +1,6 @@
 # HyperDualNumbers
 
-[![Build Status](https://travis-ci.org/goedman/HyperDualNumbers.jl.svg)](https://travis-ci.org/goedman/HyperDualNumbers.jl)
+[![Build Status](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg)](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl)
 
 Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
 

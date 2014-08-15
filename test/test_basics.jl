@@ -46,8 +46,10 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 
 # Division
 @test 1/(1/hd2) == hd2
+@test hd2/hd2 == hd1
 
 # Power of
+@test 1/hd2 == hd2^(-1)
 @test hd3^3 == hd3 * hd3 * hd3
 @test (hd3^3)^(1/3) == hd3
 

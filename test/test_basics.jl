@@ -45,10 +45,10 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 @test hd0*hd2 == hyper()
 
 # Division
-@test 1/(1/hd2) == hd2
+@test hd2/hd2 == hd1
 
 # Power of
-@test hd3^3 == hd3 * hd3 * hd3
+@test 1/hd2 == hd2^(-1)
 @test (hd3^3)^(1/3) == hd3
 
 # Mixing types

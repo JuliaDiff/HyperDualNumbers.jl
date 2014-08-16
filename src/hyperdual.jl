@@ -181,8 +181,13 @@ convert(::Type{Hyper}, x::Real) = hyper(x)
 *(z::Hyper, w::Real) = hyper(real(z) * w, eps1(z)*w, eps2(z)*w, w*eps1eps2(z))
 *(z::Number, w::Hyper) = w * z
 
-/(z::Hyper, w::Hyper) = z*w^-1
-/(z::Number, w::Hyper) = z*w^-1
+/(z::Hyper, w::Hyper) = z*(one(real(z))/w)
+function /(z::Number, w::Hyper)
+    invrw = one(z)/real(w)
+    deriv = -z*invrw^2
+    hyper(z*invrw, eps1(w)*deriv, eps2(w)*deriv,
+          eps1eps2(w)*deriv-2eps1(w)*eps2(w)*deriv*invrw)
+end
 
 # Needed to prevent ambiguous warning:
 #   /(Number,Complex{T<:Real}) at complex.jl:127

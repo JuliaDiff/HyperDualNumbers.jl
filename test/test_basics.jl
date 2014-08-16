@@ -46,6 +46,7 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 @test hd0*hd2 == hyper()
 
 # Division
+println("\nInludes test for Tim Holy's division performance improvement\n")
 @test 1/(1/hd2) == hd2
 @test hd2/hd2 == hd1
 

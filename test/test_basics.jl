@@ -25,8 +25,9 @@ hdNaN = hyper(0/0)
 @test hd4-5 == hyper256(-4.0, 4.0, 3.0, 4.0)
 
 # NaN tests
-#@test hdNaN == hyper(NaN, 0.0, 0.0, 0.0)
-#@test hdNaN + hd4 == hyper128(NaN, 4.0, 3.0, 4.0)
+@test isnan(hdNaN) == isnan(hyper(NaN, 0.0, 0.0, 0.0))
+hdNaN128 = hyper128(NaN, 4.0, 3.0, 4.0)
+@test isnan(hdNaN + hd4) == isnan(hdNaN128) && eps1eps2(hdNaN128)==4.0
 
 println("\nExamples of show() for hyperdual numbers with NaN:\n")
 println("hdNaN = $(hdNaN)")
@@ -45,10 +46,12 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 @test hd0*hd2 == hyper()
 
 # Division
+@test 1/(1/hd2) == hd2
 @test hd2/hd2 == hd1
 
 # Power of
 @test 1/hd2 == hd2^(-1)
+@test hd3^3 == hd3 * hd3 * hd3
 @test (hd3^3)^(1/3) == hd3
 
 # Mixing types

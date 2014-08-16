@@ -1,13 +1,13 @@
 # HyperDualNumbers
 
-[![Build Status](https://travis-ci.org/goedman/HyperDualNumbers.jl.svg)](https://travis-ci.org/goedman/HyperDualNumbers.jl)
+[![Build Status](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg)](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl)
 
-This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
+Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
 
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
 The Julia version was derived/written by Rob J Goedman (goedman@icloud.com).
-Tagged as v0.1.2 on 4/21/2014
+Latest version tagged as v0.1.5 (5/31/2014)
 
 The Julia package is structured similar to the DualNumbers package, which aims for complete support for `HyperDual` types for numerical functions within Julia's `Base`. Currently, basic mathematical operations and trigonometric functions are supported.
 
@@ -40,26 +40,29 @@ Then make the package available via
 
     using HyperDualNumbers
 
-Use the `hyper()` function to define a hyperual number, e.g.:
+Use the `hyper()` function to define a hyperdual number, e.g.:
 
     hd0 = hyper()
     hd1 = hyper(1.0)
     hd2 = hyper(3.0, 1.0, 1.0, 0.0)
     hd3 = hyper(3//2, 1//1, 1//1,0//1)
 
-HyperDual to compute first & second derivative at 1.5:
-
-    t0 = hyper(1.5, 1.0, 1.0, 0.0)
-
-Define a function that will be differentiated, say
+Let's say we want to calculate the first and second derivative of
 
     f(x) = e^x / (sqrt(sin(x)^3 + cos(x)^3))
 
-Perform automatic differentiation by passing the hyperdual number `t0` as argument to `f`:
+To calculate these derivatives at a location `x`, evaluate your function at `hyper(x, 1.0, 1.0, 0.0)`. For example:
 
+    t0 = hyper(1.5, 1.0, 1.0, 0.0)
     y = f(t0)
 
-Use the functions `real()`, `eps1()` or `eps2()` and `eps1eps2()` to get the function evaluation, the first derivative and the second derivative, e.g.:
+For this example, you'll get the result
+
+    4.497780053946162 + 4.053427893898621ϵ1 + 4.053427893898621ϵ2 + 9.463073681596601ϵ1ϵ2
+
+The first term is the function value, the coefficients of both `ϵ1` and `ϵ2` (which correspond to the second and third arguments of `hyper`) are equal to the first derivative, and the coefficient of `ϵ1ϵ2` is the second derivative.
+
+You can extract these coefficients from the hyperdual number using the functions `real()`, `eps1()` or `eps2()` and `eps1eps2()`:
 
     println("f(1.5) = ", f(1.5))
     println("f(t0) = ", real(f(t0)))
@@ -71,10 +74,9 @@ Use the functions `real()`, `eps1()` or `eps2()` and `eps1eps2()` to get the fun
 
 Wish list:
 
-1) A generic hyper-number package to support multiple types (Complex, Double & Dual)
-   and variable order (e.g. order 1 is dual, order 2 is as in this package, etc.)
-2) Graphs (as in Jeffrey Fike's paper)
-3) Profiling
-4) Compare with Standard Library
-5) Cross-validate with other relevant Julia packages
-6) Make it a proper package, e.g. dependencies. etc.
+1. A generic hyper-number package to support multiple types (Complex, Double & Dual) and variable order (e.g. order 1 is dual, order 2 is as in this package, etc.)
+2. Graphs (as in Jeffrey Fike's paper)
+3. Profiling
+4. Compare with Standard Library
+5. Cross-validate with other relevant Julia packages
+6. Make it a proper package, e.g. dependencies. etc.

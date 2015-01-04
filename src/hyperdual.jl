@@ -52,6 +52,8 @@ promote_rule{T<:Real}(::Type{Hyper{T}}, ::Type{T}, ::Type{T}, ::Type{T}) = Hyper
 promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}(::Type{Hyper{T}}, ::Type{S}, ::Type{Q}, ::Type{P}) =
     Hyper{promote_type(T, S, Q, P)}
 
+promote_rule{T<:Real, S<:Real}(::Type{Hyper{T}}, ::Type{S}) = Hyper{promote_type(T, S)}
+
 hyper(x, y, z, yz) = Hyper(x, y, z, yz)
 hyper(x) = Hyper(x)
 hyper() = Hyper()
@@ -194,6 +196,8 @@ end
 
 /(z::Hyper, w::Complex) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps1eps2(z)/w)
 /(z::Hyper, w::Number) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps1eps2(z)/w)
+
+abs2(z::Hyper) = z*z
 
 function ^(z::Hyper, w::Rational)
   deriv = w * real(z)^(w-1)

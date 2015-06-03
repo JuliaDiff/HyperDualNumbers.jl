@@ -62,12 +62,12 @@ hyper() = Hyper()
 
 hyper256(s::Float64, t::Float64, q::Float64, p::Float64) = Hyper{Float64}(s, t, q, p)
 hyper256(s::Real, t::Real, q::Real, p::Real) =
-  hyper256(float64(s), float64(t), float64(q), float64(p))
+  hyper256(@compat(Float64(s)), @compat(Float64(t)), @compat(Float64(q)), @compat(Float64(p)))
 hyper256(z) = hyper256(real(z), eps1(z), eps2(z), eps1eps2(z))
 
 hyper128(s::Float32, t::Float32, q::Float32, p::Float32) = Hyper{Float32}(s, t, q, p)
 hyper128(s::Real, t::Real, q::Real, p::Real) =
-  hyper128(Float32(s), Float32(t), Float32(q), Float32(p))
+  hyper128(@compat(Float32(s)), @compat(Float32(t)), @compat(Float32(q)), @compat(Float32(p)))
 hyper128(z) = hyper128(real(z), eps1(z), eps2(z), eps1eps2(z))
 
 ishyper(x::Hyper) = true

@@ -99,7 +99,7 @@ function hyper_show(io::IO, z::Hyper, compact::Bool)
       end  
       compact ? showcompact(io, f1) : show(io, f1)
       if !(isa(f1, Integer) || isa(f1, Rational) ||
-           isa(f1, FloatingPoint) || isfinite(f1))
+           isa(f1, AbstractFloat) || isfinite(f1))
            print(io, "*")
       end
       print(io, "\u03F51")
@@ -113,7 +113,7 @@ function hyper_show(io::IO, z::Hyper, compact::Bool)
       end  
       compact ? showcompact(io, f2) : show(io, f2)
       if !(isa(f2, Integer) || isa(f2, Rational) ||
-           isa(f2, FloatingPoint) || isfinite(f2))
+           isa(f2, AbstractFloat) || isfinite(f2))
            print(io, "*")
       end
       print(io, "\u03F52")
@@ -127,7 +127,7 @@ function hyper_show(io::IO, z::Hyper, compact::Bool)
       end  
       compact ? showcompact(io, f12) : show(io, f12)
       if !(isa(f12, Integer) || isa(f12, Rational) ||
-           isa(f12, FloatingPoint) || isfinite(f12))
+           isa(f12, AbstractFloat) || isfinite(f12))
            print(io, "*")
       end
       print(io, "\u03F51\u03F52")
@@ -213,7 +213,7 @@ end
 
 function ^(z::Hyper, w::Number)
   xval = real(z)
-  tol = typeof(xval)==FloatingPoint ? eps(xval) : 10.0^-15
+  tol = typeof(xval)==AbstractFloat ? eps(xval) : 10.0^-15
   if abs(float(xval)) < tol
     xval = ifelse(signbit(xval)==0, tol, -tol)
   end

@@ -258,22 +258,22 @@ function asin(z::Hyper)
   funval = asin(real(z))
   deriv1 = 1.0-real(z)*real(z)
   deriv = 1.0/sqrt(deriv1)
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(real(z)/deriv1^-1.5))
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(real(z)/deriv1^1.5))
 end
 
 function acos(z::Hyper)
   funval = acos(real(z))
   deriv1 = 1.0-real(z)*real(z)
   deriv = -1.0/sqrt(deriv1)
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-real(z)/deriv1^-1.5))
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-real(z)/deriv1^1.5))
 end
 
 function atan(z::Hyper)
   funval = atan(real(z))
   deriv1 = 1.0+real(z)*real(z)
-  deriv = 1.0/sqrt(deriv1)
+  deriv = 1.0/deriv1
   hyper(funval, deriv*eps1(z),deriv*eps2(z),
-    deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-2*real(z)/deriv1*deriv1))
+  	deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-2.0*real(z)/(deriv1*deriv1)))
 end
 
 sqrt(z::Hyper) = z^0.5

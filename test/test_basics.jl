@@ -58,6 +58,7 @@ println("\nTesting includes Tim Holy's division performance improvement.")
 @test (hd3^3)^(1/3) == hd3
 
 # Transcedentals
+println("Testing includes ngedwin98's fixes for asin, acos and atan.")
 @test asin(sin(hd8)) == hd8
 @test atan(tan(hd8)) == hd8
 @test eps1(acos(hd8)) == -eps1(asin(hd8)) && eps1eps2(acos(hd8)) == -eps1eps2(asin(hd8))

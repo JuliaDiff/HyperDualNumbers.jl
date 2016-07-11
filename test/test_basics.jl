@@ -13,6 +13,8 @@ hd5 = Hyper256(1//1, 10//2, 6//2, 20//5)
 hd6 = hyper128(1.0, 6.0, 3.0, 4.0)
 hd7 = Hyper128(1//1, 10//2, 6//2, 20//5)
 
+hd8 = hyper(1//2, 1, 1, 0)
+
 hdNaN = hyper(0/0)
 
 # Addition and subtraction
@@ -27,7 +29,7 @@ hdNaN = hyper(0/0)
 # NaN tests
 @test isnan(hdNaN) == isnan(hyper(NaN, 0.0, 0.0, 0.0))
 hdNaN128 = hyper128(NaN, 4.0, 3.0, 4.0)
-@test isnan(hdNaN + hd4) == isnan(hdNaN128) && eps1eps2(hdNaN128)==4.0
+@test isnan(hdNaN + hd4) == isnan(hdNaN128) && eps1eps2(hdNaN128) == 4.0
 
 println("\nExamples of show() for hyperdual numbers with NaN:\n")
 println("hdNaN = $(hdNaN)")
@@ -54,6 +56,11 @@ println("\nTesting includes Tim Holy's division performance improvement.")
 @test 1/hd2 == hd2^(-1)
 @test hd3^3 == hd3 * hd3 * hd3
 @test (hd3^3)^(1/3) == hd3
+
+# Transcedentals
+@test asin(sin(hd8)) == hd8
+@test atan(tan(hd8)) == hd8
+@test eps1(acos(hd8)) == -eps1(asin(hd8)) && eps1eps2(acos(hd8)) == -eps1eps2(asin(hd8))
 
 # Mixing types
 @test hd5*hd7 == hd7^2

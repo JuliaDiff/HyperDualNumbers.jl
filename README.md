@@ -1,7 +1,8 @@
 # HyperDualNumbers
 
 [![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.3.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.3)
-[![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.4.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.4)[![Build [![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.5.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.5)[![Build Status](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg)](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl)
+[![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.4.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.4) [![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.5.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.5)
+[![Build Status](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg)](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl)
 [![Coverage Status](https://coveralls.io/repos/goedman/HyperDualNumbers.jl/badge.svg)](https://coveralls.io/r/goedman/HyperDualNumbers.jl)
 
 

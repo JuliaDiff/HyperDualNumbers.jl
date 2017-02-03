@@ -58,7 +58,7 @@ hyper(x, y, z, yz) = Hyper(x, y, z, yz)
 hyper(x) = Hyper(x)
 hyper() = Hyper()
 
-@vectorize_1arg Real hyper
+#@vectorize_1arg Real hyper
 
 hyper256(s::Float64, t::Float64, q::Float64, p::Float64) = Hyper{Float64}(s, t, q, p)
 hyper256(s::Real, t::Real, q::Real, p::Real) =

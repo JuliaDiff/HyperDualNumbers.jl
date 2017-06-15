@@ -5,7 +5,6 @@ function blsprice(S0,K,r,T,sigma)
   #Black & Scholes Price for European Options
   d1=(log(S0/K)+(r+sigma*sigma*0.5)*T)/(sigma*sqrt(T));
   d2=d1-sigma*sqrt(T);
-  Out=0.0;
   Out=S0*normcdf(d1)-K*exp(-r*T)*normcdf(d2);
 return Out;
 end
@@ -21,7 +20,6 @@ end
 function blsdelta(S0,K,r,T,sigma)
   #Black & Scholes Delta for European Options
   d1=(log(S0/K)+(r+sigma*sigma*0.5)*T)/(sigma*sqrt(T));
-  Out=0.0;
   Out=normcdf(d1);
 return Out;
 end
@@ -38,8 +36,10 @@ end
 S0 = Hyper(100.0, 1.0, 1.0, 0)
 K=80.0;T=2.0;r=0.01;sigma=0.2;
 Price=blsprice(S0,K,r,T,sigma);
-@test (abs(Price.f0-blsprice(S0.f0,K,r,T,sigma))<1e-15)
-@test (abs(Price.f1-blsdelta(S0.f0,K,r,T,sigma))<1e-15)
-@test (abs(Price.f12-blsgamma(S0.f0,K,r,T,sigma))<1e-15)
-
-println(Price)
+@test (abs(real(Price)-blsprice(real(S0),K,r,T,sigma))<1e-15)
+@test (abs(eps1(Price)-blsdelta(real(S0),K,r,T,sigma))<1e-15)
+@test (abs(eps1eps2(Price)-blsgamma(real(S0),K,r,T,sigma))<1e-15)
+println("$(real(Price))   = $( blsprice(real(S0),K,r,T,sigma))")
+println("$(eps1(Price))   = $( blsdelta(real(S0),K,r,T,sigma))")
+println("$(eps1eps2(Price))   = $( blsgamma(real(S0),K,r,T,sigma))")
+println("Test Erf Passed")

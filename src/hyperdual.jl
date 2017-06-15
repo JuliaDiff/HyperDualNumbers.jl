@@ -272,6 +272,7 @@ function acos(z::Hyper)
   hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-real(z)/deriv1^1.5))
 end
 
+import Base.erf
 function erf(z::Hyper)
   funval = erf(real(z))
   deriv = 2.0*exp(-1.0*real(z)*real(z))/(sqrt(pi))

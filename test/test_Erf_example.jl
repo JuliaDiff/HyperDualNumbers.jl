@@ -1,7 +1,7 @@
 using HyperDualNumbers
-using Base.Test  
-if (VERSION.minor>5)
-	using SpecialFunctions
+using Base.Test
+if (VERSION.minor>=6)
+	using SpecialFunctions.erf
 end
 
 

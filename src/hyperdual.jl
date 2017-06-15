@@ -267,9 +267,11 @@ function acos(z::Hyper)
   deriv = -1.0/sqrt(deriv1)
   hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-real(z)/deriv1^1.5))
 end
-
+if (VERSION.minor>5)
+	using SpecialFunctions
+end
 function erf(z::Hyper)
-  funval = erf(real(z))
+  funval = SpecialFunctions.erf(real(z))
   deriv = 2.0*exp(-1.0*real(z)*real(z))/(sqrt(pi))
   deriv1 = -2.0*real(z)*deriv;
   hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*deriv1)

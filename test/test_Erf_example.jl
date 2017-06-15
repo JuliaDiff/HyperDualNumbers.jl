@@ -1,5 +1,9 @@
 using HyperDualNumbers
 using Base.Test  
+if (VERSION.minor>5)
+	using SpecialFunctions
+end
+
 
 function blsprice(S0,K,r,T,sigma)
   #Black & Scholes Price for European Options
@@ -30,7 +34,6 @@ function blsgamma(S0,K,r,T,sigma)
   Out=normpdf(d1)/(S0*sigma*sqrt(T));
 return Out;
 end
-
 
 # BlackScholes Formula Test Example
 S0 = Hyper(100.0, 1.0, 1.0, 0)

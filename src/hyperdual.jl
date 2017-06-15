@@ -268,6 +268,13 @@ function acos(z::Hyper)
   hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-real(z)/deriv1^1.5))
 end
 
+function erf(z::Hyper)
+  funval = erf(real(z))
+  deriv = 2.0*exp(-1.0*real(z)*real(z))/(sqrt(pi))
+  deriv1 = -2.0*real(z)*deriv;
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*deriv1)
+end
+
 function atan(z::Hyper)
   funval = atan(real(z))
   deriv1 = 1.0+real(z)*real(z)

@@ -19,9 +19,9 @@ Hyper(x::Real, eps1::Real, eps2::Real, eps1eps2::Real) =
 Hyper(x::Real) = Hyper(x, zero(x), zero(x), zero(x))
 Hyper() = Hyper(0.0, 0.0, 0.0, 0.0)
 
-typealias Hyper256 Hyper{Float64}
+const Hyper256 = Hyper{Float64}
 Hyper256() = Hyper256(0.0, 0.0, 0.0, 0.0)
-typealias Hyper128 Hyper{Float32}
+const Hyper128 = Hyper{Float32}
 Hyper128() = Hyper128(0.0, 0.0, 0.0, 0.0)
 
 real(z::Hyper) = z.f0

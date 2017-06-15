@@ -1,8 +1,8 @@
 module HyperDualNumbers
 
   importall Base
+  import SpecialFunctions.erf
   using Compat
-  
   include("hyperdual.jl")
   
   export

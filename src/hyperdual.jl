@@ -9,6 +9,10 @@ immutable Hyper{T<:Real} <: Number
   f12::T
 end
 
+if (VERSION.minor>=6)
+	using SpecialFunctions.erf
+end
+
 Hyper(x::Real, eps1::Real, eps2::Real, eps1eps2::Real) =
   Hyper(promote(x, eps1, eps2, eps1eps2)...)
 
@@ -266,6 +270,14 @@ function acos(z::Hyper)
   deriv1 = 1.0-real(z)*real(z)
   deriv = -1.0/sqrt(deriv1)
   hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-real(z)/deriv1^1.5))
+end
+
+import Base.erf
+function erf(z::Hyper)
+  funval = erf(real(z))
+  deriv = 2.0*exp(-1.0*real(z)*real(z))/(sqrt(pi))
+  deriv1 = -2.0*real(z)*deriv;
+  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*deriv1)
 end
 
 function atan(z::Hyper)

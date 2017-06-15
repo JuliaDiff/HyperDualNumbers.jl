@@ -2,7 +2,6 @@ module HyperDualNumbers
 
   importall Base
   using Compat
-  
   include("hyperdual.jl")
   
   export

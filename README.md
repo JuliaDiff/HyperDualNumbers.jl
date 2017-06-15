@@ -1,6 +1,7 @@
 # HyperDualNumbers
 
 [![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.4.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.4) [![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.5.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.5)
+[![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.6.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.6)
 
 [![Coverage Status](https://coveralls.io/repos/JuliaDiff/HyperDualNumbers.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaDiff/HyperDualNumbers.jl?branch=master)
 [![codecov](https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl?branch=master)

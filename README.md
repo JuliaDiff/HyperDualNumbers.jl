@@ -6,8 +6,8 @@
 [![Coverage Status](https://coveralls.io/repos/JuliaDiff/HyperDualNumbers.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaDiff/HyperDualNumbers.jl?branch=master)
 [![codecov](https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl?branch=master)
 
-Unix/OSX:  [![Travis Build Status](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg?branch=master)](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl)
-, Windows:  [![Build status](https://ci.appveyor.com/api/projects/status/github/JuliaDiff/HyperDualNumbers.jl?branch=master)](https://ci.appveyor.com/project/JuliaDiff/hyperdualnumbers-jl)
+ [![Travis Build Status](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg?branch=master)](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl)
+ [![Build status](https://ci.appveyor.com/api/projects/status/9u6kqaafmwjf273x?svg=true)](https://ci.appveyor.com/project/goedman/hyperdualnumbers-jl)
 
 Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
 
@@ -20,7 +20,7 @@ The Julia package is structured similar to the DualNumbers package, which aims f
 
 The following functions are specific to hyperdual numbers:
 * `Hyper`,
-* `Hyper256`,
+* `Hyper256`,2
 * `Hyper128`,
 * `hyper`,
 * `hyper256`,

@@ -10,7 +10,7 @@ immutable Hyper{T<:Real} <: Number
 end
 
 if (VERSION.minor>=6)
-	using SpecialFunctions.erf
+	import SpecialFunctions.erf
 end
 
 Hyper(x::Real, eps1::Real, eps2::Real, eps1eps2::Real) =

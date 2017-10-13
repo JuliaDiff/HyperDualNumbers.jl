@@ -1,5 +1,5 @@
 using HyperDualNumbers
-using Base.Test  
+using Test  
 
 # Tim Holy's test example
 hd10 = Hyper(1//2, 1, 1, 0)

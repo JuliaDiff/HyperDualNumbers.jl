@@ -1,16 +1,14 @@
+import SpecialFunctions: erf
+
 #
 # Basic definitions
 #
 
-immutable Hyper{T<:Real} <: Number
+struct Hyper{T<:Real} <: Number
   f0::T
   f1::T
   f2::T
   f12::T
-end
-
-if (VERSION.minor>=6)
-	using SpecialFunctions.erf
 end
 
 Hyper(x::Real, eps1::Real, eps2::Real, eps1eps2::Real) =
@@ -30,33 +28,34 @@ eps2(z::Hyper) = z.f2
 eps1eps2(z::Hyper) = z.f12
 
 eps(z::Hyper) = eps(real(z))
-eps{T}(::Type{Hyper{T}}) = eps(T)
+eps(::Type{Hyper{T}}) where T = eps(T)
 one(z::Hyper) = Hyper(one(real(z)))
-one{T}(::Type{Hyper{T}}) = Hyper(one(T))
-nan{T}(::Type{Hyper{T}}) = nan(one(T))
+one(::Type{Hyper{T}}) where T = Hyper(one(T))
+nan(::Type{Hyper{T}}) where T = nan(one(T))
 isnan(z::Hyper) = isnan(real(z))
 
-convert{T<:Real}(::Type{Hyper{T}}, x::Real) =
+convert(::Type{Hyper{T}}, x::Real) where T<:Real =
   Hyper{T}(convert(T, x), convert(T, 0), convert(T, 0), convert(T, 0))
 
-convert{T<:Real}(::Type{Hyper{T}}, z::Hyper{T}) = z
+convert(::Type{Hyper{T}}, z::Hyper{T}) where T<:Real = z
 
-convert{T<:Real}(::Type{Hyper{T}}, z::Hyper) =
-  Hyper{T}(convert(T, real(z)), convert(T, eps1(z)), convert(T, eps2(z)),
+convert(::Type{Hyper{T}}, z::Hyper) where T<:Real =
+  Hyper(convert(T, real(z)), convert(T, eps1(z)), convert(T, eps2(z)),
     convert(T, eps1eps2(z)))
 
-convert{T<:Real}(::Type{T}, z::Hyper) =
+convert(::Type{T}, z::Hyper) where T<:Real =
   ((eps1(z) == 0 && eps2(z) == 0 && eps1eps2(z)) ? convert(T, real(z)) : throw(InexactError()))
 
-promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}(::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}}, ::Type{Hyper{P}}) =
+promote_rule(::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}},
+  ::Type{Hyper{P}}) where {T<:Real, S<:Real, Q<:Real, P<:Real} =
     Hyper{promote_type(T, S, Q, P)}
 
-promote_rule{T<:Real}(::Type{Hyper{T}}, ::Type{T}, ::Type{T}, ::Type{T}) = Hyper{T}
+promote_rule(::Type{Hyper{T}}, ::Type{T}, ::Type{T}, ::Type{T}) where T<:Real = Hyper{T}
 
-promote_rule{T<:Real, S<:Real, Q<:Real, P<:Real}(::Type{Hyper{T}}, ::Type{S}, ::Type{Q}, ::Type{P}) =
+promote_rule(::Type{Hyper{T}}, ::Type{S}, ::Type{Q}, ::Type{P}) where {T<:Real, S<:Real, Q<:Real, P<:Real} =
     Hyper{promote_type(T, S, Q, P)}
 
-promote_rule{T<:Real, S<:Real}(::Type{Hyper{T}}, ::Type{S}) = Hyper{promote_type(T, S)}
+promote_rule(::Type{Hyper{T}}, ::Type{S}) where {T<:Real, S<:Real} = Hyper{promote_type(T, S)}
 
 hyper(x, y, z, yz) = Hyper(x, y, z, yz)
 hyper(x) = Hyper(x)
@@ -77,7 +76,7 @@ hyper128(z) = hyper128(real(z), eps1(z), eps2(z), eps1eps2(z))
 ishyper(x::Hyper) = true
 ishyper(x::Number) = false
 
-real_valued{T<:Real}(z::Hyper{T}) = (eps1(z) == 0 && eps2(z) == 0 && eps1eps2(z) == 0)
+real_valued(z::Hyper{T}) where T <:Real = (eps1(z) == 0 && eps2(z) == 0 && eps1eps2(z) == 0)
 integer_valued(z::Hyper) = real_valued(z) && integer_valued(real(z))
 
 isfinite(z::Hyper) = isfinite(real(z))
@@ -144,7 +143,7 @@ end
 show(io::IO, z::Hyper) = hyper_show(io, z, false)
 showcompact(io::IO, z::Hyper) = hyper_show(io, z, true)
 
-function read{T<:Real}(s::IO, ::Type{Hyper{T}})
+function read(s::IO, ::Type{Hyper{T}}) where {T<:Real}
   f0 = read(s, T)
   f1 = read(s, T)
   f2 = read(s, T)
@@ -272,7 +271,6 @@ function acos(z::Hyper)
   hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-real(z)/deriv1^1.5))
 end
 
-import Base.erf
 function erf(z::Hyper)
   funval = erf(real(z))
   deriv = 2.0*exp(-1.0*real(z)*real(z))/(sqrt(pi))

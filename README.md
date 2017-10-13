@@ -13,7 +13,9 @@ Hyper-dual numbers can be used to compute first and second derivatives numerical
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
 The Julia version was derived/written by Rob J Goedman (goedman@icloud.com).
-Latest version tagged as v1.0.0 (7/12/2016)
+Latest tagged versions:
+  v1.1.0 (10/13/2017, Julia 0.5 & 0.6)
+  v2.0.0 (10/13/2017, Julia v0.7-)
 
 The Julia package is structured similar to the DualNumbers package, which aims for complete support for `HyperDual` types for numerical functions within Julia's `Base`. Currently, basic mathematical operations and trigonometric functions are supported.
 
@@ -29,6 +31,9 @@ The following functions are specific to hyperdual numbers:
 * `eps1eps2`,
 * `ishyper`,
 * `hyper_show`
+
+Several other functions have been extended to accept hyperdual numbers, e.g.:
+`+`, ..., `<`, ..., `abs`, `log`, `sin`, ..., `erf`, `sqrt`, etc., see the final part of hyperdual.jl.
 
 Many other Julia packages related to Automatic Differentiation are available, e.g. PowerSeries.jl, TaylorSeries.jl and DualNumbers.jl. More are under development.
 

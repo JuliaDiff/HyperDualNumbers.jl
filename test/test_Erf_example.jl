@@ -1,7 +1,7 @@
 using HyperDualNumbers
-using Base.Test
+using Test
 
-VERSION.minor >= 6 && using SpecialFunctions.erf
+#using SpecialFunctions
 
 function blsprice(S0,K,r,T,sigma)
   #Black & Scholes Price for European Options

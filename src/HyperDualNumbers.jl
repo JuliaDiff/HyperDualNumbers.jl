@@ -3,6 +3,7 @@ module HyperDualNumbers
   import Base: <=, >=, +, -, *, /, ^, ==, <, >, isnan, convert,
     promote_rule, promote_type, one, sin, cos, tan, acos, asin, atan,
     sqrt, exp, abs, real, log
+
   using Compat
   include("hyperdual.jl")
   
@@ -18,6 +19,7 @@ module HyperDualNumbers
     eps1,
     eps2,
     eps1eps2,
-    conjhyper
+    conjhyper,
+    erf
 
 end # module

@@ -75,14 +75,3 @@ You can extract these coefficients from the hyperdual number using the functions
     println("f'(t0) = ", eps1(f(t0)))
     println("f'(t0) = ", eps2(f(t0)))
     println("f''(t0) = ", eps1eps2(f(t0)))
-
-### TBD
-
-Wish list:
-
-1. A generic hyper-number package to support multiple types (Complex, Double & Dual) and variable order (e.g. order 1 is dual, order 2 is as in this package, etc.)
-2. Graphs (as in Jeffrey Fike's paper)
-3. Profiling
-4. Compare with Standard Library
-5. Cross-validate with other relevant Julia packages
-6. Make it a proper package, e.g. dependencies. etc.

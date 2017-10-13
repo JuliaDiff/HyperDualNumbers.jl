@@ -1,5 +1,6 @@
 using HyperDualNumbers
-using Test  
+using Base.Test
+#using Test
 
 # THE example
 println("\n\"THE\" example")

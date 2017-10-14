@@ -4,7 +4,10 @@ module HyperDualNumbers
     promote_rule, promote_type, one, sin, cos, tan, acos, asin, atan,
     sqrt, exp, abs, real, log
 
+  import SpecialFunctions: erf
+
   using Compat
+
   include("hyperdual.jl")
   
   export

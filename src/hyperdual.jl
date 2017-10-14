@@ -1,5 +1,3 @@
-import SpecialFunctions: erf
-
 #
 # Basic definitions
 #

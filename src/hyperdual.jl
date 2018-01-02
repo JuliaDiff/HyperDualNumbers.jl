@@ -199,6 +199,7 @@ end
 /(z::Hyper, w::Number) = hyper(real(z)/w, eps1(z)/w, eps2(z)/w, eps1eps2(z)/w)
 
 abs2(z::Hyper) = z*z
+abs(z::Hyper) = sqrt(abs2(z))                    # Is this correct?
 
 function ^(z::Hyper, w::Rational)
   deriv = w * real(z)^(w-1)

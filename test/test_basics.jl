@@ -14,6 +14,7 @@ hd6 = hyper128(1.0, 6.0, 3.0, 4.0)
 hd7 = Hyper128(1//1, 10//2, 6//2, 20//5)
 
 hd8 = hyper(1//2, 1, 1, 0)
+hd9 = hyper(-1.0, -2.0, -3.0, -4.0)
 
 hdNaN = hyper(0/0)
 
@@ -25,6 +26,8 @@ hdNaN = hyper(0/0)
 @test hd1-hd3 == hyper(0.0, -3.0, -3.0, -4.0)
 @test 2+hd2 == hyper256(3.0, 2.0, 3.0, 4.0)
 @test hd4-5 == hyper256(-4.0, 4.0, 3.0, 4.0)
+@test abs(hd9) == sqrt(abs2(hd9))
+@test abs2(hd2) == hd2*hd2
 
 # NaN tests
 @test isnan(hdNaN) == isnan(hyper(NaN, 0.0, 0.0, 0.0))

@@ -2,7 +2,8 @@ module HyperDualNumbers
 
   import Base: <=, >=, +, -, *, /, ^, ==, <, >, isnan, convert,
     promote_rule, promote_type, one, sin, cos, tan, acos, asin, atan,
-    sqrt, exp, abs, real, log
+    sqrt, exp, abs, abs2, real, log
+    
   using Compat
   include("hyperdual.jl")
   

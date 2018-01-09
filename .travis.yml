@@ -4,7 +4,7 @@ os:
   - osx
 julia:
   - nightly
-mnotifications:
+notifications:
   email: true
 # uncomment the following lines to override the default test script
 script:

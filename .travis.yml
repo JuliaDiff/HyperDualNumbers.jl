@@ -17,8 +17,7 @@ notifications:
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  #- julia -e 'Pkg.add("Documenter")'
-  - julia -e 'using Pkg; Pkg.add("Compat"); Pkg.test("HyperDualNumbers"); coverage=true)'
+  - julia -e 'using Pkg; Pkg.add("Compat"); Pkg.test("HyperDualNumbers"; coverage=true)'
   
 after_success:
   #
@@ -26,7 +25,8 @@ after_success:
   #
   #- julia -e 'Pkg.add("Documenter")'
   #- julia -e 'cd(Pkg.dir("HyperDualNumbers")); include(joinpath("docs", "make.jl"))'
-  #
+  
+  
   # Coverage
   #
   # push coverage results to Coveralls

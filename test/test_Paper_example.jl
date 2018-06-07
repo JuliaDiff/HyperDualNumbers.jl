@@ -1,7 +1,3 @@
-using HyperDualNumbers
-using Base.Test
-#using Test
-
 # THE example
 println("\n\"THE\" example")
 f(x) = ℯ^x / sqrt(sin(x)^3 + cos(x)^3)

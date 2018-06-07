@@ -1,3 +1,5 @@
+using HyperDualNumbers, Test
+
 my_tests = [
   "test_basics.jl",
   "test_TimHoly_example.jl",
@@ -7,8 +9,10 @@ my_tests = [
 
 println("Running tests:")
 
-for my_test in my_tests
-    println("  * $(my_test) *")
-    include(my_test)
-    println("\n\n")
+@testset "HyperDualNumbers.jl" begin
+  for my_test in my_tests
+      println("  * $(my_test) *")
+      include(my_test)
+      println("\n\n")
+  end
 end

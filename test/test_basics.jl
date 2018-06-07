@@ -1,7 +1,3 @@
-using HyperDualNumbers
-#using Base.Test
-using Test
-
 # Define a few hyperdual numbers for testing purposes
 hd0 = Hyper()
 hd1 = Hyper(1.0)

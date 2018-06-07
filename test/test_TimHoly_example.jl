@@ -1,7 +1,3 @@
-using HyperDualNumbers
-using Base.Test
-#using Test
-
 # Tim Holy's test example
 hd10 = Hyper(1//2, 1, 1, 0)
 q1(x) = 1 - (96//25)*x^2 + (112//25)*x^4

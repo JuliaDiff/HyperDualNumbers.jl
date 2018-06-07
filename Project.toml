@@ -1,0 +1,8 @@
+authors = ["Rob J Goedman <goedman@mac.com>"]
+name = "HyperDualNumbers"
+uuid = "50ceba7f-c3ee-5a84-a6e8-3ad40456ec97"
+version = "2.0.1"
+
+[deps]
+Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
+SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"

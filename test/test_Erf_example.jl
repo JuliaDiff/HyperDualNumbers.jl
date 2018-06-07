@@ -1,7 +1,3 @@
-using HyperDualNumbers
-using Base.Test
-#using Test
-
 #using SpecialFunctions
 
 function blsprice(S0,K,r,T,sigma)

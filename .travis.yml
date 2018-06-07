@@ -10,7 +10,7 @@ mnotifications:
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   #- julia -e 'Pkg.add("Documenter")'
-  - julia -e 'Pkg.clone(pwd()); Pkg.build("HyperDualNumbers"); Pkg.test("HyperDualNumbers"; coverage=true)'
+  - julia -e 'using Pkg; Pkg.test("HyperDualNumbers"; coverage=true)'
 after_success:
   #
   # Documentation

@@ -1,16 +1,25 @@
 language: julia
+
 os:
   - linux
   - osx
+  
 julia:
   - nightly
-mnotifications:
+  
+matrix:
+  allow_failures:
+    - os: osx
+    
+notifications:
   email: true
+  
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   #- julia -e 'Pkg.add("Documenter")'
-  - julia -e 'using Pkg; Pkg.test("HyperDualNumbers"); coverage=true)'
+  - julia -e 'using Pkg; Pkg.add("Compat"); Pkg.test("HyperDualNumbers"); coverage=true)'
+  
 after_success:
   #
   # Documentation

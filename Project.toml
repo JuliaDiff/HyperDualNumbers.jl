@@ -1,6 +1,6 @@
-authors = ["Rob J Goedman <goedman@mac.com>"]
 name = "HyperDualNumbers"
 uuid = "50ceba7f-c3ee-5a84-a6e8-3ad40456ec97"
+authors = ["Rob J Goedman <goedman@mac.com>"]
 version = "2.0.1"
 
 [deps]

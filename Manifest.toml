@@ -8,10 +8,10 @@ uuid = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
 version = "0.8.8"
 
 [[Compat]]
-deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "IterativeEigensolvers", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "SuiteSparse", "Test", "UUIDs", "Unicode"]
-git-tree-sha1 = "4049fa166ff47bf2b9190eb4be0de478088fe0c9"
+deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Test", "UUIDs", "Unicode"]
+git-tree-sha1 = "f3e87ca1e2df8e1e4f82ea504fddf0b9b0894f61"
 uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
-version = "0.68.0"
+version = "0.69.0"
 
 [[Dates]]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
@@ -24,9 +24,6 @@ uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[InteractiveUtils]]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
-
-[[IterativeEigensolvers]]
-uuid = "de555fa4-b82f-55e7-8b71-53f60bbc027d"
 
 [[LibGit2]]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
@@ -72,12 +69,9 @@ uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [[SpecialFunctions]]
 deps = ["BinDeps", "Compat", "Libdl"]
-git-tree-sha1 = "a674e75798a737de67d6860b29a9e56a13d7639f"
+git-tree-sha1 = "56a9cf89d6d8f463370131a0345035bcadc1b7df"
 uuid = "276daf66-3868-5448-9aa4-cd146d93841b"
-version = "0.4.0"
-
-[[SuiteSparse]]
-uuid = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
+version = "0.5.0"
 
 [[Test]]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

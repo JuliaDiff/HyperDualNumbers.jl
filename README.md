@@ -15,10 +15,9 @@ The Julia version was derived/written by Rob J Goedman (goedman@icloud.com).
 Latest tagged versions:
 *  v1.1.0 (Julia 0.5 & 0.6, Oct 2017)
 *  v2.0.0 (Julia v0.7-, Oct 2017)
+*  v3.0.0 (Julia v0.7-, Jul 2018, Pkg(3))
 
-The next tagged version will be v3.0.0, which will be for Julia 0.7 and up.
-
-The Julia package is structured similar to the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package, which aims for complete support for `HyperDual` types for numerical functions within Julia's `Base`. Currently, basic mathematical operations and trigonometric functions are supported.
+The Julia package is structured similar to the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package, which aims for complete support for `Dual` types for numerical functions in Julia. Currently, basic mathematical operations and trigonometric functions are supported.
 
 The following functions are specific to hyperdual numbers:
 * `Hyper`,

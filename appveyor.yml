@@ -1,4 +1,5 @@
 environment:
+  JULIA_PROJECT: "@."
   matrix:
     - JULIA_URL: "https://julialangnightlies-s3.julialang.org/bin/winnt/x64/julia-latest-win64.exe"
 branches:
@@ -26,4 +27,4 @@ build_script:
   - IF EXIST .git\shallow (git fetch --unshallow)
 
 test_script:
-  - C:\projects\julia\bin\julia --check-bounds=yes -e "using Pkg; Pkg.add(\"Compat\"); Pkg.test(\"HyperDualNumbers\")"
+  - C:\projects\julia\bin\julia --check-bounds=yes -e "using Pkg; Pkg.test(\"HyperDualNumbers\")"

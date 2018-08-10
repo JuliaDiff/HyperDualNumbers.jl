@@ -2,7 +2,8 @@
 
 [![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.7.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.7) 
 
-[![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_1.0.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=1.0) 
+[![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_1.0.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=1.0)
+
 
 [![Coverage Status](https://coveralls.io/repos/JuliaDiff/HyperDualNumbers.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaDiff/HyperDualNumbers.jl?branch=master)
 [![codecov](https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl?branch=master)

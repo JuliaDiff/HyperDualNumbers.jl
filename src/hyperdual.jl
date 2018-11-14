@@ -201,6 +201,10 @@ end
 abs2(z::Hyper) = z*z
 abs(z::Hyper) = sqrt(abs2(z))                    # Is this correct?
 
+for op in (:real, :imag, :conj, :float, :complex)
+    @eval Base.$op(z::Hyper) = Hyper($op(real(z)), $op(eps1(z)), $op(eps2(z)), $op(eps1eps2(z)))
+end
+
 function ^(z::Hyper, w::Rational)
   deriv = w * real(z)^(w-1)
   hyper(real(z)^w, eps1(z)*deriv, eps2(z)*deriv,

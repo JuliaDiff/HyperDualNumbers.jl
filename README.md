@@ -31,6 +31,7 @@ The following functions are specific to hyperdual numbers:
 * `hyper`,
 * `hyper256`,
 * `hyper128`,
+* `realpart`,
 * `eps1`,
 * `eps2`,
 * `eps1eps2`,
@@ -78,10 +79,10 @@ For this example, you'll get the result
 
 The first term is the function value, the coefficients of both `ϵ1` and `ϵ2` (which correspond to the second and third arguments of `hyper`) are equal to the first derivative, and the coefficient of `ϵ1ϵ2` is the second derivative.
 
-You can extract these coefficients from the hyperdual number using the functions `real()`, `eps1()` or `eps2()` and `eps1eps2()`:
+You can extract these coefficients from the hyperdual number using the functions `realpart()`, `eps1()` or `eps2()` and `eps1eps2()`:
 
     println("f(1.5) = ", f(1.5))
-    println("f(t0) = ", real(f(t0)))
+    println("f(t0) = ", realpart(f(t0)))
     println("f'(t0) = ", eps1(f(t0)))
     println("f'(t0) = ", eps2(f(t0)))
     println("f''(t0) = ", eps1eps2(f(t0)))

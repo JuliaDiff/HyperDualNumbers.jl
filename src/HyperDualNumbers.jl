@@ -19,6 +19,7 @@ module HyperDualNumbers
     hyper128,
     ishyper,
     hyper_show,
+    realpart,
     eps1,
     eps2,
     eps1eps2,

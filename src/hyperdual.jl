@@ -201,9 +201,11 @@ end
 abs2(z::Hyper) = z*z
 abs(z::Hyper) = sqrt(abs2(z))                    # Is this correct?
 
-for op in (:real, :imag, :conj, :float, :complex)
-    @eval Base.$op(z::Hyper) = Hyper($op(real(z)), $op(eps1(z)), $op(eps2(z)), $op(eps1eps2(z)))
-end
+Base.real(z::Hyper) = Hyper(real(real(z)), real(eps1(z)), real(eps2(z)), real(eps1eps2(z)))
+Base.imag(z::Hyper) = Hyper(imag(real(z)), imag(eps1(z)), imag(eps2(z)), imag(eps1eps2(z)))
+Base.conj(z::Hyper) = Hyper(conj(real(z)), conj(eps1(z)), conj(eps2(z)), conj(eps1eps2(z)))
+Base.float(z::Hyper) = Hyper(float(real(z)), float(eps1(z)), float(eps2(z)), float(eps1eps2(z)))
+Base.complex(z::Hyper) = Hyper(complex(real(z)), complex(eps1(z)), complex(eps2(z)), complex(eps1eps2(z)))
 
 function ^(z::Hyper, w::Rational)
   deriv = w * real(z)^(w-1)

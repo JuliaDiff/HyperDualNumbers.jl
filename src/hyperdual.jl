@@ -49,9 +49,9 @@ hyper(x::ReComp) = Hyper(x)
 hyper(h::Hyper) = h
 
 const realpart = value
-const hyperpart1 = epsilon1
-const hyperpart2 = epsilon2
-const hyperpart12 = epsilon12
+const ε₁part = epsilon1 # different from `dualpart` but shorter and clearer IMHO?
+const ε₂part = epsilon2
+const ε₁ε₂part = epsilon12
 
 Base.isnan(h::Hyper) = isnan(value(h))
 Base.isinf(h::Hyper) = isinf(value(h))
@@ -74,7 +74,7 @@ function hyperpart_show(io::IO, yzw::T, compact::Bool, str::String) where T<:Rea
 end
 
 function hyper_show(io::IO, h::Hyper{T}, compact::Bool) where T<:Real
-    x, y, z, w = value(h), epsilon1(h), epsilon2(h), epsilon12(h)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     compact ? show(IOContext(io, :compact=>true), x) : show(io, x)
     hyperpart_show(io, y, compact, "ε₁")
     hyperpart_show(io, z, compact, "ε₂")
@@ -119,7 +119,7 @@ function hyperpart_show(io::IO, yzw::T, compact::Bool, str::String) where T<:Com
 end
 
 function hyper_show(io::IO, h::Hyper{T}, compact::Bool) where T<:Complex
-    x, y, z, w = value(h), epsilon1(h), epsilon2(h), epsilon12(h)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     compact ? show(IOContext(io, :compact=>true), x) : show(io, x)
     hyperpart_show(io, y, compact, "ε₁")
     hyperpart_show(io, z, compact, "ε₂")
@@ -127,7 +127,7 @@ function hyper_show(io::IO, h::Hyper{T}, compact::Bool) where T<:Complex
 end
 
 function hyper_show(io::IO, h::Hyper{T}, compact::Bool) where T<:Bool
-    x, y, z, w = value(h), epsilon1(h), epsilon2(h), epsilon12(h)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     if !x && y && !z && !w
         print(io, "ɛ₁")
     elseif !x && !y && z && !w
@@ -140,7 +140,7 @@ function hyper_show(io::IO, h::Hyper{T}, compact::Bool) where T<:Bool
 end
 
 function hyper_show(io::IO, h::Hyper{Complex{T}}, compact::Bool) where T<:Bool
-    x, y, z, w = value(h), epsilon1(h), epsilon2(h), epsilon12(h)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     xr, xi = reim(x)
     yr, yi = reim(y)
     zr, zi = reim(z)
@@ -182,13 +182,13 @@ function Base.read(s::IO, ::Type{Hyper{T}}) where T<:ReComp
 end
 function Base.write(s::IO, h::Hyper)
     write(s, value(h))
-    write(s, epsilon1(h))
-    write(s, epsilon2(h))
-    write(s, epsilon12(h))
+    write(s, ε₁part(h))
+    write(s, ε₂part(h))
+    write(s, ε₁ε₂part(h))
 end
 
 
-## Generic functions of dual numbers ##
+## Generic functions of hyperdual numbers ##
 
 Base.convert(::Type{Hyper}, h::Hyper) = h
 Base.convert(::Type{Hyper}, x::Number) = Hyper(x)
@@ -197,8 +197,8 @@ Base.:(==)(h₁::Hyper, h₂::Hyper) = value(h₁) == value(h₂)
 Base.:(==)(h::Hyper, x::Number) = value(h) == x
 Base.:(==)(x::Number, h::Hyper) = h == x
 
-Base.isequal(h₁::Hyper, h₂::Hyper) = isequal(value(h₁),value(h₂)) && isequal(epsilon1(h₁), epsilon1(h₂)) && isequal(epsilon2(h₁), epsilon2(h₂))&& isequal(epsilon12(h₁), epsilon12(h₂))
-Base.isequal(h::Hyper, x::Number) = isequal(value(h), x) && isequal(epsilon1(h), zero(x)) && isequal(epsilon2(h), zero(x)) && isequal(epsilon12(h), zero(x))
+Base.isequal(h₁::Hyper, h₂::Hyper) = isequal(value(h₁),value(h₂)) && isequal(ε₁part(h₁), ε₁part(h₂)) && isequal(ε₂part(h₁), ε₂part(h₂)) && isequal(ε₁ε₂part(h₁), ε₁ε₂part(h₂))
+Base.isequal(h::Hyper, x::Number) = isequal(value(h), x) && isequal(ε₁part(h), zero(x)) && isequal(ε₂part(h), zero(x)) && isequal(ε₁ε₂part(h), zero(x))
 Base.isequal(x::Number, h::Hyper) = isequal(h, x)
 
 Base.isless(h₁::Hyper{T}, h₂::Hyper{T}) where {T<:Real} = value(h₁) < value(h₂)
@@ -210,82 +210,101 @@ function Base.hash(h::Hyper) # Not sure thtis works
     if isequal(h, value(h))
         return x
     else
-        y = hash(epsilon1(h))
-        z = hash(epsilon2(h))
-        w = hash(epsilon12(h))
+        y = hash(ε₁part(h))
+        z = hash(ε₂part(h))
+        w = hash(ε₁ε₂part(h))
         return hash(x, hash(y, hash(z, hash(w))))
     end
 end
 
-Base.float(z::Union{Dual{T}, Dual{Complex{T}}}) where {T<:AbstractFloat} = z
-Base.complex(z::Dual{<:Complex}) = z
+Base.float(h::Union{Hyper{T}, Hyper{Complex{T}}}) where {T<:AbstractFloat} = h
+Base.complex(h::Hyper{<:Complex}) = h
 
-Base.floor(z::Dual) = floor(value(z))
-Base.ceil(z::Dual)  = ceil(value(z))
-Base.trunc(z::Dual) = trunc(value(z))
-Base.round(z::Dual) = round(value(z))
-Base.floor(::Type{T}, z::Dual) where {T<:Real} = floor(T, value(z))
-Base.ceil( ::Type{T}, z::Dual) where {T<:Real} = ceil( T, value(z))
-Base.trunc(::Type{T}, z::Dual) where {T<:Real} = trunc(T, value(z))
-Base.round(::Type{T}, z::Dual) where {T<:Real} = round(T, value(z))
+Base.floor(h::Hyper) = floor(value(h))
+Base.ceil(h::Hyper)  = ceil(value(h))
+Base.trunc(h::Hyper) = trunc(value(h))
+Base.round(h::Hyper) = round(value(h))
+Base.floor(::Type{T}, h::Hyper) where {T<:Real} = floor(T, value(h))
+Base.ceil( ::Type{T}, h::Hyper) where {T<:Real} =  ceil(T, value(h))
+Base.trunc(::Type{T}, h::Hyper) where {T<:Real} = trunc(T, value(h))
+Base.round(::Type{T}, h::Hyper) where {T<:Real} = round(T, value(h))
 
-for op in (:real, :imag, :conj, :float, :complex)
-    @eval Base.$op(z::Dual) = Dual($op(value(z)), $op(epsilon(z)))
+for op in (:float, :complex)
+    @eval Base.$op(z::Hyper) = Hyper($op(value(z)), $op(ε₁part(z)), $op(ε₂part(z)), $op(ε₁ε₂part(z)))
 end
 
-Base.abs(z::Dual) = sqrt(abs2(z))
-Base.abs2(z::Dual) = real(conj(z)*z)
+for op in (:conj)
+    @eval Base.$op(z::Hyper{<:Real}) = Hyper($op(value(z)), $op(ε₁part(z)), $op(ε₂part(z)), $op(ε₁ε₂part(z)))
+end
 
-Base.real(z::Dual{<:Real}) = z
-Base.abs(z::Dual{<:Real}) = z ≥ 0 ? z : -z
-
-Base.angle(z::Dual{<:Real}) = z ≥ 0 ? zero(z) : one(z)*π
-function Base.angle(z::Dual{Complex{T}}) where T<:Real
-    if z == 0
-        if imag(epsilon(z)) == 0
-            Dual(zero(T), zero(T))
-        else
-            Dual(zero(T), convert(T, Inf))
-        end
+function Base.abs(h::Hyper{<:Real})
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    if x > 0
+        return h
+    elseif x < 0
+        return -h
     else
-        real(log(sign(z)) / im)
+        if y+z > 0
+            return h
+        elseif y+z < 0
+            return -h
+        else
+            if z ≥ 0
+                return h
+            else z < 0
+                return -h
+            end
+        end
     end
 end
 
-Base.flipsign(x::Dual,y::Dual) = y == 0 ? flipsign(x, epsilon(y)) : flipsign(x, value(y))
-Base.flipsign(x, y::Dual) = y == 0 ? flipsign(x, epsilon(y)) : flipsign(x, value(y))
-Base.flipsign(x::Dual, y) = dual(flipsign(value(x), y), flipsign(epsilon(x), y))
+# (Unsure, but) no `abs`, `real`, `conj`, `angle` or `imag`
+# for hyperdual complex because differentiable nowhere in ℂ
+# (these functions don't satisfy the Cauchy–Riemann equations).
+# I guess it might be usable for printing or other checking purposes,
+# but then I guess the user should define his own functions,
+# at its own risk, rather than having this package suggest a value that
+# does not make mathematical sense, right? (I may be completely wrong about this)
 
-# algebraic definitions
-conjdual(z::Dual) = Dual(value(z),-epsilon(z))
-absdual(z::Dual) = abs(value(z))
-abs2dual(z::Dual) = abs2(value(z))
+# No flipsign so far but maybe I should make it like the `abs` above and
+# then have `abs(x) = flipsign(x, x)`?
+
+# No `conjhyper`, `abshyper`, or `abs2hyper` because I don't understand
+# their purpose in DualNumbers
 
 # algebra
 
-Base.:+(z::Dual, w::Dual) = Dual(value(z)+value(w), epsilon(z)+epsilon(w))
-Base.:+(z::Number, w::Dual) = Dual(z+value(w), epsilon(w))
-Base.:+(z::Dual, w::Number) = Dual(value(z)+w, epsilon(z))
+Base.:+(h₁::Hyper, h₂::Hyper) = Hyper(value(h₁) + value(h₂), ε₁part(h₁) + ε₁part(h₂), ε₂part(h₁) + ε₂part(h₂), ε₁ε₂part(h₁) + ε₁ε₂part(h₂))
+Base.:+(n::Number, h::Hyper) = Hyper(n + value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h))
+Base.:+(h::Hyper, n::Number) = n + h
 
-Base.:-(z::Dual) = Dual(-value(z), -epsilon(z))
-Base.:-(z::Dual, w::Dual) = Dual(value(z)-value(w), epsilon(z)-epsilon(w))
-Base.:-(z::Number, w::Dual) = Dual(z-value(w), -epsilon(w))
-Base.:-(z::Dual, w::Number) = Dual(value(z)-w, epsilon(z))
+Base.:-(h::Hyper) = Hyper(-value(h), -ε₁part(h), -ε₂part(h), -ε₁ε₂part(h))
+Base.:-(h₁::Hyper, h₂::Hyper) = Hyper(value(h₁) - value(h₂), ε₁part(h₁) - ε₁part(h₂), ε₂part(h₁) - ε₂part(h₂), ε₁ε₂part(h₁) - ε₁ε₂part(h₂))
+Base.:-(n::Number, h::Hyper) = Hyper(n - value(h), -ε₁part(h), -ε₂part(h), -ε₁ε₂part(h))
+Base.:-(h::Hyper, n::Number) = Hyper(value(h) - n, ε₁part(h), ε₂part(h), ε₁ε₂part(h))
 
 # avoid ambiguous definition with Bool*Number
-Base.:*(x::Bool, z::Dual) = ifelse(x, z, ifelse(signbit(real(value(z)))==0, zero(z), -zero(z)))
-Base.:*(x::Dual, z::Bool) = z*x
+Base.:*(x::Bool, h::Hyper) = ifelse(x, h, ifelse(signbit(real(value(h)))==0, zero(h), -zero(h)))
+Base.:*(h::Hyper, x::Bool) = x * h
 
-Base.:*(z::Dual, w::Dual) = Dual(value(z)*value(w), epsilon(z)*value(w)+value(z)*epsilon(w))
-Base.:*(x::Number, z::Dual) = Dual(x*value(z), x*epsilon(z))
-Base.:*(z::Dual, x::Number) = Dual(x*value(z), x*epsilon(z))
+function Base.:*(h₁::Hyper, h₂::Hyper)
+    x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
+    a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
+    return Hyper(a*x, a*y+b*x, a*z+c*x, a*w+d*x+c*y+b*z)
+end
+Base.:*(n::Number, h::Hyper) = Hyper(n*value(z), n*ε₁part(z), n*ε₂part(z), n*ε₁ε₂part(z))
+Base.:*(h::Hyper, n::Number) = n * h
 
-Base.:/(z::Dual, w::Dual) = Dual(value(z)/value(w), (epsilon(z)*value(w)-value(z)*epsilon(w))/(value(w)*value(w)))
-Base.:/(z::Number, w::Dual) = Dual(z/value(w), -z*epsilon(w)/value(w)^2)
-Base.:/(z::Dual, x::Number) = Dual(value(z)/x, epsilon(z)/x)
+function Base.:/(n::Number, h::Hyper) =
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(n/x, -n*y/x^2, -n*z/x^2, -n*(w/x-y*z/x^2-z*y/x^2)/x)
+end
+Base.one(h::Hyper) = Hyper(one(realpart(z)))
+Base.:/(h₁::Hyper, h₂::Hyper) = h₁ * (one(h₂) / h₂)
+Base.:/(h::Hyper, n::Number) = Hyper(value(z)/n, ε₁part(z)/n, ε₂part(z)/n, ε₁ε₂part(z)/n)
 
-for f in [:(Base.:^), :(NaNMath.pow)]
-    @eval function ($f)(z::Dual, w::Dual)
+for f in [:(Base.:^), :(NaNMath.pow)] # not done here :/
+    @eval function ($f)(z::Hyper, w::Hyper)
         if epsilon(w) == 0.0
             return $f(z, value(w))
         end
@@ -294,7 +313,7 @@ for f in [:(Base.:^), :(NaNMath.pow)]
         du = epsilon(z) * value(w) * $f(value(z), value(w) - 1) +
              epsilon(w) * $f(value(z), value(w)) * log(value(z))
 
-        Dual(val, du)
+        Hyper(val, du)
     end
 end
 

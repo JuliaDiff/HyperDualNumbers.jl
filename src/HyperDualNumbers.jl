@@ -1,29 +1,34 @@
 module HyperDualNumbers
 
-  import Base: <=, >=, +, -, *, /, ^, ==, <, >, isnan, convert,
-    promote_rule, promote_type, one, sin, cos, tan, acos, asin, atan,
-    sqrt, exp, abs, abs2, real, log
+using SpecialFunctions
+import NaNMath
+import Calculus
 
-  import SpecialFunctions: erf
+include("hyperdual.jl")
 
-  using Compat
-
-  include("hyperdual.jl")
-  
-  export
+export
     Hyper,
     Hyper256,
     Hyper128,
+    Hyper64,
+    HyperComplex512,
+    HyperComplex256,
+    HyperComplex128,
     hyper,
-    hyper256,
-    hyper128,
-    ishyper,
-    hyper_show,
     realpart,
     eps1,
     eps2,
     eps1eps2,
+    ishyper,
+    hyper_show,
     conjhyper,
-    erf
+    abshyper,
+    abs2hyper,
+    ɛ₁,
+    ɛ₂,
+    ɛ₁ε₂,
+    imɛ₁,
+    imɛ₂,
+    imɛ₁ε₂,
 
 end # module

@@ -316,6 +316,10 @@ for f in [:(Base.:^), :(NaNMath.pow)] # not done here :/
         Hyper(val, du)
     end
 end
+# sage: f
+# (a + b)^(x + y)
+# sage: f.taylor((b,0),(y,0), 2)
+# a^x + (a*a^x*y*log(a) + a^x*b*x)/a + 1/2*(a^2*a^x*y^2*log(a)^2 + (a^x*x^2 - a^x*x)*b^2 + 2*(a*a^x*x*log(a) + a*a^x)*b*y)/a^2
 
 Base.mod(z::Dual, n::Number) = Dual(mod(value(z), n), epsilon(z))
 

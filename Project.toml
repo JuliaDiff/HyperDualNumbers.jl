@@ -4,6 +4,7 @@ authors = ["Rob J Goedman <goedman@mac.com>"]
 version = "3.0.2"
 
 [deps]
+Calculus = "49dc2e85-a5d0-5ad3-a950-438e2897f1b9"
 Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
 NaNMath = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"

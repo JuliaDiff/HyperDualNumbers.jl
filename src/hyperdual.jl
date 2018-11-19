@@ -238,24 +238,10 @@ for op in (:conj)
 end
 
 function Base.abs(h::Hyper{<:Real})
-    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
-    if x > 0
-        return h
-    elseif x < 0
-        return -h
-    else
-        if y+z > 0
-            return h
-        elseif y+z < 0
-            return -h
-        else
-            if z ≥ 0
-                return h
-            else z < 0
-                return -h
-            end
-        end
-    end
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return ((a > 0) - (a < 0) + (a == 0) *
+               ((b+c > 0) - (b+c < 0) + (b+c == 0) *
+                    ((d ≥ 0) - (d < 0)))) * h
 end
 
 # (Unsure, but) no `abs`, `real`, `conj`, `angle` or `imag`
@@ -303,35 +289,77 @@ Base.one(h::Hyper) = Hyper(one(realpart(z)))
 Base.:/(h₁::Hyper, h₂::Hyper) = h₁ * (one(h₂) / h₂)
 Base.:/(h::Hyper, n::Number) = Hyper(value(z)/n, ε₁part(z)/n, ε₂part(z)/n, ε₁ε₂part(z)/n)
 
-for f in [:(Base.:^), :(NaNMath.pow)] # not done here :/
-    @eval function ($f)(z::Hyper, w::Hyper)
-        if epsilon(w) == 0.0
-            return $f(z, value(w))
-        end
-        val = $f(value(z), value(w))
+Base.mod(h::Hyper, n::Number) = Hyper(mod(value(h), n), ε₁part(h), ε₂part(h), ε₁ε₂part(h))
 
-        du = epsilon(z) * value(w) * $f(value(z), value(w) - 1) +
-             epsilon(w) * $f(value(z), value(w)) * log(value(z))
-
-        Hyper(val, du)
-    end
+# Power functions written using sage to see Taylor expansions
+#   (x+y*ε₁+z*ε₂+w*ε₁*ε₂)^(a+b*ε₁+c*ε₂+d*ε₁*ε₂)
+# around 0 for y, z, w, b, c, and d
+function Base.:^((h₁::Hyper, h₂::Hyper))
+    x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
+    a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
+    return Hyper(x^a,
+        a*x^(a - 1)*y + b*x^a*log(x),
+        a*x^(a - 1)*z + c*x^a*log(x),
+        a^2*x^(a - 2)*y*z + a*c*x^(a - 1)*y*log(x) + a*b*x^(a - 1)*z*log(x) + b*c*x^a*log(x)^2 - a*x^(a - 2)*y*z + a*w*x^(a - 1) + c*x^(a - 1)*y + b*x^(a - 1)*z + d*x^a*log(x))
 end
-# sage: f
-# (a + b)^(x + y)
-# sage: f.taylor((b,0),(y,0), 2)
-# a^x + (a*a^x*y*log(a) + a^x*b*x)/a + 1/2*(a^2*a^x*y^2*log(a)^2 + (a^x*x^2 - a^x*x)*b^2 + 2*(a*a^x*x*log(a) + a*a^x)*b*y)/a^2
+function NaNMath.pow((h₁::Hyper, h₂::Hyper))
+    x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
+    a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
+    return Hyper(NaNMath.pow(x,a),
+        a*NaNMath.pow(x,a - 1)*y + b*NaNMath.pow(x,a)*log(x),
+        a*NaNMath.pow(x,a - 1)*z + c*NaNMath.pow(x,a)*log(x),
+        a^2*NaNMath.pow(x,a - 2)*y*z + a*c*NaNMath.pow(x,a - 1)*y*log(x) + a*b*NaNMath.pow(x,a - 1)*z*log(x) + b*c*NaNMath.pow(x,a)*log(x)^2 - a*NaNMath.pow(x,a - 2)*y*z + a*w*NaNMath.pow(x,a - 1) + c*NaNMath.pow(x,a - 1)*y + b*NaNMath.pow(x,a - 1)*z + d*NaNMath.pow(x,a)*log(x))
+end
 
-Base.mod(z::Dual, n::Number) = Dual(mod(value(z), n), epsilon(z))
+function Base.:^(h::Hyper, a::Integer)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        a*x^(a - 1)*y,
+        a*x^(a - 1)*z,
+        a^2*x^(a - 2)*y*z - a*x^(a - 2)*y*z + a*w*x^(a - 1))
+end
+function Base.:^(h::Hyper, a::Rational)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        a*x^(a - 1)*y,
+        a*x^(a - 1)*z,
+        a^2*x^(a - 2)*y*z - a*x^(a - 2)*y*z + a*w*x^(a - 1))
+end
 
-# these two definitions are needed to fix ambiguity warnings
-Base.:^(z::Dual, n::Integer) = Dual(value(z)^n, epsilon(z)*n*value(z)^(n-1))
-Base.:^(z::Dual, n::Rational) = Dual(value(z)^n, epsilon(z)*n*value(z)^(n-1))
+function Base.:^(h::Hyper, a::Number)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        a*x^(a - 1)*y,
+        a*x^(a - 1)*z,
+        a^2*x^(a - 2)*y*z - a*x^(a - 2)*y*z + a*w*x^(a - 1))
+end
+function Base.:^(x::Number, h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        b*x^a*log(x),
+        c*x^a*log(x)*z,
+        b*c*x^a*log(x)^2 + d*x^a*log(x))
+end
 
-Base.:^(z::Dual, n::Number) = Dual(value(z)^n, epsilon(z)*n*value(z)^(n-1))
-NaNMath.pow(z::Dual, n::Number) = Dual(NaNMath.pow(value(z),n), epsilon(z)*n*NaNMath.pow(value(z),n-1))
-NaNMath.pow(z::Number, w::Dual) = Dual(NaNMath.pow(z,value(w)), epsilon(w)*NaNMath.pow(z,value(w))*log(z))
+function NaNMath.pow(h::Hyper, a::Number)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(NaNMath.pow(x,a),
+        a*NaNMath.pow(x,a - 1)*y,
+        a*NaNMath.pow(x,a - 1)*z,
+        a^2*NaNMath.pow(x,a - 2)*y*z - a*NaNMath.pow(x,a - 2)*y*z + a*w*NaNMath.pow(x,a - 1))
+end
+function NaNMath.pow(x::Number, h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(NaNMath.pow(x,a),
+        b*NaNMath.pow(x,a)*log(x),
+        c*NaNMath.pow(x,a)*log(x)*z,
+        b*c*NaNMath.pow(x,a)*log(x)^2 + d*NaNMath.pow(x,a)*log(x))
+end
 
-Base.inv(z::Dual) = dual(inv(value(z)),-epsilon(z)/value(z)^2)
+function Base.inv(h::Hyper) 
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return hyper(inv(a), -b/a^2, -c/a^2, 2*b*c/a^3 - d/a^2)
+end
 
 # force use of NaNMath functions in derivative calculations
 function to_nanmath(x::Expr)
@@ -344,46 +372,39 @@ function to_nanmath(x::Expr)
 end
 to_nanmath(x) = x
 
-
-
-
-for (funsym, exp) in Calculus.symbolic_derivatives_1arg()
-    funsym == :exp && continue
-    funsym == :abs2 && continue
-    funsym == :inv && continue
-    if isdefined(SpecialFunctions, funsym)
-        @eval function SpecialFunctions.$(funsym)(z::Dual)
-            x = value(z)
-            xp = epsilon(z)
-            Dual($(funsym)(x),xp*$exp)
+include("derivatives_list.jl")
+for (fsym, dfexp, d²fexp) in symbolic_derivative_list
+    if isdefined(SpecialFunctions, fsym)
+        @eval function SpecialFunctions.$(fsym)(h::Hyper)
+            a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(a), b*$dfexp, c*$dfexp, d*$dfexp + b*c*$d²fexp)
         end
-    elseif isdefined(Base, funsym)
-        @eval function Base.$(funsym)(z::Dual)
-            x = value(z)
-            xp = epsilon(z)
-            Dual($(funsym)(x),xp*$exp)
+    elseif isdefined(Base, fsym)
+        @eval function Base.$(fsym)(h::Hyper)
+            a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(a), b*$dfexp, c*$dfexp, d*$dfexp + b*c*$d²fexp)
         end
     end
     # extend corresponding NaNMath methods
-    if funsym in (:sin, :cos, :tan, :asin, :acos, :acosh, :atanh, :log, :log2, :log10,
-          :lgamma, :log1p)
-        funsym = Expr(:.,:NaNMath,Base.Meta.quot(funsym))
-        @eval function $(funsym)(z::Dual)
-            x = value(z)
-            xp = epsilon(z)
-            Dual($(funsym)(x),xp*$(to_nanmath(exp)))
+    if fsym in (:sin, :cos, :tan, :asin, :acos, :acosh, :atanh, :log, :log2, :log10, :log1p)
+        fsym = Expr(:.,:NaNMath,Base.Meta.quot(fsym))
+        @eval function $(fsym)(h::Dual)
+            a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(x), b*$(to_nanmath(dfexp)), c*$(to_nanmath(dfexp)), d*$(to_nanmath(dfexp)) + b*c*$(to_nanmath(d²fexp)))
         end
     end
 end
 
 # only need to compute exp/cis once
-Base.exp(z::Dual) = (expval = exp(value(z)); Dual(expval, epsilon(z)*expval))
-Base.cis(z::Dual) = (cisval = cis(value(z)); Dual(cisval, im*epsilon(z)*cisval))
+function Base.exp(h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return exp(a) * Hyper(one(a), b, c, d + b*c)
+end
+function Base.cis(h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return cis(a) * Hyper(one(a), im*b, im*c, im*d - b*c)
+end
 
-Base.exp10(x::Dual) = (y = exp10(value(x)); Dual(y, y * log(10) * epsilon(x)))
+# TODO: should be generated in Calculus, sinpi and cospi (erased here)
 
-## TODO: should be generated in Calculus
-Base.sinpi(z::Dual) = Dual(sinpi(value(z)),epsilon(z)*cospi(value(z))*π)
-Base.cospi(z::Dual) = Dual(cospi(value(z)),-epsilon(z)*sinpi(value(z))*π)
-
-Base.checkindex(::Type{Bool}, inds::AbstractUnitRange, i::Dual) = checkindex(Bool, inds, value(i))
+Base.checkindex(::Type{Bool}, inds::AbstractUnitRange, i::Hyper) = checkindex(Bool, inds, value(h))

@@ -7,7 +7,6 @@ symbolic_derivative_list = [
     (:log10, :(1/(log(10)*x)), :(-1/(log(10)*x^2)))
     (:log2, :(1/(log(2)*x)), :(-1/(log(2)*x^2)))
     (:log1p, :(1/(x + 1)), :(-1/(x + 1)^2))
-    (:exp, :(exp(x)), :(exp(x)))
     (:exp2, :(2^x*log(2)), :(2^x*log(2)^2))
     (:exp10, :(10^x*log(10)), :(10^x*log(10)^2))
     (:expm1, :(exp(x)), :(exp(x)))

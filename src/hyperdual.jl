@@ -354,11 +354,6 @@ function NaNMath.pow(x::Number, h::Hyper)
         b*c*NaNMath.pow(x,a)*log(x)^2 + d*NaNMath.pow(x,a)*log(x))
 end
 
-function Base.inv(h::Hyper) 
-    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
-    return hyper(inv(a), -b/a^2, -c/a^2, 2*b*c/a^3 - d/a^2)
-end
-
 # force use of NaNMath functions in derivative calculations
 function to_nanmath(x::Expr)
     if x.head == :call
@@ -393,7 +388,7 @@ for (fsym, dfexp, d²fexp) in symbolic_derivative_list
     end
 end
 
-# only need to compute exp/cis once
+# only need to compute exp/cis once (removed exp from derivatives_list)
 function Base.exp(h::Hyper)
     a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     return exp(a) * Hyper(one(a), b, c, d + b*c)

@@ -44,7 +44,7 @@ epsilon1(x::Number) = zero(typeof(x))
 epsilon2(x::Number) = zero(typeof(x))
 epsilon12(x::Number) = zero(typeof(x))
 
-hyper(x::ReComp, y::ReComp, z::Recomp, w::Recomp) = Hyper(x, y, z, w)
+hyper(x::ReComp, y::ReComp, z::ReComp, w::ReComp) = Hyper(x, y, z, w)
 hyper(x::ReComp) = Hyper(x)
 hyper(h::Hyper) = h
 
@@ -233,9 +233,7 @@ for op in (:float, :complex)
     @eval Base.$op(z::Hyper) = Hyper($op(value(z)), $op(ε₁part(z)), $op(ε₂part(z)), $op(ε₁ε₂part(z)))
 end
 
-for op in (:conj)
-    @eval Base.$op(z::Hyper{<:Real}) = Hyper($op(value(z)), $op(ε₁part(z)), $op(ε₂part(z)), $op(ε₁ε₂part(z)))
-end
+Base.conj(z::Hyper{<:Real}) = Hyper(conj(value(z)), conj(ε₁part(z)), conj(ε₂part(z)), conj(ε₁ε₂part(z)))
 
 function Base.abs(h::Hyper{<:Real})
     a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
@@ -281,7 +279,7 @@ end
 Base.:*(n::Number, h::Hyper) = Hyper(n*value(z), n*ε₁part(z), n*ε₂part(z), n*ε₁ε₂part(z))
 Base.:*(h::Hyper, n::Number) = n * h
 
-function Base.:/(n::Number, h::Hyper) =
+function Base.:/(n::Number, h::Hyper)
     x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     return Hyper(n/x, -n*y/x^2, -n*z/x^2, -n*(w/x-y*z/x^2-z*y/x^2)/x)
 end
@@ -294,7 +292,7 @@ Base.mod(h::Hyper, n::Number) = Hyper(mod(value(h), n), ε₁part(h), ε₂part(
 # Power functions written using sage to see Taylor expansions
 #   (x+y*ε₁+z*ε₂+w*ε₁*ε₂)^(a+b*ε₁+c*ε₂+d*ε₁*ε₂)
 # around 0 for y, z, w, b, c, and d
-function Base.:^((h₁::Hyper, h₂::Hyper))
+function Base.:^(h₁::Hyper, h₂::Hyper)
     x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
     a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
     return Hyper(x^a,
@@ -302,7 +300,7 @@ function Base.:^((h₁::Hyper, h₂::Hyper))
         a*x^(a - 1)*z + c*x^a*log(x),
         a^2*x^(a - 2)*y*z + a*c*x^(a - 1)*y*log(x) + a*b*x^(a - 1)*z*log(x) + b*c*x^a*log(x)^2 - a*x^(a - 2)*y*z + a*w*x^(a - 1) + c*x^(a - 1)*y + b*x^(a - 1)*z + d*x^a*log(x))
 end
-function NaNMath.pow((h₁::Hyper, h₂::Hyper))
+function NaNMath.pow(h₁::Hyper, h₂::Hyper)
     x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
     a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
     return Hyper(NaNMath.pow(x,a),
@@ -388,7 +386,7 @@ for (fsym, dfexp, d²fexp) in symbolic_derivative_list
     # extend corresponding NaNMath methods
     if fsym in (:sin, :cos, :tan, :asin, :acos, :acosh, :atanh, :log, :log2, :log10, :log1p)
         fsym = Expr(:.,:NaNMath,Base.Meta.quot(fsym))
-        @eval function $(fsym)(h::Dual)
+        @eval function $(fsym)(h::Hyper)
             a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
             Hyper($(fsym)(x), b*$(to_nanmath(dfexp)), c*$(to_nanmath(dfexp)), d*$(to_nanmath(dfexp)) + b*c*$(to_nanmath(d²fexp)))
         end

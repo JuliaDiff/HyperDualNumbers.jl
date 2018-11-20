@@ -7,7 +7,6 @@ symbolic_derivative_list = [
     (:log10, :(1/(log(10)*x)), :(-1/(log(10)*x^2)))
     (:log2, :(1/(log(2)*x)), :(-1/(log(2)*x^2)))
     (:log1p, :(1/(x + 1)), :(-1/(x + 1)^2))
-    (:exp, :(exp(x)), :(exp(x)))
     (:exp2, :(2^x*log(2)), :(2^x*log(2)^2))
     (:exp10, :(10^x*log(10)), :(10^x*log(10)^2))
     (:expm1, :(exp(x)), :(exp(x)))
@@ -49,10 +48,10 @@ symbolic_derivative_list = [
     (:acoth, :(-1/(x^2 - 1)), :(2*x/(x^2 - 1)^2))
     (:deg2rad, :(π/180), :(0))
     (:rad2deg, :(180/π), :(0))
-    (:erf, :(2*e^(-x^2)/sqrt(π)), :(-4*x*e^(-x^2)/sqrt(π)))
-    (:erfinv, :(1/2*sqrt(π)*e^(erfinv(x)^2)), :(1/2*π*erfinv(x)*e^(2*erfinv(x)^2)))
-    (:erfc, :(-2*e^(-x^2)/sqrt(π)), :(4*x*e^(-x^2)/sqrt(π)))
-    (:erfi, :(2*e^(x^2)/sqrt(π)), :(4*x*e^(x^2)/sqrt(π)))
+    (:erf, :(2*exp(-x^2)/sqrt(π)), :(-4*x*exp(-x^2)/sqrt(π)))
+    (:erfinv, :(1/2*sqrt(π)*exp(erfinv(x)^2)), :(1/2*π*erfinv(x)*exp(2*erfinv(x)^2)))
+    (:erfc, :(-2*exp(-x^2)/sqrt(π)), :(4*x*exp(-x^2)/sqrt(π)))
+    (:erfi, :(2*exp(x^2)/sqrt(π)), :(4*x*exp(x^2)/sqrt(π)))
 ]
 
 # This is the public interface for accessing the list of symbolic

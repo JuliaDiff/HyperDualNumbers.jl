@@ -1,4 +1,4 @@
-#using SpecialFunctions
+using SpecialFunctions
 
 function blsprice(S0,K,r,T,sigma)
   #Black & Scholes Price for European Options

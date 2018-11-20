@@ -15,7 +15,16 @@ export
     HyperComplex256,
     HyperComplex128,
     hyper,
+    hyper256,
+    hyper128,
+    hyper64,
+    hyperComplex512,
+    hyperComplex256,
+    hyperComplex128,
     realpart,
+    ɛ₁part,
+    ɛ₂part,
+    ɛ₁ε₂part,
     eps1,
     eps2,
     eps1eps2,
@@ -29,6 +38,6 @@ export
     ɛ₁ε₂,
     imɛ₁,
     imɛ₂,
-    imɛ₁ε₂,
+    imɛ₁ε₂
 
 end # module

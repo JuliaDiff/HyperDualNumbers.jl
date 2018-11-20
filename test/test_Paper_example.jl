@@ -1,10 +1,10 @@
 # THE example
 println("\n\"THE\" example")
-f(x) = ℯ^x / sqrt(sin(x)^3 + cos(x)^3)
+f(x) = exp(x) / sqrt(sin(x)^3 + cos(x)^3)
 println("f(1.5) = $(f(1.5))")
 println()
 t0 = hyper(1.5, 1.0, 1.0, 0.0)
-t1 = ℯ^t0
+t1 = exp(t0)
 t2 = sin(t0)
 t3 = t2^3
 t4 = cos(t0)

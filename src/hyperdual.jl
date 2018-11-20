@@ -1,326 +1,419 @@
-#
-# Basic definitions
-#
+const ReComp = Union{Real,Complex}
 
-struct Hyper{T<:Real} <: Number
-  f0::T
-  f1::T
-  f2::T
-  f12::T
+struct Hyper{T<:ReComp} <: Number
+    value::T
+    epsilon1::T
+    epsilon2::T
+    epsilon12::T
 end
+Hyper(x::S, y::T, z::U, w::V) where {S<:ReComp,T<:ReComp,U<:ReComp,V<:ReComp} = Hyper(promote(x,y,z,w)...)
+Hyper(x::ReComp) = Hyper(x, zero(x), zero(x), zero(x))
+Hyper() = Hyper(false, false, false, false)
 
-Hyper(x::Real, eps1::Real, eps2::Real, eps1eps2::Real) =
-  Hyper(promote(x, eps1, eps2, eps1eps2)...)
+const hyper = Hyper
 
-Hyper(x::Real) = Hyper(x, zero(x), zero(x), zero(x))
-Hyper() = Hyper(0.0, 0.0, 0.0, 0.0)
+# Some useful constants
+const ɛ₁ = Hyper(false, true, false, false)
+const ɛ₂ = Hyper(false, false, true, false)
+const ε₁ɛ₂ = Hyper(false, false, false, true)
+const imɛ₁ = Hyper(Complex(false, false), Complex(false, true), Complex(false, false), Complex(false, false))
+const imɛ₂ = Hyper(Complex(false, false), Complex(false, false), Complex(false, true), Complex(false, false))
+const imɛ₁ε₂ = Hyper(Complex(false, false), Complex(false, false), Complex(false, false), Complex(false, true))
 
-const Hyper256 = Hyper{Float64}
-Hyper256() = Hyper256(0.0, 0.0, 0.0, 0.0)
+# Some aliases for backwards compatibility (both `Hyper` and `hyper` must work)
+const Hyper256  = Hyper{Float64}
 const Hyper128 = Hyper{Float32}
-Hyper128() = Hyper128(0.0, 0.0, 0.0, 0.0)
+const Hyper64  = Hyper{Float16}
+const HyperComplex512  = Hyper{ComplexF64}
+const HyperComplex256 = Hyper{ComplexF32}
+const HyperComplex128 = Hyper{ComplexF16}
+const hyper256 = Hyper256
+const hyper128 = Hyper128
+const hyper64 = Hyper64
+const hyperComplex512 = HyperComplex512
+const hyperComplex256 = HyperComplex256
+const hyperComplex128 = HyperComplex128
 
-realpart(z::Hyper) = z.f0
-eps1(z::Hyper) = z.f1
-eps2(z::Hyper) = z.f2
-eps1eps2(z::Hyper) = z.f12
+Base.convert(::Type{Hyper{T}}, h::Hyper{T}) where {T<:ReComp} = h
+Base.convert(::Type{Hyper{T}}, h::Hyper) where {T<:ReComp} = Hyper{T}(convert(T, value(h)), convert(T, epsilon1(h)), convert(T, epsilon2(h)), convert(T, epsilon12(h)))
+Base.convert(::Type{Hyper{T}}, x::Number) where {T<:ReComp} = Hyper{T}(convert(T, x), convert(T, 0), convert(T, 0), convert(T, 0))
+Base.convert(::Type{T}, h::Hyper) where {T<:ReComp} = (epsilon1(h)==0 && epsilon2(h)==0 && epsilon12(h)==0 ? convert(T, value(h)) : throw(InexactError()))
 
-eps(z::Hyper) = eps(realpart(z))
-eps(::Type{Hyper{T}}) where T = eps(T)
-one(z::Hyper) = Hyper(one(realpart(z)))
-one(::Type{Hyper{T}}) where T = Hyper(one(T))
-nan(::Type{Hyper{T}}) where T = nan(one(T))
-isnan(z::Hyper) = isnan(realpart(z))
+Base.promote_rule(::Type{Hyper{T}}, ::Type{Hyper{S}}) where {T<:ReComp,S<:ReComp} = Hyper{promote_type(T, S)}
+Base.promote_rule(::Type{Hyper{T}}, ::Type{S}) where {T<:ReComp,S<:ReComp} = Hyper{promote_type(T, S)}
+Base.promote_rule(::Type{Hyper{T}}, ::Type{T}) where {T<:ReComp} = Hyper{T}
 
-convert(::Type{Hyper{T}}, x::Real) where T<:Real =
-  Hyper{T}(convert(T, x), convert(T, 0), convert(T, 0), convert(T, 0))
+Base.widen(::Type{Hyper{T}}) where {T} = Hyper{widen(T)}
 
-convert(::Type{Hyper{T}}, z::Hyper{T}) where T<:Real = z
+value(h::Hyper) = h.value
+epsilon1(h::Hyper) = h.epsilon1
+epsilon2(h::Hyper) = h.epsilon2
+epsilon12(h::Hyper) = h.epsilon12
 
-convert(::Type{Hyper{T}}, z::Hyper) where T<:Real =
-  Hyper(convert(T, realpart(z)), convert(T, eps1(z)), convert(T, eps2(z)),
-    convert(T, eps1eps2(z)))
+value(x::Number) = x
+epsilon1(x::Number) = zero(typeof(x))
+epsilon2(x::Number) = zero(typeof(x))
+epsilon12(x::Number) = zero(typeof(x))
 
-convert(::Type{T}, z::Hyper) where T<:Real =
-  ((eps1(z) == 0 && eps2(z) == 0 && eps1eps2(z)) ? convert(T, realpart(z)) : throw(InexactError()))
 
-promote_rule(::Type{Hyper{T}}, ::Type{Hyper{S}}, ::Type{Hyper{Q}},
-  ::Type{Hyper{P}}) where {T<:Real, S<:Real, Q<:Real, P<:Real} =
-    Hyper{promote_type(T, S, Q, P)}
+const realpart = value
+const ε₁part = epsilon1 # different from `dualpart` but shorter and clearer IMHO?
+const ε₂part = epsilon2
+const ε₁ε₂part = epsilon12
+const eps1 = ε₁part # kepth for backwards compatibility
+const eps2 = ε₂part
+const eps1eps2 = ε₁ε₂part
 
-promote_rule(::Type{Hyper{T}}, ::Type{T}, ::Type{T}, ::Type{T}) where T<:Real = Hyper{T}
-
-promote_rule(::Type{Hyper{T}}, ::Type{S}, ::Type{Q}, ::Type{P}) where {T<:Real, S<:Real, Q<:Real, P<:Real} =
-    Hyper{promote_type(T, S, Q, P)}
-
-promote_rule(::Type{Hyper{T}}, ::Type{S}) where {T<:Real, S<:Real} = Hyper{promote_type(T, S)}
-
-hyper(x, y, z, yz) = Hyper(x, y, z, yz)
-hyper(x) = Hyper(x)
-hyper() = Hyper()
-
-#@vectorize_1arg Real hyper
-
-hyper256(s::Float64, t::Float64, q::Float64, p::Float64) = Hyper{Float64}(s, t, q, p)
-hyper256(s::Real, t::Real, q::Real, p::Real) =
-  hyper256(Float64(s), Float64(t), Float64(q), Float64(p))
-hyper256(z) = hyper256(realpart(z), eps1(z), eps2(z), eps1eps2(z))
-
-hyper128(s::Float32, t::Float32, q::Float32, p::Float32) = Hyper{Float32}(s, t, q, p)
-hyper128(s::Real, t::Real, q::Real, p::Real) =
-  hyper128(Float32(s), Float32(t), Float32(q), Float32(p))
-hyper128(z) = hyper128(realpart(z), eps1(z), eps2(z), eps1eps2(z))
-
+Base.isnan(h::Hyper) = isnan(value(h))
+Base.isinf(h::Hyper) = isinf(value(h))
+Base.isfinite(h::Hyper) = isfinite(value(h))
 ishyper(x::Hyper) = true
 ishyper(x::Number) = false
+Base.eps(h::Hyper) = eps(value(h))
+Base.eps(::Type{Hyper{T}}) where {T} = eps(T)
 
-real_valued(z::Hyper{T}) where T <:Real = (eps1(z) == 0 && eps2(z) == 0 && eps1eps2(z) == 0)
-integer_valued(z::Hyper) = real_valued(z) && integer_valued(real(z))
-
-isfinite(z::Hyper) = isfinite(realpart(z))
-reim(z::Hyper) = (realpart(z), eps1(z), eps2(z), eps1eps2(z))
-
-# No-op?
-conjhyper(z::Hyper) = z
-
-#
-# IO definitions
-#
-
-function hyper_show(io::IO, z::Hyper, compact::Bool)
-  f0, f1, f2, f12 = reim(z)
-  if isnan(f0) || (isfinite(f1) || isfinite(f2) || isfinite(f12))
-    compact ? showcompact(io, f0) : show(io, f0)
-    if isfinite(f1)
-      if signbit(f1) == 1 && !isnan(f1)
-        f1 = -f1
+function hyperpart_show(io::IO, yzw::T, compact::Bool, str::String) where T<:Real
+    if signbit(yzw)
+        yzw = -yzw
         print(io, compact ? "-" : " - ")
-      else
+    else
         print(io, compact ? "+" : " + ")
-      end  
-      compact ? showcompact(io, f1) : show(io, f1)
-      if !(isa(f1, Integer) || isa(f1, Rational) ||
-           isa(f1, AbstractFloat) || isfinite(f1))
-           print(io, "*")
-      end
-      print(io, "\u03F51")
     end
-    if isfinite(f2)
-      if signbit(f2) == 1 && !isnan(f2)
-        f2 = -f2
-        print(io, compact ? "-" : " - ")
-      else
-        print(io, compact ? "+" : " + ")
-      end  
-      compact ? showcompact(io, f2) : show(io, f2)
-      if !(isa(f2, Integer) || isa(f2, Rational) ||
-           isa(f2, AbstractFloat) || isfinite(f2))
-           print(io, "*")
-      end
-      print(io, "\u03F52")
+    compact ? show(IOContext(io, :compact=>true), yzw) : show(io, yzw)
+    printtimes(io, yzw)
+    print(io, str)
+end
+
+function hyper_show(io::IO, h::Hyper{T}, compact::Bool) where T<:Real
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    compact ? show(IOContext(io, :compact=>true), x) : show(io, x)
+    hyperpart_show(io, y, compact, "ε₁")
+    hyperpart_show(io, z, compact, "ε₂")
+    hyperpart_show(io, w, compact, "ε₁ε₂")
+end
+
+function hyperpart_show(io::IO, yzw::T, compact::Bool, str::String) where T<:Complex
+    yzwr, yzwi = reim(yzw)
+    if signbit(yzwr)
+        yzwr = -yzwr
+        print(io, " - ")
+    else
+        print(io, " + ")
     end
-    if isfinite(f12)
-      if signbit(f12) == 1 && !isnan(f12)
-        f12 = -f12
-        print(io, compact ? "-" : " - ")
-      else
-        print(io, compact ? "+" : " + ")
-      end  
-      compact ? showcompact(io, f12) : show(io, f12)
-      if !(isa(f12, Integer) || isa(f12, Rational) ||
-           isa(f12, AbstractFloat) || isfinite(f12))
-           print(io, "*")
-      end
-      print(io, "\u03F51\u03F52")
+    if compact
+        if signbit(yzwi)
+            yzwi = -yzwi
+            show(IOContext(io, :compact=>true), yzwr)
+            printtimes(io, yzwr)
+            print(io, str, "-")
+            show(IOContext(io, :compact=>true), yzwi)
+        else
+            show(IOContext(io, :compact=>true), yzwr)
+            print(io, str, "+")
+            show(IOContext(io, :compact=>true), yzwi)
+        end
+    else
+        if signbit(yzwi)
+            yzwi = -yzwi
+            show(io, yzwr)
+            printtimes(io, yzwr)
+            print(io, str, " - ")
+            show(io, yzwi)
+        else
+            show(io, yzwr)
+            print(io, str, " + ")
+            show(io, yzwi)
+        end
     end
-  else
-    print(io, "Hyper(", f0, ",", f1, ",", f2, ",", f12, ")")
-  end
+    printtimes(io, yzwi)
+    print(io, "im", str)
 end
 
-show(io::IO, z::Hyper) = hyper_show(io, z, false)
-showcompact(io::IO, z::Hyper) = hyper_show(io, z, true)
-
-function read(s::IO, ::Type{Hyper{T}}) where {T<:Real}
-  f0 = read(s, T)
-  f1 = read(s, T)
-  f2 = read(s, T)
-  f12 = read(s, T)
-  Hyper{T}(f0, f1, f2, f12)
+function hyper_show(io::IO, h::Hyper{T}, compact::Bool) where T<:Complex
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    compact ? show(IOContext(io, :compact=>true), x) : show(io, x)
+    hyperpart_show(io, y, compact, "ε₁")
+    hyperpart_show(io, z, compact, "ε₂")
+    hyperpart_show(io, w, compact, "ε₁ε₂")
 end
 
-function write(s::IO, z::Hyper)
-  write(s, realpart(z))
-  write(s, eps1(z))
-  write(s, eps2(z))
-  write(s, eps1eps2(z))
-end
-  
-#
-# Generic function on hyperdualnumbers
-#
-
-convert(::Type{Hyper}, z::Hyper) = z
-convert(::Type{Hyper}, x::Real) = hyper(x)
-
-+(z::Hyper, w::Hyper) = hyper(realpart(z) + realpart(w), eps1(z) + eps1(w),
-  eps2(z) + eps2(w), eps1eps2(z) + eps1eps2(w))
-+(z::Number, w::Hyper) = hyper(z + realpart(w), eps1(w), eps2(w), eps1eps2(w))
-+(z::Hyper, w::Number) = hyper(realpart(z) + w, eps1(z), eps2(z), eps1eps2(z))
-
--(z::Hyper) = hyper(-realpart(z), -eps1(z), -eps2(z), -eps1eps2(z))
--(z::Hyper, w::Hyper) = hyper(realpart(z) - realpart(w), eps1(z) - eps1(w),
-  eps2(z) - eps2(w), eps1eps2(z) - eps1eps2(w))
--(z::Number, w::Hyper) = hyper(z - realpart(w), -eps1(w), -eps2(w), -eps1eps2(w))
--(z::Hyper, w::Number) = hyper(realpart(z) - w, eps1(z), eps2(z), eps1eps2(z))
-
-*(x::Bool, z::Hyper) = ifelse(x, z, ifelse(signbit(realpart(z)) == 0, zero(z), -zero(z)))
-*(x::Hyper, z::Bool) = z * x
-
-*(z::Hyper, w::Hyper) = hyper(realpart(z) * realpart(w),
-  realpart(z)*eps1(w)+eps1(z)*realpart(w), realpart(z)*eps2(w)+eps2(z)*realpart(w),
-  realpart(z)*eps1eps2(w)+eps1(z)*eps2(w)+eps2(z)*eps1(w)+realpart(w)*eps1eps2(z))
-
-*(z::Hyper, w::Real) = hyper(realpart(z) * w, eps1(z)*w, eps2(z)*w, w*eps1eps2(z))
-*(z::Number, w::Hyper) = w * z
-
-/(z::Hyper, w::Hyper) = z*(one(realpart(z))/w)
-function /(z::Number, w::Hyper)
-    invrw = one(z)/realpart(w)
-    deriv = -z*invrw^2
-    hyper(z*invrw, eps1(w)*deriv, eps2(w)*deriv,
-          eps1eps2(w)*deriv-2eps1(w)*eps2(w)*deriv*invrw)
+function hyper_show(io::IO, h::Hyper{T}, compact::Bool) where T<:Bool
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    if !x && y && !z && !w
+        print(io, "ɛ₁")
+    elseif !x && !y && z && !w
+        print(io, "ɛ₂")
+    elseif !x && !y && !z && w
+        print(io, "ɛ₁ε₂")
+    else
+        print(io, "Hyper{",T,"}(", x, ",", y, ",", z, ",", w, ")")
+    end
 end
 
-# Needed to prevent ambiguous warning:
-#   /(Number,Complex{T<:Real}) at complex.jl:127
-
-/(z::Hyper, w::Complex) = hyper(realpart(z)/w, eps1(z)/w, eps2(z)/w, eps1eps2(z)/w)
-/(z::Hyper, w::Number) = hyper(realpart(z)/w, eps1(z)/w, eps2(z)/w, eps1eps2(z)/w)
-
-abs2(z::Hyper) = z*z
-abs(z::Hyper) = sqrt(abs2(z))                    # Is this correct?
-
-for op in (:real, :imag, :conj, :float, :complex)
-    @eval Base.$op(z::Hyper) = Hyper($op(realpart(z)), $op(eps1(z)), $op(eps2(z)), $op(eps1eps2(z)))
+function hyper_show(io::IO, h::Hyper{Complex{T}}, compact::Bool) where T<:Bool
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    xr, xi = reim(x)
+    yr, yi = reim(y)
+    zr, zi = reim(z)
+    wr, wi = reim(w)
+    if !xr * xi * !yr * !yi * !zr * !zi * !wr * !wi
+        print(io, "im")
+    elseif !xr * !xi * yr * !yi * !zr * !zi * !wr * !wi
+        print(io, "ɛ₁")
+    elseif !xr * !xi * !yr * yi * !zr * !zi * !wr * !wi
+        print(io, "imɛ₁")
+    elseif !xr * !xi * !yr * !yi * zr * !zi * !wr * !wi
+        print(io, "ɛ₂")
+    elseif !xr * !xi * !yr * !yi * !zr * zi * !wr * !wi
+        print(io, "imɛ₂")
+    elseif !xr * !xi * !yr * !yi * !zr * !zi * wr * !wi
+        print(io, "ε₁ɛ₂")
+    elseif !xr * !xi * !yr * !yi * !zr * !zi * !wr * wi
+        print(io, "imε₁ɛ₂")
+    else
+        print(io, "Hyper{",T,"}(", x, ",", y, ",", z, ",", w, ")")
+    end
 end
 
-function ^(z::Hyper, w::Rational)
-  deriv = w * realpart(z)^(w-1)
-  hyper(realpart(z)^w, eps1(z)*deriv, eps2(z)*deriv,
-    eps1eps2(z)*deriv+w*(w-1)*eps1(z)*eps2(z)*realpart(z)^(w-2))
+function printtimes(io::IO, x::Real)
+    if !(isa(x,Integer) || isa(x,Rational) ||
+         isa(x,AbstractFloat) && isfinite(x))
+        print(io, "*")
+    end
 end
 
-function ^(z::Hyper, w::Integer)
-  deriv = w * realpart(z)^(w-1)
-  hyper(realpart(z)^w, eps1(z)*deriv, eps2(z)*deriv,
-    eps1eps2(z)*deriv+w*(w-1)*eps1(z)*eps2(z)*realpart(z)^(w-2))
+Base.show(io::IO, h::Hyper) = hyper_show(io, h, get(IOContext(io), :compact, false))
+
+function Base.read(s::IO, ::Type{Hyper{T}}) where T<:ReComp
+    x = read(s, T)
+    y = read(s, T)
+    z = read(s, T)
+    w = read(s, T)
+    Hyper{T}(x, y, z, w)
+end
+function Base.write(s::IO, h::Hyper)
+    write(s, value(h))
+    write(s, ε₁part(h))
+    write(s, ε₂part(h))
+    write(s, ε₁ε₂part(h))
 end
 
-function ^(z::Hyper, w::Number)
-  xval = realpart(z)
-  tol = typeof(xval)==AbstractFloat ? eps(xval) : 10.0^-15
-  if abs(float(xval)) < tol
-    xval = ifelse(signbit(xval)==0, tol, -tol)
-  end
-  deriv = w * xval^(w-1)
-  # Use actual value for f0, tol for deriv only
-  hyper(realpart(z)^w, eps1(z)*deriv, eps2(z)*deriv,
-    eps1eps2(z)*deriv+w*(w-1)*eps1(z)*eps2(z)*xval^(w-2))
+
+## Generic functions of hyperdual numbers ##
+
+Base.convert(::Type{Hyper}, h::Hyper) = h
+Base.convert(::Type{Hyper}, x::Number) = Hyper(x)
+
+Base.:(==)(h₁::Hyper, h₂::Hyper) = value(h₁) == value(h₂)
+Base.:(==)(h::Hyper, x::Number) = value(h) == x
+Base.:(==)(x::Number, h::Hyper) = h == x
+
+Base.isequal(h₁::Hyper, h₂::Hyper) = isequal(value(h₁),value(h₂)) && isequal(ε₁part(h₁), ε₁part(h₂)) && isequal(ε₂part(h₁), ε₂part(h₂)) && isequal(ε₁ε₂part(h₁), ε₁ε₂part(h₂))
+Base.isequal(h::Hyper, x::Number) = isequal(value(h), x) && isequal(ε₁part(h), zero(x)) && isequal(ε₂part(h), zero(x)) && isequal(ε₁ε₂part(h), zero(x))
+Base.isequal(x::Number, h::Hyper) = isequal(h, x)
+
+Base.isless(h₁::Hyper{T}, h₂::Hyper{T}) where {T<:Real} = value(h₁) < value(h₂)
+Base.isless(h₁::Real, h₂::Hyper{<:Real}) = h₁ < value(h₂)
+Base.isless(h₁::Hyper{<:Real}, h₂::Real) = value(h₁) < h₂
+
+function Base.hash(h::Hyper) # Not sure thtis works
+    x = hash(value(h))
+    if isequal(h, value(h))
+        return x
+    else
+        y = hash(ε₁part(h))
+        z = hash(ε₂part(h))
+        w = hash(ε₁ε₂part(h))
+        return hash(x, hash(y, hash(z, hash(w))))
+    end
 end
 
-^(z::Hyper, w::Hyper) = exp(w*log(z))
+Base.float(h::Union{Hyper{T}, Hyper{Complex{T}}}) where {T<:AbstractFloat} = h
+Base.complex(h::Hyper{<:Complex}) = h
 
-function exp(z::Hyper)
-  deriv = exp(realpart(z))
-  hyper(deriv, deriv*eps1(z), deriv*eps2(z), deriv*(eps1eps2(z)+eps1(z)*eps2(z)))
+Base.floor(h::Hyper) = floor(value(h))
+Base.ceil(h::Hyper)  = ceil(value(h))
+Base.trunc(h::Hyper) = trunc(value(h))
+Base.round(h::Hyper) = round(value(h))
+Base.floor(::Type{T}, h::Hyper) where {T<:Real} = floor(T, value(h))
+Base.ceil( ::Type{T}, h::Hyper) where {T<:Real} =  ceil(T, value(h))
+Base.trunc(::Type{T}, h::Hyper) where {T<:Real} = trunc(T, value(h))
+Base.round(::Type{T}, h::Hyper) where {T<:Real} = round(T, value(h))
+
+for op in (:float, :complex)
+    @eval Base.$op(h::Hyper) = Hyper($op(value(h)), $op(ε₁part(h)), $op(ε₂part(h)), $op(ε₁ε₂part(h)))
 end
 
-function log(z::Hyper)
-  deriv1 = eps1(z)/realpart(z)
-  deriv2 = eps2(z)/realpart(z)
-  hyper(log(realpart(z)), deriv1, deriv2, eps1eps2(z)/realpart(z)-(deriv1*deriv2))
+Base.conj(h::Hyper{<:Real}) = Hyper(conj(value(h)), conj(ε₁part(h)), conj(ε₂part(h)), conj(ε₁ε₂part(h)))
+
+function Base.abs(h::Hyper{<:Real})
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return ((a > 0) - (a < 0) + (a == 0) *
+               ((b+c > 0) - (b+c < 0) + (b+c == 0) *
+                    ((d ≥ 0) - (d < 0)))) * h
 end
 
-function sin(z::Hyper)
-  funval = sin(realpart(z))
-  deriv = cos(realpart(z))
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)-funval*eps1(z)*eps2(z))
+# (Unsure, but) no `abs`, `real`, `conj`, `angle` or `imag`
+# for hyperdual complex because differentiable nowhere in ℂ
+# (these functions don't satisfy the Cauchy–Riemann equations).
+# I guess it might be usable for printing or other checking purposes,
+# but then I guess the user should define his own functions,
+# at its own risk, rather than having this package suggest a value that
+# does not make mathematical sense, right? (I may be completely wrong about this)
+
+# No flipsign so far but maybe I should make it like the `abs` above and
+# then have `abs(x) = flipsign(x, x)`?
+
+# No `conjhyper`, `abshyper`, or `abs2hyper` because I don't understand
+# their purpose in DualNumbers
+
+# algebra
+
+Base.:+(h₁::Hyper, h₂::Hyper) = Hyper(value(h₁) + value(h₂), ε₁part(h₁) + ε₁part(h₂), ε₂part(h₁) + ε₂part(h₂), ε₁ε₂part(h₁) + ε₁ε₂part(h₂))
+Base.:+(n::Number, h::Hyper) = Hyper(n + value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h))
+Base.:+(h::Hyper, n::Number) = n + h
+
+Base.:-(h::Hyper) = Hyper(-value(h), -ε₁part(h), -ε₂part(h), -ε₁ε₂part(h))
+Base.:-(h₁::Hyper, h₂::Hyper) = Hyper(value(h₁) - value(h₂), ε₁part(h₁) - ε₁part(h₂), ε₂part(h₁) - ε₂part(h₂), ε₁ε₂part(h₁) - ε₁ε₂part(h₂))
+Base.:-(n::Number, h::Hyper) = Hyper(n - value(h), -ε₁part(h), -ε₂part(h), -ε₁ε₂part(h))
+Base.:-(h::Hyper, n::Number) = Hyper(value(h) - n, ε₁part(h), ε₂part(h), ε₁ε₂part(h))
+
+# avoid ambiguous definition with Bool*Number
+Base.:*(x::Bool, h::Hyper) = ifelse(x, h, ifelse(signbit(real(value(h)))==0, zero(h), -zero(h)))
+Base.:*(h::Hyper, x::Bool) = x * h
+
+function Base.:*(h₁::Hyper, h₂::Hyper)
+    x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
+    a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
+    return Hyper(a*x, a*y+b*x, a*z+c*x, a*w+d*x+c*y+b*z)
+end
+Base.:*(n::Number, h::Hyper) = Hyper(n*value(h), n*ε₁part(h), n*ε₂part(h), n*ε₁ε₂part(h))
+Base.:*(h::Hyper, n::Number) = n * h
+
+Base.one(h::Hyper) = Hyper(one(realpart(h)))
+
+function Base.:/(h₁::Hyper, h₂::Hyper)
+    x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
+    a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
+    return Hyper(x/a, y/a - b*x/a^2, z/a - c*x/a^2, w/a + 2*b*c*x/a^3 - d*x/a^2 - c*y/a^2 - b*z/a^2)
+end
+function Base.:/(n::Number, h::Hyper)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(n/x, -n*y/x^2, -n*z/x^2, -n*(w/x-y*z/x^2-z*y/x^2)/x)
+end
+Base.:/(h::Hyper, n::Number) = Hyper(value(h)/n, ε₁part(h)/n, ε₂part(h)/n, ε₁ε₂part(h)/n)
+
+Base.mod(h::Hyper, n::Number) = Hyper(mod(value(h), n), ε₁part(h), ε₂part(h), ε₁ε₂part(h))
+
+# Power functions written using sage to see Taylor expansions
+#   (x+y*ε₁+z*ε₂+w*ε₁*ε₂)^(a+b*ε₁+c*ε₂+d*ε₁*ε₂)
+# around 0 for y, z, w, b, c, and d
+function Base.:^(h₁::Hyper, h₂::Hyper)
+    x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
+    a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
+    return Hyper(x^a,
+        a*x^(a - 1)*y + b*x^a*log(x),
+        a*x^(a - 1)*z + c*x^a*log(x),
+        a^2*x^(a - 2)*y*z + a*c*x^(a - 1)*y*log(x) + a*b*x^(a - 1)*z*log(x) + b*c*x^a*log(x)^2 - a*x^(a - 2)*y*z + a*w*x^(a - 1) + c*x^(a - 1)*y + b*x^(a - 1)*z + d*x^a*log(x))
+end
+function NaNMath.pow(h₁::Hyper, h₂::Hyper)
+    x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
+    a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
+    return Hyper(NaNMath.pow(x,a),
+        a*NaNMath.pow(x,a - 1)*y + b*NaNMath.pow(x,a)*log(x),
+        a*NaNMath.pow(x,a - 1)*z + c*NaNMath.pow(x,a)*log(x),
+        a^2*NaNMath.pow(x,a - 2)*y*z + a*c*NaNMath.pow(x,a - 1)*y*log(x) + a*b*NaNMath.pow(x,a - 1)*z*log(x) + b*c*NaNMath.pow(x,a)*log(x)^2 - a*NaNMath.pow(x,a - 2)*y*z + a*w*NaNMath.pow(x,a - 1) + c*NaNMath.pow(x,a - 1)*y + b*NaNMath.pow(x,a - 1)*z + d*NaNMath.pow(x,a)*log(x))
 end
 
-function cos(z::Hyper)
-  funval = cos(realpart(z))
-  deriv = -sin(realpart(z))
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)-funval*eps1(z)*eps2(z))
+function Base.:^(h::Hyper, a::Integer)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        a*x^(a - 1)*y,
+        a*x^(a - 1)*z,
+        a^2*x^(a - 2)*y*z - a*x^(a - 2)*y*z + a*w*x^(a - 1))
+end
+function Base.:^(h::Hyper, a::Rational)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        a*x^(a - 1)*y,
+        a*x^(a - 1)*z,
+        a^2*x^(a - 2)*y*z - a*x^(a - 2)*y*z + a*w*x^(a - 1))
 end
 
-function tan(z::Hyper)
-  funval = tan(realpart(z))
-  deriv = funval*funval+1
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(2*funval*deriv))
+function Base.:^(h::Hyper, a::Number)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        a*x^(a - 1)*y,
+        a*x^(a - 1)*z,
+        a^2*x^(a - 2)*y*z - a*x^(a - 2)*y*z + a*w*x^(a - 1))
+end
+function Base.:^(x::Number, h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        b*x^a*log(x),
+        c*x^a*log(x)*z,
+        b*c*x^a*log(x)^2 + d*x^a*log(x))
 end
 
-function asin(z::Hyper)
-  funval = asin(realpart(z))
-  deriv1 = 1.0-realpart(z)*realpart(z)
-  deriv = 1.0/sqrt(deriv1)
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(realpart(z)/deriv1^1.5))
+function NaNMath.pow(h::Hyper, a::Number)
+    x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(NaNMath.pow(x,a),
+        a*NaNMath.pow(x,a - 1)*y,
+        a*NaNMath.pow(x,a - 1)*z,
+        a^2*NaNMath.pow(x,a - 2)*y*z - a*NaNMath.pow(x,a - 2)*y*z + a*w*NaNMath.pow(x,a - 1))
+end
+function NaNMath.pow(x::Number, h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(NaNMath.pow(x,a),
+        b*NaNMath.pow(x,a)*log(x),
+        c*NaNMath.pow(x,a)*log(x)*z,
+        b*c*NaNMath.pow(x,a)*log(x)^2 + d*NaNMath.pow(x,a)*log(x))
 end
 
-function acos(z::Hyper)
-  funval = acos(realpart(z))
-  deriv1 = 1.0-realpart(z)*realpart(z)
-  deriv = -1.0/sqrt(deriv1)
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-realpart(z)/deriv1^1.5))
+# force use of NaNMath functions in derivative calculations
+function to_nanmath(x::Expr)
+    if x.head == :call
+        funsym = Expr(:.,:NaNMath,Base.Meta.quot(x.args[1]))
+        return Expr(:call,funsym,[to_nanmath(z) for z in x.args[2:end]]...)
+    else
+        return Expr(:call,[to_nanmath(z) for z in x.args]...)
+    end
+end
+to_nanmath(x) = x
+
+include("derivatives_list.jl")
+for (fsym, dfexp, d²fexp) in symbolic_derivative_list
+    if isdefined(SpecialFunctions, fsym)
+        @eval function SpecialFunctions.$(fsym)(h::Hyper)
+            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
+        end
+    elseif isdefined(Base, fsym)
+        @eval function Base.$(fsym)(h::Hyper)
+            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
+        end
+    end
+    # extend corresponding NaNMath methods
+    if fsym in (:sin, :cos, :tan, :asin, :acos, :acosh, :atanh, :log, :log2, :log10, :log1p)
+        fsym = Expr(:.,:NaNMath,Base.Meta.quot(fsym))
+        @eval function $(fsym)(h::Hyper)
+            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(x), y*$(to_nanmath(dfexp)), z*$(to_nanmath(dfexp)), w*$(to_nanmath(dfexp)) + y*z*$(to_nanmath(d²fexp)))
+        end
+    end
 end
 
-function erf(z::Hyper)
-  funval = erf(realpart(z))
-  deriv = 2.0*exp(-1.0*realpart(z)*realpart(z))/(sqrt(pi))
-  deriv1 = -2.0*realpart(z)*deriv;
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),deriv*eps1eps2(z)+eps1(z)*eps2(z)*deriv1)
+# only need to compute exp/cis once (removed exp from derivatives_list)
+function Base.exp(h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return exp(a) * Hyper(one(a), b, c, d + b*c)
+end
+function Base.cis(h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return cis(a) * Hyper(one(a), im*b, im*c, im*d - b*c)
 end
 
-function atan(z::Hyper)
-  funval = atan(realpart(z))
-  deriv1 = 1.0+realpart(z)*realpart(z)
-  deriv = 1.0/deriv1
-  hyper(funval, deriv*eps1(z),deriv*eps2(z),
-    deriv*eps1eps2(z)+eps1(z)*eps2(z)*(-2.0*realpart(z)/(deriv1*deriv1)))
-end
+# TODO: should be generated in Calculus, sinpi and cospi (erased here)
 
-sqrt(z::Hyper) = z^0.5
-
-maximum(z::Hyper, w::Hyper) = z > w ? z : w
-maximum(z::Hyper, w::Number) = z > w ? z : hyper(w)
-maximum(z::Number, w::Hyper) = z > w ? hyper(z) : w
-
-minimum(z::Hyper, w::Hyper) = z < w ? z : w
-minimum(z::Hyper, w::Number) = z < w ? z : hyper(w)
-minimum(z::Number, w::Hyper) = z < w ? hyper(z) : w
-
->(z::Hyper, w::Hyper) = realpart(z) > realpart(w)
->(z::Hyper, w::Number) = realpart(z) > w
->(z::Number, w::Hyper) = z > realpart(w)
->=(z::Hyper, w::Hyper) = realpart(z) >= realpart(w)
->=(z::Hyper, w::Number) = realpart(z) >= w
->=(z::Number, w::Hyper) = z >= realpart(w)
-<(z::Hyper, w::Hyper) = realpart(z) < realpart(w)
-<(z::Hyper, w::Number) = realpart(z) < w
-<(z::Number, w::Hyper) = z < realpart(w)
-<=(z::Hyper, w::Hyper) = realpart(z) <= realpart(w)
-<=(z::Hyper, w::Number) = realpart(z) <= w
-<=(z::Number, w::Hyper) = z <= realpart(w)
-
-
-==(z::Hyper, w::Hyper) = realpart(z) == realpart(w) && eps1(z) == eps1(w) &&
-  eps2(z) == eps2(w) && eps1eps2(z) == eps1eps2(w)  
-
-==(z::Hyper, x::Real) = real_valued(z) && realpart(z) == x
-==(x::Real, z::Hyper) = ==(z, x)
-
-isequal(z::Hyper, w::Hyper) = isequal(realpart(z), realpart(w)) && isequal(eps1(z), eps1(w)) && 
-  isequal(eps2(z), eps2(w)) && isequal(eps1eps2(z), eps1eps2(w))
-
-isequal(z::Hyper, x::Real) = 
-isequal(x::Real, z::Hyper) = ==(z, x)
+Base.checkindex(::Type{Bool}, inds::AbstractUnitRange, i::Hyper) = checkindex(Bool, inds, value(h))

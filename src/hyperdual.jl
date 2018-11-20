@@ -8,7 +8,12 @@ struct Hyper{T<:ReComp} <: Number
 end
 Hyper(x::S, y::T, z::U, w::V) where {S<:ReComp,T<:ReComp,U<:ReComp,V<:ReComp} = Hyper(promote(x,y,z,w)...)
 Hyper(x::ReComp) = Hyper(x, zero(x), zero(x), zero(x))
+Hyper() = Hyper(false, false, false, false)
 
+Hyper(x::T, y::T, z::T, w::T) where {T<:ReComp} = Hyper(x, y, z, w)
+const hyper = Hyper
+
+# Some useful constants
 const ɛ₁ = Hyper(false, true, false, false)
 const ɛ₂ = Hyper(false, false, true, false)
 const ε₁ɛ₂ = Hyper(false, false, false, true)
@@ -16,12 +21,19 @@ const imɛ₁ = Hyper(Complex(false, false), Complex(false, true), Complex(false
 const imɛ₂ = Hyper(Complex(false, false), Complex(false, false), Complex(false, true), Complex(false, false))
 const imɛ₁ε₂ = Hyper(Complex(false, false), Complex(false, false), Complex(false, false), Complex(false, true))
 
+# Some aliases for backwards compatibility (both `Hyper` and `hyper` must work)
 const Hyper256  = Hyper{Float64}
 const Hyper128 = Hyper{Float32}
 const Hyper64  = Hyper{Float16}
 const HyperComplex512  = Hyper{ComplexF64}
 const HyperComplex256 = Hyper{ComplexF32}
 const HyperComplex128 = Hyper{ComplexF16}
+const hyper256 = Hyper256
+const hyper128 = Hyper128
+const hyper64 = Hyper64
+const hyperComplex512 = HyperComplex512
+const hyperComplex256 = HyperComplex256
+const hyperComplex128 = HyperComplex128
 
 Base.convert(::Type{Hyper{T}}, h::Hyper{T}) where {T<:ReComp} = h
 Base.convert(::Type{Hyper{T}}, h::Hyper) where {T<:ReComp} = Hyper{T}(convert(T, value(h)), convert(T, epsilon1(h)), convert(T, epsilon2(h)), convert(T, epsilon12(h)))
@@ -44,9 +56,6 @@ epsilon1(x::Number) = zero(typeof(x))
 epsilon2(x::Number) = zero(typeof(x))
 epsilon12(x::Number) = zero(typeof(x))
 
-hyper(x::ReComp, y::ReComp, z::ReComp, w::ReComp) = Hyper(x, y, z, w)
-hyper(x::ReComp) = Hyper(x)
-hyper(h::Hyper) = h
 
 const realpart = value
 const ε₁part = epsilon1 # different from `dualpart` but shorter and clearer IMHO?

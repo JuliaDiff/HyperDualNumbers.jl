@@ -1,10 +1,11 @@
 using HyperDualNumbers, Test
 
 my_tests = [
-  "test_basics.jl",
-  "test_TimHoly_example.jl",
-  "test_Paper_example.jl",
-	"test_Erf_example.jl"
+    "test_basics.jl",
+    "test_TimHoly_example.jl",
+    "test_Paper_example.jl",
+	"test_Erf_example.jl",
+    "extra_tests_for_coverage.jl"
 ]
 
 println("Running tests:")

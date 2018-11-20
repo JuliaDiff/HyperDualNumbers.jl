@@ -11,9 +11,9 @@ my_tests = [
 println("Running tests:")
 
 @testset "HyperDualNumbers.jl" begin
-  for my_test in my_tests
-      println("  * $(my_test) *")
-      include(my_test)
-      println("\n\n")
-  end
+    @testset "$my_test" for my_test in my_tests
+        println("  * $(my_test) *")
+        include(my_test)
+        println("\n\n")
+    end
 end

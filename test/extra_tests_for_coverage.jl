@@ -76,6 +76,7 @@ end
         @test (realpart(h) == h) || isnan(h)
     end
     @testset "h = $(hyper(a))" for a in nums(str)
+        h = hyper(a)
         @test isequal(realpart(h), h) || isnan(h)
     end
 end

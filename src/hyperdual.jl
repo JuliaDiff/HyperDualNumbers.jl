@@ -60,6 +60,9 @@ const realpart = value
 const ε₁part = epsilon1 # different from `dualpart` but shorter and clearer IMHO?
 const ε₂part = epsilon2
 const ε₁ε₂part = epsilon12
+const eps1 = ε₁part # kepth for backwards compatibility
+const eps2 = ε₂part
+const eps1eps2 = ε₁ε₂part
 
 Base.isnan(h::Hyper) = isnan(value(h))
 Base.isinf(h::Hyper) = isinf(value(h))

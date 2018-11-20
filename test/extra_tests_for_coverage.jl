@@ -27,24 +27,24 @@ function nums(str)
     end
 end
 
-@testset "$f(x)" for f in (realpart, identity)
+@testset "$ftest(x)" for ftest in (realpart, identity)
     @testset "for $str" for str in ("ℝ", "ℂ", "ℝInfs", "ℂInfs")
         @testset "for x = $x" for x in nums(str)
-            @test f(x) == x
+            @test ftest(x) == x
         end
     end
 end
-@testset "$f(x)" for f in (ε₁part, eps1, ε₂part, eps2, ε₁ε₂part, eps1eps2)
+@testset "$ftest(x)" for ftest in (ε₁part, eps1, ε₂part, eps2, ε₁ε₂part, eps1eps2)
     @testset "for $str" for str in ("ℝ", "ℂ", "ℝInfs", "ℂInfs", "ℝInfsNaN", "ℂInfsNaN")
         @testset "for x = $x" for x in nums(str)
-            @test f(x) == zero(x)
+            @test ftest(x) == zero(x)
         end
     end
 end
-@testset "$f(x)" for f in (isinf, isnan)
+@testset "$ftest(x)" for ftest in (isinf, isnan)
     @testset "for $str" for str in ("ℕ", "ℝ", "ℂ", "ℝInfsNaN", "ℂInfsNaN")
         @testset "for x = $x" for x in nums(str)
-            @test f(hyper(x)) == f(x)
+            @test f(hyper(x)) == ftest(x)
         end
     end
 end

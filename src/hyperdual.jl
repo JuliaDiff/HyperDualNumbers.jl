@@ -10,7 +10,6 @@ Hyper(x::S, y::T, z::U, w::V) where {S<:ReComp,T<:ReComp,U<:ReComp,V<:ReComp} = 
 Hyper(x::ReComp) = Hyper(x, zero(x), zero(x), zero(x))
 Hyper() = Hyper(false, false, false, false)
 
-Hyper(x::T, y::T, z::T, w::T) where {T<:ReComp} = Hyper(x, y, z, w)
 const hyper = Hyper
 
 # Some useful constants

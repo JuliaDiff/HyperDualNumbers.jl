@@ -44,7 +44,7 @@ end
 @testset "$ftest(x)" for ftest in (isinf, isnan)
     @testset "for $str" for str in ("ℕ", "ℝ", "ℂ", "ℝInfsNaN", "ℂInfsNaN")
         @testset "for x = $x" for x in nums(str)
-            @test f(hyper(x)) == ftest(x)
+            @test ftest(hyper(x)) == ftest(x)
         end
     end
 end

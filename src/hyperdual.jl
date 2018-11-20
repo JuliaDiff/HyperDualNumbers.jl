@@ -241,10 +241,10 @@ Base.trunc(::Type{T}, h::Hyper) where {T<:Real} = trunc(T, value(h))
 Base.round(::Type{T}, h::Hyper) where {T<:Real} = round(T, value(h))
 
 for op in (:float, :complex)
-    @eval Base.$op(z::Hyper) = Hyper($op(value(z)), $op(ε₁part(z)), $op(ε₂part(z)), $op(ε₁ε₂part(z)))
+    @eval Base.$op(h::Hyper) = Hyper($op(value(h)), $op(ε₁part(h)), $op(ε₂part(h)), $op(ε₁ε₂part(h)))
 end
 
-Base.conj(z::Hyper{<:Real}) = Hyper(conj(value(z)), conj(ε₁part(z)), conj(ε₂part(z)), conj(ε₁ε₂part(z)))
+Base.conj(h::Hyper{<:Real}) = Hyper(conj(value(h)), conj(ε₁part(h)), conj(ε₂part(h)), conj(ε₁ε₂part(h)))
 
 function Base.abs(h::Hyper{<:Real})
     a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
@@ -287,16 +287,21 @@ function Base.:*(h₁::Hyper, h₂::Hyper)
     a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
     return Hyper(a*x, a*y+b*x, a*z+c*x, a*w+d*x+c*y+b*z)
 end
-Base.:*(n::Number, h::Hyper) = Hyper(n*value(z), n*ε₁part(z), n*ε₂part(z), n*ε₁ε₂part(z))
+Base.:*(n::Number, h::Hyper) = Hyper(n*value(h), n*ε₁part(h), n*ε₂part(h), n*ε₁ε₂part(h))
 Base.:*(h::Hyper, n::Number) = n * h
 
+Base.one(h::Hyper) = Hyper(one(realpart(h)))
+
+function Base.:/(h₁::Hyper, h₂::Hyper)
+    x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
+    a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
+    return Hyper(x/a, y/a - b*x/a^2, z/a - c*x/a^2, w/a + 2*b*c*x/a^3 - d*x/a^2 - c*y/a^2 - b*z/a^2)
+end
 function Base.:/(n::Number, h::Hyper)
     x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     return Hyper(n/x, -n*y/x^2, -n*z/x^2, -n*(w/x-y*z/x^2-z*y/x^2)/x)
 end
-Base.one(h::Hyper) = Hyper(one(realpart(z)))
-Base.:/(h₁::Hyper, h₂::Hyper) = h₁ * (one(h₂) / h₂)
-Base.:/(h::Hyper, n::Number) = Hyper(value(z)/n, ε₁part(z)/n, ε₂part(z)/n, ε₁ε₂part(z)/n)
+Base.:/(h::Hyper, n::Number) = Hyper(value(h)/n, ε₁part(h)/n, ε₂part(h)/n, ε₁ε₂part(h)/n)
 
 Base.mod(h::Hyper, n::Number) = Hyper(mod(value(h), n), ε₁part(h), ε₂part(h), ε₁ε₂part(h))
 
@@ -380,21 +385,21 @@ include("derivatives_list.jl")
 for (fsym, dfexp, d²fexp) in symbolic_derivative_list
     if isdefined(SpecialFunctions, fsym)
         @eval function SpecialFunctions.$(fsym)(h::Hyper)
-            a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
-            Hyper($(fsym)(a), b*$dfexp, c*$dfexp, d*$dfexp + b*c*$d²fexp)
+            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
         end
     elseif isdefined(Base, fsym)
         @eval function Base.$(fsym)(h::Hyper)
-            a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
-            Hyper($(fsym)(a), b*$dfexp, c*$dfexp, d*$dfexp + b*c*$d²fexp)
+            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
         end
     end
     # extend corresponding NaNMath methods
     if fsym in (:sin, :cos, :tan, :asin, :acos, :acosh, :atanh, :log, :log2, :log10, :log1p)
         fsym = Expr(:.,:NaNMath,Base.Meta.quot(fsym))
         @eval function $(fsym)(h::Hyper)
-            a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
-            Hyper($(fsym)(x), b*$(to_nanmath(dfexp)), c*$(to_nanmath(dfexp)), d*$(to_nanmath(dfexp)) + b*c*$(to_nanmath(d²fexp)))
+            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(x), y*$(to_nanmath(dfexp)), z*$(to_nanmath(dfexp)), w*$(to_nanmath(dfexp)) + y*z*$(to_nanmath(d²fexp)))
         end
     end
 end

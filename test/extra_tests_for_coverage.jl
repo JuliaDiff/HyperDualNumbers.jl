@@ -54,9 +54,9 @@ end
 end
 
 println("\nRandom examples of show() for hyperdual numbers:\n")
-for nums in (ℝnums2, ℂnums, ℂbools)
+for str in ("ℝInfsNaN", "ℂInfsNaN", "ℂbool")
     for i in 1:10
-        a, b, c, d = rand([nums...], 4)
+        a, b, c, d = rand([nums(str)...], 4)
         println("h = $(hyper(a, b, c, d))")
     end
 end

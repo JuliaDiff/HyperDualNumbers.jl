@@ -6,9 +6,9 @@ A complete rewrite of the implementation by Benoit Pasquier.
 
 ##### Notes:
 
-1. Redefined abs in such a way that the 2nd derivative of abs(-x^2) is correct. (Additionally, the previous abs(x) = sqrt(x^2) was quite slower — compare e.g., with Base.abs.)
+1. v4.0.0 redefined abs in such a way that the 2nd derivative of abs(-x^2) is correct. (Additionally, the previous abs(x) = sqrt(x^2) was quite slower — compare e.g., with Base.abs.)
 
-2. Did not include some functions (sometimes on purpose, sometimes because I did not know what to do with them). But I thought I should raise the issue that some functions should not be available for differentiation in ℂ because they are differentiable nowhere. Namely functions that inject into ℝ, like abs or angle, but also some quite common functions like conj. (The functions that are ℂ-differentiable should be in the code though.)
+2. v4.0.0 did not include some functions (sometimes on purpose, sometimes because I did not know what to do with them). But I thought I should raise the issue that some functions should not be available for differentiation in ℂ because they are differentiable nowhere. Namely functions that inject into ℝ, like abs or angle, but also some quite common functions like conj. (The functions that are ℂ-differentiable should be in the code though.)
 
 3. I chose to write my own list of first and second derivatives (using sagemath) to use for overloading most of the functions (like cos, sin, etc.). This was to match DualNumbers.jl's approach (which uses a list in Calculus.jl. (I saw that ForwardDiff.jl uses DiffRules.jl instead — so maybe this is were this list should go to be used by all other packages?)
 

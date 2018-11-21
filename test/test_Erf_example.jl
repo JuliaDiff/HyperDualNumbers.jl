@@ -35,9 +35,9 @@ S0 = Hyper(100.0, 1.0, 1.0, 0)
 K=80.0;T=2.0;r=0.01;sigma=0.2;
 Price=blsprice(S0,K,r,T,sigma);
 @test (abs(realpart(Price)-blsprice(realpart(S0),K,r,T,sigma))<1e-15)
-@test (abs(eps1(Price)-blsdelta(realpart(S0),K,r,T,sigma))<1e-15)
-@test (abs(eps1eps2(Price)-blsgamma(realpart(S0),K,r,T,sigma))<1e-15)
+@test (abs(ε₁part(Price)-blsdelta(realpart(S0),K,r,T,sigma))<1e-15)
+@test (abs(ε₁ε₂part(Price)-blsgamma(realpart(S0),K,r,T,sigma))<1e-15)
 println("$(realpart(Price))   = $( blsprice(realpart(S0),K,r,T,sigma))")
-println("$(eps1(Price))   = $( blsdelta(realpart(S0),K,r,T,sigma))")
-println("$(eps1eps2(Price))   = $( blsgamma(realpart(S0),K,r,T,sigma))")
+println("$(ε₁part(Price))   = $( blsdelta(realpart(S0),K,r,T,sigma))")
+println("$(ε₁ε₂part(Price))   = $( blsgamma(realpart(S0),K,r,T,sigma))")
 println("Test Erf Passed")

@@ -16,7 +16,7 @@ Hyper-dual numbers can be used to compute first and second derivatives numerical
 
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
-The initial Julia-ish version was derived/written by Rob J Goedman (goedman@icloud.com).
+The initial Julia-ish versions (up to v3.0.1) were derived/written by Rob J Goedman (goedman@icloud.com).
 
 HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier to make it `Julia` and much better follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]()
 

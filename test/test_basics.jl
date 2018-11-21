@@ -16,7 +16,7 @@ hd9 = hyper(-1.0, -2.0, -3.0, -4.0)
 hdNaN = hyper(0/0)
 
 # Addition and subtraction
-@test eps1(hd1) == 0.0
+@test ε₁part(hd1) == 0.0
 @test isequal(hd1 + hd2, hyper(2.0, 2.0, 3.0, 4.0))
 @test isequal(-hd2, hyper(-1.0, -2.0, -3.0, -4.0))
 @test isequal(+hd3, hd2 + hyper(0.0, 1.0, 0.0, 0.0))
@@ -29,7 +29,7 @@ hdNaN = hyper(0/0)
 # NaN tests
 @test isnan(hdNaN) == isnan(hyper(NaN, 0.0, 0.0, 0.0))
 hdNaN128 = hyper128(NaN, 4.0, 3.0, 4.0)
-@test isnan(hdNaN + hd4) == isnan(hdNaN128) && eps1eps2(hdNaN128) == 4.0
+@test isnan(hdNaN + hd4) == isnan(hdNaN128) && ε₁ε₂part(hdNaN128) == 4.0
 
 println("\nExamples of show() for hyperdual numbers with NaN:\n")
 println("hdNaN = $(hdNaN)")
@@ -37,7 +37,7 @@ println("hdNaN + hd4 = $(hdNaN + hd4)")
 
 @test isnan(hdNaN) == true
 @test isnan(hdNaN+hd4) == true
-@test eps1eps2(hdNaN+hd4) == 4.0
+@test ε₁ε₂part(hdNaN+hd4) == 4.0
 
 # Using and mixing 64 & 32 bits
 @test isequal(hd6+hd7, hyper(2.0, 11.0, 6.0, 8.0))
@@ -61,7 +61,7 @@ println("\nTesting includes Tim Holy's division performance improvement.")
 println("Testing includes ngedwin98's fixes for asin, acos and atan.")
 @test isequal(asin(sin(hd8)), hd8)
 @test isequal(atan(tan(hd8)), hd8)
-@test eps1(acos(hd8)) == -eps1(asin(hd8)) && eps1eps2(acos(hd8)) == -eps1eps2(asin(hd8))
+@test ε₁part(acos(hd8)) == -ε₁part(asin(hd8)) && ε₁ε₂part(acos(hd8)) == -ε₁ε₂part(asin(hd8))
 
 # Mixing types
 @test isequal(hd5*hd7, hd7^2)

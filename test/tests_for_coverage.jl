@@ -27,21 +27,23 @@ function nums(str)
     end
 end
 
-@testset "$ftest(x)" for ftest in (realpart, identity)
+@testset "Test `$ftest`" for ftest in (realpart, identity)
     @testset "for $str" for str in ("ℝ", "ℂ", "ℝInfs", "ℂInfs")
         @testset "for x = $x" for x in nums(str)
             @test ftest(x) == x
         end
     end
 end
-@testset "$ftest(x)" for ftest in (ε₁part, eps1, ε₂part, eps2, ε₁ε₂part, eps1eps2)
+
+@testset "Test `$ftest`" for ftest in (ε₁part, eps1, ε₂part, eps2, ε₁ε₂part, eps1eps2)
     @testset "for $str" for str in ("ℝ", "ℂ", "ℝInfs", "ℂInfs", "ℝInfsNaN", "ℂInfsNaN")
         @testset "for x = $x" for x in nums(str)
             @test ftest(x) == zero(x)
         end
     end
 end
-@testset "$ftest(x)" for ftest in (isinf, isnan)
+
+@testset "Test `$ftest`" for ftest in (isinf, isnan, isfinite)
     @testset "for $str" for str in ("ℕ", "ℝ", "ℂ", "ℝInfsNaN", "ℂInfsNaN")
         @testset "for x = $x" for x in nums(str)
             @test ftest(hyper(x)) == ftest(x)
@@ -49,8 +51,10 @@ end
     end
 end
 
-@testset "for x = $x" for x in nums("ℝ")
-    @test eps(hyper(x)) == eps(x)
+@testset "Test `eps`" begin
+    @testset "for x = $x" for x in nums("ℝ")
+        @test eps(hyper(x)) == eps(x)
+    end
 end
 
 println("\nRandom examples of show() for hyperdual numbers:\n")
@@ -65,20 +69,43 @@ for h in (hyper(true), ε₁, ε₂, ε₁ε₂, hyper(complex(false, true)), im
     println("h = $h")
 end
 
-
-@testset "for x = $x" for x in nums("ℝ")
-    @test convert(Hyper, x) == x
-end
-
-@testset "for $str" for str in ("ℕ", "ℝ", "ℂ", "ℝInfsNaN", "ℂInfsNaN")
-    @testset "h = $(hyper(a, b, c, d))" for a in nums(str), b in nums(str), c in nums(str), d in nums(str)
-        h = hyper(a, b, c, d)
-        @test (realpart(h) == h) || isnan(h)
-    end
-    @testset "h = $(hyper(a))" for a in nums(str)
-        h = hyper(a)
-        @test isequal(realpart(h), h) || isnan(h)
+@testset "Test `convert`" begin
+    @testset "for x = $x" for x in nums("ℝ")
+        @test convert(Hyper, x) == x
+        @test convert(Hyper, Hyper(x)) == Hyper(x)
     end
 end
 
+@testset "Test `realpart`" begin
+    @testset "for $str" for str in ("ℕ", "ℝ", "ℂ", "ℝInfsNaN", "ℂInfsNaN")
+        @testset "h = $(hyper(a, b, c, d))" for a in nums(str), b in nums(str), c in nums(str), d in nums(str)
+            h = hyper(a, b, c, d)
+            @test (realpart(h) == h) || isnan(h)
+        end
+        @testset "h = $(hyper(a))" for a in nums(str)
+            h = hyper(a)
+            @test isequal(realpart(h), h) || isnan(h)
+        end
+    end
+end
+
+@testset "Test `ishyper`" begin
+    @testset "for $str" for str in ("ℕ", "ℝ", "ℂ", "ℝInfsNaN", "ℂInfsNaN")
+        @testset "h = $(hyper(a, b, c, d))" for a in nums(str), b in nums(str), c in nums(str), d in nums(str)
+            h = hyper(a, b, c, d)
+            @test ishyper(h)
+            @test !ishyper(a)
+        end
+    end
+end
+
+@testset "Test `hash`" begin
+    @testset "for $str" for str in ["ℕ"] #, "ℝInfsNaN", "ℂInfsNaN") Reduced the number of tests for hash
+        @testset "h₁ = $(hyper(a, b, c, d)), h₂ = $(hyper(x, y, z, w))" for a in nums(str), b in nums(str), c in nums(str), d in nums(str), x in nums(str), y in nums(str), z in nums(str), w in nums(str)
+            h₁ = hyper(a, b, c, d)
+            h₂ = hyper(x, y, z, w)
+            @test (hash(h₁) == hash(h₂)) == isequal(h₁, h₂)
+        end
+    end
+end
 

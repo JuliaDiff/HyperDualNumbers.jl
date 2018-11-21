@@ -6,7 +6,8 @@ my_tests = [
     "test_Paper_example.jl",
 	"test_Erf_example.jl",
     "test_power.jl",
-    "tests_for_coverage.jl"
+    "tests_for_coverage.jl",
+    "test_function_list.jl"
 ]
 
 println("Running tests:")
@@ -18,3 +19,5 @@ println("Running tests:")
         println("\n\n")
     end
 end
+
+println("Tests finished")

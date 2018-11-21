@@ -27,6 +27,8 @@ const Hyper64  = Hyper{Float16}
 const HyperComplex512  = Hyper{ComplexF64}
 const HyperComplex256 = Hyper{ComplexF32}
 const HyperComplex128 = Hyper{ComplexF16}
+
+# In the future to be deprecated:
 const hyper256 = Hyper256
 const hyper128 = Hyper128
 const hyper64 = Hyper64
@@ -347,11 +349,21 @@ function Base.:^(h::Hyper, a::Number)
         a*x^(a - 1)*z,
         a^2*x^(a - 2)*y*z - a*x^(a - 2)*y*z + a*w*x^(a - 1))
 end
+
+# Below definition is necesssaty to resolve a conflict with the
+# definition in MathConstants.jl
+function Base.:^(x::Irrational{:ℯ}, h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    return Hyper(x^a,
+        b*x^a*log(x),
+        c*x^a*log(x),
+        b*c*x^a*log(x)^2 + d*x^a*log(x))
+end
 function Base.:^(x::Number, h::Hyper)
     a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     return Hyper(x^a,
         b*x^a*log(x),
-        c*x^a*log(x)*z,
+        c*x^a*log(x),
         b*c*x^a*log(x)^2 + d*x^a*log(x))
 end
 

@@ -12,6 +12,7 @@ r1 = f3(t0)
 @test round(ε₂part(r1), digits=4) == 790.7755
 @test round(ε₁ε₂part(r1), digits=10) == 6883.7763738258
 r1 |> display
+println()
 
 # test 2
 f4(x) = -4x^2 + 18
@@ -23,3 +24,4 @@ r2 = f6(t0)
 @test round(ε₂part(r2), digits=4) == 0.6355
 @test round(ε₁ε₂part(r2), digits=10) == -503.1625169931
 r2 |> display
+println()

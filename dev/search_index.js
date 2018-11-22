@@ -17,11 +17,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#symbolic_derivative_list-1",
+    "location": "#symbolic*derivative*list-1",
     "page": "Home",
-    "title": "symbolic_derivative_list",
+    "title": "symbolicderivativelist",
     "category": "section",
-    "text": "HyperDualNumbers.symbolic_derivative_list"
+    "text": "symbolic_derivative_list"
 },
 
 {

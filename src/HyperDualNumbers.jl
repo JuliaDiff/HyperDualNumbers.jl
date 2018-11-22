@@ -4,6 +4,7 @@ using SpecialFunctions
 import NaNMath
 import Calculus
 
+include("derivatives_list.jl")
 include("hyperdual.jl")
 
 export

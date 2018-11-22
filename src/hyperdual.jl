@@ -393,7 +393,6 @@ function to_nanmath(x::Expr)
 end
 to_nanmath(x) = x
 
-include("derivatives_list.jl")
 for (fsym, dfexp, d²fexp) in symbolic_derivative_list
     if isdefined(SpecialFunctions, fsym)
         @eval function SpecialFunctions.$(fsym)(h::Hyper)

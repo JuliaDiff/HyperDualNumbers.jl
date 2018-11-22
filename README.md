@@ -67,7 +67,7 @@ Question and contributions are very welcome, as are feature requests and suggest
 [travis-img]: https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg?branch=master
 [travis-url]: https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl
 
-[appveyor-img]: https://ci.appveyor.com/api/projects/status/xx7nimfpnl1r4gx0?svg=true
+[appveyor-img]: [![Build status](https://ci.appveyor.com/api/projects/status/gkwh4md2fq4c29hy?svg=true)](https://ci.appveyor.com/project/goedman/hyperdualnumbers-jl-0k1n3)
 [appveyor-url]: https://ci.appveyor.com/project/JuliaDiff/HyperDualNumbers-jl
 
 [codecov-img]: https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl/branch/master/graph/badge.svg

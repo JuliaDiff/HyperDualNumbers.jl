@@ -13,8 +13,17 @@ Hyper() = Hyper(false, false, false, false)
 const hyper = Hyper
 
 # Some useful constants
+"""
+ɛ₁ contains the first derivative after the evaluation
+"""
 const ɛ₁ = Hyper(false, true, false, false)
+"""
+ɛ₂ contains the first derivative after the evaluation
+"""
 const ɛ₂ = Hyper(false, false, true, false)
+"""
+ɛ₁ɛ₂ contains the second derivative after the evaluation
+"""
 const ε₁ɛ₂ = Hyper(false, false, false, true)
 const imɛ₁ = Hyper(Complex(false, false), Complex(false, true), Complex(false, false), Complex(false, false))
 const imɛ₂ = Hyper(Complex(false, false), Complex(false, false), Complex(false, true), Complex(false, false))

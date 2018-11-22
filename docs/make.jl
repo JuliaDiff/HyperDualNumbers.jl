@@ -11,5 +11,5 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/JuliaDiff/HyperDualNumbers.jl.git",
+    repo = "github.com/JuliaDiff/HyperDualNumbers.jl.git"
  )

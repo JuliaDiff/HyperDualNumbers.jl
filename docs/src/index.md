@@ -8,7 +8,7 @@ The initial Julia implementation (up to v3.0.1) is directly based on the C++ imp
 
 Those initial versions were derived/written by Rob J Goedman (goedman@icloud.com).
 
-HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier to better follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]()
+HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier and follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]()
 
 ## `symbolic_derivative_list`
 

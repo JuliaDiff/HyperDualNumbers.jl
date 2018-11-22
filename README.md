@@ -1,19 +1,20 @@
 # JuliaDiff/HyperDualNumbers
 
-*A package to run Stan's cmdstan executable from Julia.*
 
 | **Documentation**                                                               | **Build Status**                                                                                |
 |:-------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
 | [![][docs-stable-img]][docs-stable-url] [![][docs-dev-img]][docs-dev-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url] [![][codecov-img]][codecov-url] |
 
 
-Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
+Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. 
+
+The initial Julia implementation was directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics as described in the paper:
 
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
-The initial Julia-ish versions (up to v3.0.1) were derived/written by Rob J Goedman (goedman@icloud.com).
+Those initial Julia versions (up to v3.0.1) were derived/written by Rob J Goedman (goedman@icloud.com).
 
-HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier to make it `Julia` and much better follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]()
+HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier and follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]()
 
 For a quick into, see [STEPBYSTEP.md](https://github.com/JuliaDiff/HyperDualNumbers.jl/blob/master/STEPBYSTEP.md)
 

@@ -1,3 +1,4 @@
+## Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
 
 os:
@@ -5,7 +6,6 @@ os:
   - osx
   
 julia:
-  - 0.7
   - 1.0
   - nightly
   
@@ -13,28 +13,23 @@ matrix:
   allow_failures:
     - os: osx
     - julia: nightly
-    
-notifications:
-  email: true
-  
-script:
- # - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  #- julia -e 'using Pkg; Pkg.test(coverage=true)'
-  - julia -e 'import Pkg; Pkg.test(coverage=true)'  
 
+#script:
+
+branches:
+  only:
+    - master
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+    
 after_success:
+  - julia --project=test/coverage -e 'using Pkg; Pkg.instantiate()'
+  - julia --project=test/coverage test/coverage/coverage.jl
   
-  # Documentation
+  - julia --project=docs -e 'using Pkg; ps=Pkg.PackageSpec(name="Documenter", version="0.20"); Pkg.add(ps); Pkg.pin(ps); Pkg.add("CmdStan"); Pkg.instantiate();'
+  - julia --project=docs --color=yes docs/make.jl
+
+notifications:
+  email: false
   
-  #- julia -e 'Pkg.add("Documenter")'
-  #- julia -e 'cd(Pkg.dir("HyperDualNumbers")); include(joinpath("docs", "make.jl"))'
-  
-  # Coverage
-  
-  # push coverage results to Coveralls
-  
-  - julia -e 'cd(Pkg.dir("HyperDualNumbers")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  
-  # push coverage results to Codecov
-  
-  - julia -e 'cd(Pkg.dir("HyperDualNumbers")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+git:
+  depth: 99999999

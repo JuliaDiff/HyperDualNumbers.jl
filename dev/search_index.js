@@ -17,9 +17,9 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#Symbolic-derivative-list-1",
+    "location": "#symbolic_derivative_list-1",
     "page": "Home",
-    "title": "Symbolic derivative list",
+    "title": "symbolic_derivative_list",
     "category": "section",
     "text": "HyperDualNumbers.symbolic_derivative_list"
 },

@@ -14,7 +14,8 @@ matrix:
     - os: osx
     - julia: nightly
 
-#script:
+script:
+  - julia -e 'using Pkg; Pkg.test("HyperDualNumbers"; coverage=true)'
 
 branches:
   only:

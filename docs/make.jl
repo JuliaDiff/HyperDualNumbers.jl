@@ -1,5 +1,4 @@
 using HyperDualNumbers
-using Literate
 using Documenter
 
 makedocs(

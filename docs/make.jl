@@ -1,7 +1,6 @@
 using HyperDualNumbers
 using Literate
 using Documenter
-using Documenter, CmdStan
 
 makedocs(
     modules = [HyperDualNumbers],

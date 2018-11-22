@@ -1,10 +1,8 @@
-"""
-
-# Symbolic derivative list
+"""Symbolic derivative list
 
 The format is a list of (Symbol,Expr,Expr) tuples.
 
-### Entries in each tuple:
+Entries in each tuple:
 ```julia
 * `:f `     : Function symbol
 * `:df`    : Symbolic expression for first derivative

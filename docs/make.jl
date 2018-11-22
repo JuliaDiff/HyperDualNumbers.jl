@@ -4,9 +4,10 @@ using Documenter
 makedocs(
     modules = [HyperDualNumbers],
     format = :html,
+    checkdocs = :exports,
     sitename = "HyperDualNumbers.jl",
     pages = Any[
-        "Home" => "index.md",
+        "Home" => "index.md"
     ]
 )
 

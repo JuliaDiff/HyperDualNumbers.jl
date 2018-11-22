@@ -1,7 +1,7 @@
 site_name:        JuliaDiff/HyperDualNumbers.jl
 repo_url:         https://github.com/JuliaDiff/HyperDualNumbers.jl
 site_description: An implementation of HyperDualNumbers
-site_author:      StanJulia
+site_author:      JuliaDiff
 
 theme: readthedocs
 

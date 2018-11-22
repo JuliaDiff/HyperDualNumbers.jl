@@ -17,9 +17,9 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#symbolic*derivative*list-1",
+    "location": "#\'symbolic*derivative*list\'-1",
     "page": "Home",
-    "title": "symbolicderivativelist",
+    "title": "\'symbolicderivativelist\'",
     "category": "section",
     "text": "symbolic_derivative_list"
 },

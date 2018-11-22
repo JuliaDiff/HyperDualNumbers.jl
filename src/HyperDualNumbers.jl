@@ -39,6 +39,7 @@ export
     ɛ₁ε₂,
     imɛ₁,
     imɛ₂,
-    imɛ₁ε₂
+    imɛ₁ε₂,
+    symbolic_derivative_list
 
 end # module

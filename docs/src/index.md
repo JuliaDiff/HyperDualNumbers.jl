@@ -10,10 +10,9 @@ Those initial versions were derived/written by Rob J Goedman (goedman@icloud.com
 
 HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier and follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]()
 
-## `symbolic_derivative_list`
-
+## symbolic_derivative_list
 ```@docs
-HyperDualNumbers.symbolic_derivative_list
+symbolic_derivative_list
 ```
 
 ## Index

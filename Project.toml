@@ -1,6 +1,6 @@
 name = "HyperDualNumbers"
 uuid = "50ceba7f-c3ee-5a84-a6e8-3ad40456ec97"
-authors = ["Rob J Goedman <goedman@mac.com>"]
+authors = ["Rob J Goedman <goedman@icloud.com>"]
 version = "4.0.0"
 
 [deps]
@@ -11,8 +11,7 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [extras]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Documenter", "Literate", "Test"]
+test = ["Documenter", "Test"]

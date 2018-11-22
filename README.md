@@ -8,13 +8,13 @@
 
 Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. 
 
-The initial Julia implementation was directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics as described in the paper:
+The initial Julia implementation (up to v3.0.1) is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics as described in the paper:
 
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
-Those initial Julia versions (up to v3.0.1) were derived/written by Rob J Goedman (goedman@icloud.com).
+The initial Julia versions (up to v3.0.1) were derived/written by Rob J Goedman (goedman@icloud.com).
 
-HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier and follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]()
+HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier and follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]
 
 For a quick into, see [STEPBYSTEP.md](https://github.com/JuliaDiff/HyperDualNumbers.jl/blob/master/STEPBYSTEP.md)
 
@@ -33,7 +33,7 @@ The following functions are specific to hyperdual numbers:
 * `Hyper`,
 * `Hyper256`,
 * `Hyper128`,
-* `ishyper`,
+* `ishyper`,y2
 * `hyper_show`
 * `realpart`,
 * `ε₁part()`, replaces eps1,

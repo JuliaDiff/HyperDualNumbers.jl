@@ -1,7 +1,7 @@
 name = "HyperDualNumbers"
 uuid = "50ceba7f-c3ee-5a84-a6e8-3ad40456ec97"
-authors = ["Rob J Goedman <goedman@mac.com>"]
-version = "3.0.2"
+authors = ["Rob J Goedman <goedman@icloud.com>"]
+version = "4.0.0"
 
 [deps]
 Calculus = "49dc2e85-a5d0-5ad3-a950-438e2897f1b9"
@@ -10,7 +10,8 @@ NaNMath = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [extras]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Documenter", "Test"]

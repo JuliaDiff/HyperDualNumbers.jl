@@ -1,24 +1,20 @@
 # JuliaDiff/HyperDualNumbers
 
-[![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_0.7.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=0.7) 
 
-[![HyperDualNumbers](http://pkg.julialang.org/badges/HyperDualNumbers_1.0.svg)](http://pkg.julialang.org/?pkg=HyperDualNumbers&ver=1.0)
+| **Documentation**                                                               | **Build Status**                                                                                |
+|:-------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
+| [![][docs-stable-img]][docs-stable-url] [![][docs-dev-img]][docs-dev-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url] [![][codecov-img]][codecov-url] |
 
 
-[![Coverage Status](https://coveralls.io/repos/JuliaDiff/HyperDualNumbers.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaDiff/HyperDualNumbers.jl?branch=master)
-[![codecov](https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl?branch=master)
+Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. 
 
-Unix/OSX:  [![Travis Build Status](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg?branch=master)](https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl)
-
-Windows(64bit):  [![Build status](https://ci.appveyor.com/api/projects/status/github/JuliaDiff/HyperDualNumbers.jl?branch=master)](https://ci.appveyor.com/project/JuliaDiff/HyperDualNumbers-jl)
-
-Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. This Julia implementation is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics and is described in the paper:
+The initial Julia implementation (up to v3.0.1) is directly based on the C++ implementation by Jeffrey Fike and Juan J Alonso, both of Stanford University, department of Aeronautics and Astronautics as described in the paper:
 
 [The Development of Hyper-Dual Numbers for Exact Second Derivative Calculations](https://adl.stanford.edu/hyperdual/Fike_AIAA-2011-886.pdf)
 
-The initial Julia-ish versions (up to v3.0.1) were derived/written by Rob J Goedman (goedman@icloud.com).
+The initial Julia versions (up to v3.0.1) were derived/written by Rob J Goedman (goedman@icloud.com).
 
-HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier to make it `Julia` and much better follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]()
+HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier and follows the structure of the [JuliaDiff/DualNumbers](https://github.com/JuliaDiff/DualNumbers.jl) package.]
 
 For a quick into, see [STEPBYSTEP.md](https://github.com/JuliaDiff/HyperDualNumbers.jl/blob/master/STEPBYSTEP.md)
 
@@ -37,7 +33,7 @@ The following functions are specific to hyperdual numbers:
 * `Hyper`,
 * `Hyper256`,
 * `Hyper128`,
-* `ishyper`,
+* `ishyper`,y2
 * `hyper_show`
 * `realpart`,
 * `ε₁part()`, replaces eps1,
@@ -52,4 +48,30 @@ In the future it is my intention to deprecate:
 * `eps1`,
 * `eps2`,
 * `eps1eps2`
+
+## Documentation
+
+- [**STABLE**][docs-stable-url] &mdash; **documentation of the most recently tagged version.**
+- [**DEVEL**][docs-dev-url] &mdash; *documentation of the in-development version.*
+
+## Questions and issues
+
+Question and contributions are very welcome, as are feature requests and suggestions. Please open an [issue][issues-url] if you encounter any problems or have a question. 
+
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
+[docs-dev-url]: https://juliadiff.github.io/HyperDualNumbers.jl/latest
+
+[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-stable-url]: https://juliadiff.github.io/HyperDualNumbers.jl/stable
+
+[travis-img]: https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg?branch=master
+[travis-url]: https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl
+
+[appveyor-img]: https://ci.appveyor.com/api/projects/status/gkwh4md2fq4c29hy?svg=true
+[appveyor-url]: https://ci.appveyor.com/project/JuliaDiff/HyperDualNumbers-jl
+
+[codecov-img]: https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/JuliaDiff/HyperDualNumbers.jl
+
+[issues-url]: https://github.com/JuliaDiff/HyperDualNumbers.jl/issues
 

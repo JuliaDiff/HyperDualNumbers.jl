@@ -19,11 +19,16 @@ println()
 q = @sym ToString(f1(x));
 q |> display
 println()
-u = @sym ToString(f2(x));
+u = lowercase(@sym ToString(f2(x)));
 u |> display
 println()
 
-@eval f1(x) = $(Meta.parse(q))
+Meta.parse(q) |> display
+println()
+Meta.parse(u) |> display
+println()
+
+@eval f1(x) = $(Meta.parse(q)) # This will also take care conversion to lowercase
 @eval f2(x) = $(Meta.parse(u))
 
 f1(Complex(4.5)) |> display

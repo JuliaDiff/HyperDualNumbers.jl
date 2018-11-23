@@ -4,6 +4,7 @@ using SpecialFunctions
 import NaNMath
 import Calculus
 
+include("derivatives_list.jl")
 include("hyperdual.jl")
 
 export
@@ -38,6 +39,7 @@ export
     ɛ₁ε₂,
     imɛ₁,
     imɛ₂,
-    imɛ₁ε₂
+    imɛ₁ε₂,
+    symbolic_derivative_list
 
 end # module

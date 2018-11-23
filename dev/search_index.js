@@ -25,9 +25,9 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "#Fields-of-a-HyperDualNumbers-1",
+    "location": "#Fields-of-a-HyperDualNumber-1",
     "page": "Home",
-    "title": "Fields of a HyperDualNumbers",
+    "title": "Fields of a HyperDualNumber",
     "category": "section",
     "text": "ɛ₁\nɛ₂\nε₁ɛ₂"
 },

@@ -1,3 +1,5 @@
+# Currently not used, left here if we want to do more testing in the future.
+
 using HyperDualNumbers, Test
 
 t0 = Hyper(2.0, 1.0, 1.0, 0.0)

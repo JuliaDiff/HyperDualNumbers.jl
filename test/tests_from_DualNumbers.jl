@@ -252,8 +252,7 @@ end
 end
 
 
-# `flipsign` tests are
-# commented at for now until I figure out why
+# `flipsign` tests are commented outt for now until I figure out why
 # DualNumbers.jl and ForwardDiff.jl do not follow this rule
 #@testset "Test for `flipsign`" begin
 #    t₀ = Hyper(1, 2, 3, 4)

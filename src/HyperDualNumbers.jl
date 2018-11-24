@@ -1,6 +1,6 @@
 module HyperDualNumbers
 
-using SpecialFunctions
+using SpecialFunctions, LinearAlgebra
 import NaNMath
 import Calculus
 

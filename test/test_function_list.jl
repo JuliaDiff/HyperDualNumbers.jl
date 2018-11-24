@@ -36,30 +36,29 @@ list_of_test_functions = [
     ( :(-4*x^2 + 18), :(-8*x), :(-8) )
     ( :(x^3 - 7), :(3*x^2), :(6*x) )
     ( :((-4*x^2 + 18)^(x^3 - 7)), :((3*x^2*log(-4*x^2 + 18) + 4*(x^3 - 7)*x/(2*x^2 - 9))*(-4*x^2 + 18)^(x^3 - 7)), :((3*x^2*log(-4*x^2 + 18) + 4*(x^3 - 7)*x/(2*x^2 - 9))^2*(-4*x^2 + 18)^(x^3 - 7) + 2*(12*x^3/(2*x^2 - 9) + 3*x*log(-4*x^2 + 18) - 8*(x^3 - 7)*x^2/(2*x^2 - 9)^2 + 2*(x^3 - 7)/(2*x^2 - 9))*(-4*x^2 + 18)^(x^3 - 7)) )
+    ( :(exp10(x)), :(log(10)*exp10(x)), :(log(10)^2*exp10(x)) )
 ]
 
 # some non-random and random x values to test
-x_values = (-2, -1, 0, 1, 2, -2.0, -1.0, 0.0, 1.0, 2.0, 2randn(10)...)
-x_values = (-2.0, 1.0)
+x_values = -2.5:0.1:2.5
 
 # list of functions with their 1st and 2nd derivatives
 @testset "Test $fexp" for (fexp, Dfexp, D²fexp) in list_of_test_functions
+    @eval f(x) = $fexp
+    @eval Df(x) = $Dfexp
+    @eval D²f(x) = $D²fexp
     @testset "for x = $x0" for x0 in x_values
-        x = x0
-        try # Necessary to avoid cases where the function is not defined (e.g., (-1)^0.5)
-            eval(Expr(:(=), :f_at_x0, fexp))
+        try # Necessary to avoid cases where the functions are not defined (e.g., (-1)^0.5)
+            f(x0), Df(x0), D²f(x0)
         catch
             continue
         end
-        eval(Expr(:(=), :Df_at_x0, Dfexp))
-        eval(Expr(:(=), :D²f_at_x0, D²fexp))
-        @show f_at_x0
-        x = hyper(x0, 1, 1, 0)
-        eval(Expr(:(=), :f_at_t0, fexp))
-        @test abs(realpart(f_at_t0) - f_at_x0) < 5eps(float(f_at_x0))
-        @test abs(ε₁part(f_at_t0) - Df_at_x0) < 5eps(float(Df_at_x0))
-        @test abs(ε₂part(f_at_t0) - Df_at_x0) < 5eps(float(Df_at_x0))
-        @test abs(ε₁ε₂part(f_at_t0) - D²f_at_x0) < 5eps(float(D²f_at_x0))
+        (isnan(f(x0)) || isnan(Df(x0)) || isnan(D²f(x0))) && continue
+        t0 = hyper(x0, 1, 1, 0)
+        @test realpart(f(t0)) ≈ f(x0) rtol = 1e4eps()
+        @test ε₁part(f(t0)) ≈ Df(x0) rtol = 1e4eps()
+        @test ε₂part(f(t0)) ≈ Df(x0) rtol = 1e4eps()
+        @test ε₁ε₂part(f(t0)) ≈ D²f(x0) rtol = 1e4eps()
     end
 end
 

@@ -15,7 +15,7 @@ HyperDualNumbers.jl v4.0.0 has been completely redone by Benoit Pasquier and fol
 symbolic_derivative_list
 ```
 
-## Fields of a HyperDualNumbers
+## Fields of a HyperDualNumber
 ```@docs
 ɛ₁
 ɛ₂

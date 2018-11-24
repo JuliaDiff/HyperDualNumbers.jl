@@ -17,19 +17,19 @@ CurrentModule = HyperDualNumbers
 
 ## Creation of a HyperDualNumber
 ```@docs
-Hyper()
+HyperDualNumbers.Hyper()
 ```
 
 ## Symbolic derivative list
 ```@docs
-symbolic_derivative_list
+HyperDualNumbers.symbolic_derivative_list
 ```
 
 ## Fields of a HyperDualNumber
 ```@docs
-ɛ₁
-ɛ₂
-ε₁ɛ₂
+HyperDualNumbers.ɛ₁
+HyperDualNumbers.ɛ₂
+HyperDualNumbers.ε₁ɛ₂
 ```
 
 ## Index

@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Creation of a HyperDualNumber",
     "category": "section",
-    "text": "Hyper()"
+    "text": "HyperDualNumbers.Hyper()"
 },
 
 {
@@ -29,7 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Symbolic derivative list",
     "category": "section",
-    "text": "symbolic_derivative_list"
+    "text": "HyperDualNumbers.symbolic_derivative_list"
 },
 
 {
@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Fields of a HyperDualNumber",
     "category": "section",
-    "text": "ɛ₁\nɛ₂\nε₁ɛ₂"
+    "text": "HyperDualNumbers.ɛ₁\nHyperDualNumbers.ɛ₂\nHyperDualNumbers.ε₁ɛ₂"
 },
 
 {

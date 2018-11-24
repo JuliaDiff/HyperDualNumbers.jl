@@ -387,7 +387,7 @@ function NaNMath.pow(x::Number, h::Hyper)
     a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
     return Hyper(NaNMath.pow(x,a),
         b*NaNMath.pow(x,a)*log(x),
-        c*NaNMath.pow(x,a)*log(x)*z,
+        c*NaNMath.pow(x,a)*log(x),
         b*c*NaNMath.pow(x,a)*log(x)^2 + d*NaNMath.pow(x,a)*log(x))
 end
 
@@ -410,6 +410,11 @@ for (fsym, dfexp, d²fexp) in symbolic_derivative_list
         end
     elseif isdefined(Base, fsym)
         @eval function Base.$(fsym)(h::Hyper)
+            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+            Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
+        end
+    elseif isdefined(Base.Math, fsym)
+        @eval function Base.Math.$(fsym)(h::Hyper)
             x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
             Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
         end

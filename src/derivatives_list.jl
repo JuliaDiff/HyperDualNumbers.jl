@@ -1,4 +1,6 @@
-"""Symbolic derivative list
+"""
+
+Symbolic derivative list
 
 The format is a list of (Symbol,Expr,Expr) tuples.
 

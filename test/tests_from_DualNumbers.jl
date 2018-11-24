@@ -93,19 +93,19 @@ end
 
             @testset "ε₁ε₂part(f(x + ε₁ e₁ + ε₂ e₁)) = ∂²f/∂x₁²(x)" begin
                 t₀ = x + ε₁ * e₁ + ε₂ * e₁
-                @test ε₁ε₂part(f(t₀)) ≈ D²f(x)[1, 1] rtol = 1e3eps()
+                @test ε₁ε₂part(f(t₀)) ≈ D²f(x)[1, 1] rtol = 1e4eps()
             end
             @testset "ε₁ε₂part(f(x + ε₁ e₁ + ε₂ e₂)) = ∂²f/∂x₁∂x₂(x)" begin
                 t₀ = x + ε₁ * e₁ + ε₂ * e₂
-                @test ε₁ε₂part(f(t₀)) ≈ D²f(x)[1, 2] rtol = 1e3eps()
+                @test ε₁ε₂part(f(t₀)) ≈ D²f(x)[1, 2] rtol = 1e4eps()
             end
             @testset "ε₁ε₂part(f(x + ε₁ e₂ + ε₂ e₁)) = ∂²f/∂x₂∂x₁(x)" begin
                 t₀ = x + ε₁ * e₂ + ε₂ * e₁
-                @test ε₁ε₂part(f(t₀)) ≈ D²f(x)[2, 1] rtol = 1e3eps()
+                @test ε₁ε₂part(f(t₀)) ≈ D²f(x)[2, 1] rtol = 1e4eps()
             end
             @testset "ε₁ε₂part(f(x + ε₁ e₂ + ε₂ e₂)) = ∂²f/∂x₂²(x)" begin
                 t₀ = x + ε₁ * e₂ + ε₂ * e₂
-                @test ε₁ε₂part(f(t₀)) ≈ D²f(x)[2, 2] rtol = 1e3eps()
+                @test ε₁ε₂part(f(t₀)) ≈ D²f(x)[2, 2] rtol = 1e4eps()
             end
         end
     end

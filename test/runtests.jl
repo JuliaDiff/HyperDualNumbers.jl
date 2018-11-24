@@ -7,7 +7,8 @@ my_tests = [
 	"test_Erf_example.jl",
     #"test_power.jl",
     "tests_for_coverage.jl",
-    "test_function_list.jl"
+    "test_function_list.jl",
+    "tests_from_DualNumbers.jl"
 ]
 
 println("Running tests:")

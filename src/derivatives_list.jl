@@ -74,6 +74,8 @@ symbolic_derivative_list = [
     (:erfinv, :(1/2*sqrt(π)*exp(erfinv(x)^2)), :(1/2*π*erfinv(x)*exp(2*erfinv(x)^2)))
     (:erfc, :(-2*exp(-x^2)/sqrt(π)), :(4*x*exp(-x^2)/sqrt(π)))
     (:erfi, :(2*exp(x^2)/sqrt(π)), :(4*x*exp(x^2)/sqrt(π)))
+    (:cospi, :(-π*sinpi(x)), :(-π^2*cospi(x)))
+    (:sinpi, :(π*cospi(x)), :(-π^2*sinpi(x)))
 ]
 
 # This is the public interface for accessing the list of symbolic

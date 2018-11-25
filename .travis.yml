@@ -9,28 +9,35 @@ julia:
   - 1.0
   - nightly
   
+notifications:
+  email: false
+
+git:
+  depth: 99999999
+
 matrix:
   allow_failures:
     - os: osx
     - julia: nightly
-
-script:
-  - julia -e 'using Pkg; Pkg.test("HyperDualNumbers"; coverage=true)'
 
 branches:
   only:
     - master
     - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
     
+jobs:
+  include:
+    - stage: Documentation
+      julia: 1.0
+      os: linux
+      script:
+        - julia --project=docs -e 'using Pkg; Pkg.instantiate(); Pkg.develop(PackageSpec(path=pwd()))'
+        - julia --project=docs --color=yes docs/make.jl
+      after_success: skip
+
+# before_script:
+#   - julia -e 'using Pkg; pkg"up"'
+
 after_success:
   - julia --project=test/coverage -e 'using Pkg; Pkg.instantiate()'
   - julia --project=test/coverage test/coverage/coverage.jl
-  
-  - julia --project=docs -e 'using Pkg; Pkg.add("HyperDualNumbers"); Pkg.instantiate();'
-  - julia --project=docs --color=yes docs/make.jl
-
-notifications:
-  email: true
-  
-git:
-  depth: 99999999

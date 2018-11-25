@@ -17,6 +17,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "#HyperDualNumbers.Hyper-Tuple{}",
+    "page": "HyperDualNumbers",
+    "title": "HyperDualNumbers.Hyper",
+    "category": "method",
+    "text": "Creation of a HyperDuakNumber\n\nhn = Hyper(2.0, 1.0, 1.0, 0.0)\n\n\n\n\n\n"
+},
+
+{
     "location": "#Creation-of-a-HyperDualNumber-1",
     "page": "HyperDualNumbers",
     "title": "Creation of a HyperDualNumber",
@@ -25,11 +33,43 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "#HyperDualNumbers.symbolic_derivative_list",
+    "page": "HyperDualNumbers",
+    "title": "HyperDualNumbers.symbolic_derivative_list",
+    "category": "constant",
+    "text": "Symbolic derivative list\n\nThe format is a list of (Symbol,Expr,Expr) tuples.\n\nEntries in each tuple:\n\n* `:f `     : Function symbol\n* `:df`    : Symbolic expression for first derivative\n* `:d²f`   : Symbolic expression for second derivative\n\nThe symbol :x is used within deriv_expr for the point at which the derivative should be evaluated.\n\nExample of a tuple in the list\n\n(:sqrt, :(1/2/sqrt(x)), :(-1/4/x^(3/2)))\n\n\n\n\n\n"
+},
+
+{
     "location": "#Symbolic-derivative-list-1",
     "page": "HyperDualNumbers",
     "title": "Symbolic derivative list",
     "category": "section",
     "text": "HyperDualNumbers.symbolic_derivative_list"
+},
+
+{
+    "location": "#HyperDualNumbers.ε₁",
+    "page": "HyperDualNumbers",
+    "title": "HyperDualNumbers.ε₁",
+    "category": "constant",
+    "text": "ɛ₁ contains the first derivative after the evaluation\n\n\n\n\n\n"
+},
+
+{
+    "location": "#HyperDualNumbers.ε₂",
+    "page": "HyperDualNumbers",
+    "title": "HyperDualNumbers.ε₂",
+    "category": "constant",
+    "text": "ɛ₂ contains the first derivative after the evaluation\n\n\n\n\n\n"
+},
+
+{
+    "location": "#HyperDualNumbers.ε₁ε₂",
+    "page": "HyperDualNumbers",
+    "title": "HyperDualNumbers.ε₁ε₂",
+    "category": "constant",
+    "text": "ɛ₁ɛ₂ contains the second derivative after the evaluation\n\n\n\n\n\n"
 },
 
 {

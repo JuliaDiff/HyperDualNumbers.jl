@@ -1,3 +1,4 @@
 julia 1.0
 Compat 0.69
 SpecialFunctions
+NaNMath

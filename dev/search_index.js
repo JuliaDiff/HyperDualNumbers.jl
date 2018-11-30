@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "HyperDualNumbers",
     "title": "HyperDualNumbers.Hyper",
     "category": "method",
-    "text": "Creation of a HyperDuakNumber\n\nhn = Hyper(2.0, 1.0, 1.0, 0.0)\n\n\n\n\n\n"
+    "text": "Creation of a HyperDualNumber\n\nhn = Hyper(2.0, 1.0, 1.0, 0.0)\n\n\n\n\n\n"
 },
 
 {

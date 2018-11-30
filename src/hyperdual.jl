@@ -10,7 +10,7 @@ Hyper(x::S, y::T, z::U, w::V) where {S<:ReComp,T<:ReComp,U<:ReComp,V<:ReComp} = 
 Hyper(x::ReComp) = Hyper(x, zero(x), zero(x), zero(x))
 
 """
-Creation of a HyperDuakNumber
+Creation of a HyperDualNumber
 
 `hn = Hyper(2.0, 1.0, 1.0, 0.0)`
 

@@ -64,8 +64,8 @@ Question and contributions are very welcome, as are feature requests and suggest
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://juliadiff.github.io/HyperDualNumbers.jl/stable
 
-[travis-img]: https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/JuliaDiff/HyperDualNumbers.jl
+[travis-img]: https://travis-ci.com/JuliaDiff/HyperDualNumbers.jl.svg?branch=master
+[travis-url]: https://travis-ci.com/JuliaDiff/HyperDualNumbers.jl
 
 [appveyor-img]: https://ci.appveyor.com/api/projects/status/gkwh4md2fq4c29hy?svg=true
 [appveyor-url]: https://ci.appveyor.com/project/JuliaDiff/HyperDualNumbers-jl

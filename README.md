@@ -59,10 +59,10 @@ In the future it is my intention to deprecate:
 Question and contributions are very welcome, as are feature requests and suggestions. Please open an [issue][issues-url] if you encounter any problems or have a question. 
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-dev-url]: https://juliadiff.github.io/HyperDualNumbers.jl/latest
+[docs-dev-url]: https://juliadiff.org/HyperDualNumbers.jl/latest
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://juliadiff.github.io/HyperDualNumbers.jl/stable
+[docs-stable-url]: https://juliadiff.org/HyperDualNumbers.jl/stable
 
 [travis-img]: https://travis-ci.com/JuliaDiff/HyperDualNumbers.jl.svg?branch=master
 [travis-url]: https://travis-ci.com/JuliaDiff/HyperDualNumbers.jl

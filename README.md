@@ -3,7 +3,7 @@
 
 | **Documentation**                                                               | **Build Status**                                                                                |
 |:-------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
-| [![][docs-stable-img]][docs-stable-url] [![][docs-dev-img]][docs-dev-url] | [![][travis-img]][travis-url] [![][appveyor-img]][appveyor-url] [![][codecov-img]][codecov-url] |
+| [![][docs-stable-img]][docs-stable-url] [![][docs-dev-img]][docs-dev-url] | ![][CI-build] [![][codecov-img]][codecov-url] |
 
 
 Hyper-dual numbers can be used to compute first and second derivatives numerically without the cancellation errors of finite-differencing schemes. 
@@ -63,6 +63,8 @@ Question and contributions are very welcome, as are feature requests and suggest
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://juliadiff.org/HyperDualNumbers.jl/stable
+
+[CI-build]: https://github.com/stanjulia/Stan.jl/workflows/CI/badge.svg?branch=master
 
 [travis-img]: https://travis-ci.com/JuliaDiff/HyperDualNumbers.jl.svg?branch=master
 [travis-url]: https://travis-ci.com/JuliaDiff/HyperDualNumbers.jl

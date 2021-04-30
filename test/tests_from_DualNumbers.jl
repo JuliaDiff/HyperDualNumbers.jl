@@ -187,6 +187,14 @@ end
         end
     end
 
+    @testset "complex type conversion" begin
+        for T in [Float16, Float32, Float64, BigFloat, Int8, Int16, Int32, Int64, Int128, BigInt, Bool]
+            D = Hyper{T}
+            @test typeof(complex(zero(D))) == complex(D)
+            D = Hyper{Complex{T}}
+            @test typeof(complex(zero(D))) == complex(D)
+        end
+    end
 end
 
 @testset "Check bug in `inv`" begin

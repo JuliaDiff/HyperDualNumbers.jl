@@ -251,6 +251,7 @@ end
 
 Base.float(h::Union{Hyper{T}, Hyper{Complex{T}}}) where {T<:AbstractFloat} = h
 Base.complex(h::Hyper{<:Complex}) = h
+Base.complex(::Type{Hyper{T}}) where {T} = Hyper{complex(T)}
 
 Base.floor(h::Hyper) = floor(value(h))
 Base.ceil(h::Hyper)  = ceil(value(h))

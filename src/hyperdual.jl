@@ -307,7 +307,7 @@ Base.:*(h::Hyper, x::Bool) = x * h
 function Base.:*(h₁::Hyper, h₂::Hyper)
     x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
     a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)
-    return Hyper(a*x, a*y+b*x, a*z+c*x, a*w+d*x+c*y+b*z)
+    return Hyper(a*x, muladd(a, y, b*x), muladd(a, z, c*x), muladd(a, w, muladd(d, x, muladd(c, y, b*z))))
 end
 Base.:*(n::Number, h::Hyper) = Hyper(n*value(h), n*ε₁part(h), n*ε₂part(h), n*ε₁ε₂part(h))
 Base.:*(h::Hyper, n::Number) = n * h

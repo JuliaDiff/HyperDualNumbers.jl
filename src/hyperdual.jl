@@ -314,6 +314,11 @@ Base.:*(h::Hyper, n::Number) = n * h
 
 Base.one(h::Hyper) = Hyper(one(realpart(h)))
 
+@inline Base.literal_pow(::typeof(^), x::Hyper, ::Val{0}) = one(typeof(x))
+@inline Base.literal_pow(::typeof(^), x::Hyper, ::Val{1}) = x
+@inline Base.literal_pow(::typeof(^), x::Hyper, ::Val{2}) = x*x
+@inline Base.literal_pow(::typeof(^), x::Hyper, ::Val{3}) = x*x*x
+
 function Base.:/(h₁::Hyper, h₂::Hyper)
     x, y, z, w = value(h₁), ε₁part(h₁), ε₂part(h₁), ε₁ε₂part(h₁)
     a, b, c, d = value(h₂), ε₁part(h₂), ε₂part(h₂), ε₁ε₂part(h₂)

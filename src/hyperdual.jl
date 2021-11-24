@@ -418,7 +418,7 @@ for (fsym, dfexp, d²fexp) in symbolic_derivative_list
           isdefined(Base, fsym)             ? Base             :
           isdefined(Base.Math, fsym)        ? Base.Math        :
           nothing
-    if mod !== nothing
+    if mod !== nothing && fsym !== :sin && fsym !== :cos # (we define out own sin and cos)
         expr = :(Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp))
         cse_expr = CommonSubexpressions.cse(expr, warn=false)
 
@@ -437,6 +437,17 @@ for (fsym, dfexp, d²fexp) in symbolic_derivative_list
     end
 end
 
+# Can use sincos for cos and sin
+function Base.cos(h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    si, co = sincos(a)
+    return Hyper(co, -si*b, -si*c, -si*d - co*b*c)
+end
+function Base.sin(h::Hyper)
+    a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
+    si, co = sincos(a)
+    return Hyper(si, co*b, co*c, co*d - si*b*c)
+end
 # only need to compute exp/cis once (removed exp from derivatives_list)
 function Base.exp(h::Hyper)
     a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)

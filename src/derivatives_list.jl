@@ -21,7 +21,7 @@ which the derivative should be evaluated.
 ```
 """ 
 symbolic_derivative_list = [
-    (:sqrt, :(1/2/sqrt(x)), :(-1/4/x^(3/2)))
+    (:sqrt, :(1/2/sqrt(x)), :(-1/4/(sqrt(x) * x)))
     (:cbrt, :(1/3/x^(2/3)), :(-2/9/x^(5/3)))
     (:abs2, :(2*x), :(2))
     (:inv, :(-1/x^2), :(2/x^3))

@@ -3,6 +3,7 @@ module HyperDualNumbers
 using SpecialFunctions, LinearAlgebra
 import NaNMath
 import Calculus
+import CommonSubexpressions
 
 include("derivatives_list.jl")
 include("hyperdual.jl")

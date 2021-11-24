@@ -5,12 +5,14 @@ version = "4.0.7"
 
 [deps]
 Calculus = "49dc2e85-a5d0-5ad3-a950-438e2897f1b9"
+CommonSubexpressions = "bbf7d656-a473-5ed7-a52c-81e309532950"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 NaNMath = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
 Calculus = "0.5"
+CommonSubexpressions = "0.3"
 NaNMath = "0.3"
 SpecialFunctions = "0.10, 1.0, 2"
 julia = "1"

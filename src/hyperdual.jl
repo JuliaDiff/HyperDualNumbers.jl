@@ -370,7 +370,7 @@ function Base.:^(h::Hyper, a::Number)
         a^2*x^(a - 2)*y*z - a*x^(a - 2)*y*z + a*w*x^(a - 1))
 end
 
-# Below definition is necesssaty to resolve a conflict with the
+# Below definition is necesssary to resolve a conflict with the
 # definition in MathConstants.jl
 function Base.:^(x::Irrational{:ℯ}, h::Hyper)
     a, b, c, d = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
@@ -419,9 +419,12 @@ for (fsym, dfexp, d²fexp) in symbolic_derivative_list
           isdefined(Base.Math, fsym)        ? Base.Math        :
           nothing
     if mod !== nothing
+        expr = :(Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp))
+        cse_expr = CommonSubexpressions.cse(expr, warn=false)
+
         @eval function $mod.$(fsym)(h::Hyper)
             x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
-            Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
+            $cse_expr
         end
     end
     # extend corresponding NaNMath methods

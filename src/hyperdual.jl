@@ -414,18 +414,12 @@ end
 to_nanmath(x) = x
 
 for (fsym, dfexp, d²fexp) in symbolic_derivative_list
-    if isdefined(SpecialFunctions, fsym)
-        @eval function SpecialFunctions.$(fsym)(h::Hyper)
-            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
-            Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
-        end
-    elseif isdefined(Base, fsym)
-        @eval function Base.$(fsym)(h::Hyper)
-            x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
-            Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
-        end
-    elseif isdefined(Base.Math, fsym)
-        @eval function Base.Math.$(fsym)(h::Hyper)
+    mod = isdefined(SpecialFunctions, fsym) ? SpecialFunctions :
+          isdefined(Base, fsym)             ? Base             :
+          isdefined(Base.Math, fsym)        ? Base.Math        :
+          nothing
+    if mod !== nothing
+        @eval function $mod.$(fsym)(h::Hyper)
             x, y, z, w = value(h), ε₁part(h), ε₂part(h), ε₁ε₂part(h)
             Hyper($(fsym)(x), y*$dfexp, z*$dfexp, w*$dfexp + y*z*$d²fexp)
         end

@@ -8,6 +8,7 @@ struct Hyper{T<:ReComp} <: Number
 end
 Hyper(x::S, y::T, z::U, w::V) where {S<:ReComp,T<:ReComp,U<:ReComp,V<:ReComp} = Hyper(promote(x,y,z,w)...)
 Hyper(x::ReComp) = Hyper(x, zero(x), zero(x), zero(x))
+Hyper{T}(x::ReComp) where T<:ReComp = Hyper{T}(T(x), zero(T), zero(T), zero(T))
 
 """
 Creation of a HyperDualNumber

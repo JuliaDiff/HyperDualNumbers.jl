@@ -30,5 +30,5 @@ println("f(t0) = ", f(t0))
 
 @test abs(f(1.5) - realpart(f(t0))) < 5eps(1.0)
 @test abs(ε₁part(f(t0))-4.053427893898621) < 5eps(1.0) && ε₁part(f(t0)) == ε₂part(f(t0))
-@test abs(ε₁ε₂part(f(t0))-9.463073681596601) < 5eps(1.0)
+@test abs(ε₁ε₂part(f(t0))-9.463073681596601) < 10eps(1.0)
 

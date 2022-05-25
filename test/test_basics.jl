@@ -15,6 +15,8 @@ hd9 = hyper(-1.0, -2.0, -3.0, -4.0)
 
 hdNaN = hyper(0/0)
 
+hd_from_f32 = Hyper{Float64}(1f2)
+
 # Addition and subtraction
 @test ε₁part(hd1) == 0.0
 @test isequal(hd1 + hd2, hyper(2.0, 2.0, 3.0, 4.0))

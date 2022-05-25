@@ -24,6 +24,7 @@ Latest tagged versions:
 *  v2.0.0 (Julia v0.7-, Oct 2017)
 *  v3.0.1 (Julia v0.7 & Julia v1.0), Aug 2018, Pkg(3))
 *  v4.0.0 (Julia v1.0, Nov 2018)
+*  v4.0.9 (Julia 1.9-DEV, May 2022)
 
 For details see [VERSION.md](https://github.com/JuliaDiff/HyperDualNumbers.jl/blob/master/VERSIONS.md)
 

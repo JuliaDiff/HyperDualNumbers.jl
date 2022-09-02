@@ -13,7 +13,7 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 [compat]
 Calculus = "0.5"
 CommonSubexpressions = "0.3"
-NaNMath = "0.3"
+NaNMath = "0.3, 1.0"
 SpecialFunctions = "0.10, 1.0, 2"
 julia = "1"
 
